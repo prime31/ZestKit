@@ -5,7 +5,7 @@
 
 # ZestKit
 
-The 3rd tween library for Unity. Yes, you read that number correctly. First there was [GoKit](https://github.com/prime31/GoKit). Then there was [GoKitLite](https://github.com/prime31/GoKitLite). They each had their purpose. GoKit was insanely customizable and GoKitLite was insanely fast. ZestKit was designed to take the best of both of them and make it even better.
+The 3rd tween library for Unity. Yes, you read that number correctly. First there was [GoKit](https://github.com/prime31/GoKit). Then there was [GoKitLite](https://github.com/prime31/GoKitLite). They each had their purpose. GoKit was insanely customizable and GoKitLite was insanely fast. ZestKit was designed to take the best of both of them and make it even better. For a brief overview on the design and structure checkout [this blog post](http://blog.prime31.com/anatomy-of-a-tween-lib/).
 
 
 ### Quick Start or I Just Wanna Tween
