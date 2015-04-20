@@ -1,14 +1,77 @@
+##### NOTE: This is just the initial commit of ZestKit and it is not yet fully feature complete. There is no demo scene yet and the easy to use extension methods only cover Transform and Materials. More goodies are coming soon.
+
+
+
+
 # ZestKit
 
 The 3rd tween library for Unity. Yes, you read that number correctly. First there was [GoKit](https://github.com/prime31/GoKit). Then there was [GoKitLite](https://github.com/prime31/GoKitLite). They each had their purpose. GoKit was insanely customizable and GoKitLite was insanely fast. ZestKit was designed to take the best of both of them and make it even better.
 
 
+### Quick Start or I Just Wanna Tween
 
-## NOTE: This is just an initial commit of ZestKit and it is not yet complete. There is no demo scene yet and the easy to use extension methods only cover Transform and Materials. More coming in the next week or so
+Import the files in the ZestKit folder into your project, add ```using ZestKit``` to your file and you are ready to start tweening. Using the [extension methods](http://csharp.net-tutorials.com/csharp-3.0/extension-methods/) (currently covering Transform and Material classes) will get you up and running in no time. Examples:
+
+```csharp
+// tween position to Vector3.one over 0.3 seconds
+transform.positionTo( 0.3f, Vector3.one ).start();
+
+// tween eulerAngles to Vector3.zero over 0.3 seconds then ping-pong back to the original value
+transform.positionTo( 0.3f, Vector3.zero )
+    .setLoops( LoopType.PingPong )
+    .start();
+
+// tween the Material _Color property from black to yellow
+material.colorTo( 0.5f, Color.yellow )
+    .setFrom( Color.black )
+    .start();
+
+// tween localScale independant of Time.timeScale with a 2 second delay before starting the tween
+// and get notified when the tween has finished specifying the easing equation to use
+transform.localScaleTo( 0.5f, new Vector3( 10f, 10f, 10f )
+    .setDelay( 2f )
+    .setIsTimeScaleIndependant()
+    .setCompletionHandler( myCompletionHandlerFunction )
+    .setEaseType( EaseType.ElasticOut )
+    .start();
+```
+
+
+### What Can I Tween?
+
+Out of the box, ZestKit can tween any int, float, Vector2, Vector3, Vector4, Quaternion, Color, Color32 and it has a built in path editor/tweener ("borrowed" from GoKit ;). ZestKit offers both strongly targeted and weakly targeted tweens. What's the difference between strongly and weakly targeted tweens? A strongly targeted tween is something ZestKit knows about out of the box. The most commonly used would be transform.position/rotation/scale, material.color, etc. A weakly targeted tween means ZestKit doesn't know about the object or property being tweened. For example, if you have a custom class (SomeCustomClass) that has a Vector3 property (myVector3) you can still tween this value with ZestKit by using a property tween. The following would do the trick:
+
+```csharp
+PropertyTweens.vector3PropertyTo( someCustomClassInstance, "myVector3", 0.4f, Vector3.zero, Vector3.one )
+```
+
+
+### What About Those Fancy Easing Equations?
+
+ZestKit offers a bunch of built-in easing equations and it also lets you specify an AnimationCurve to handle easing for maximum flexibility. The included easing types are: Linear, SineIn, SineOut, SineInOut, QuadIn, QuadOut, QuadInOut, CubicIn, CubicOut, CubicInOut, QuartIn, QuartOut, QuartInOut, QuintIn, QuintOut, QuintInOut, ExpoIn, ExpoOut, ExpoInOut, CircIn, CircOut, CircInOut, ElasticIn, ElasticOut, ElasticInOut, Punch, BackIn, BackOut, BackInOut, BounceIn, BounceOut and BounceInOut.
 
 
 
+#### Extending ZestKit or Using the Tween Engine Without ZestKit
 
-License
------
-[Attribution-NonCommercial-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode) with [simple explanation](http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US) with the attribution clause waived. You are free to use GoKitLite in any and all games that you make. You cannot sell GoKitLite directly or as part of a larger game asset.
+Special care was taken when making ZestKit so that it can be extended with great ease. Let's take the PropertyTween example from above and make it a proper ZestKit tween so that we don't have to use the PropertyTween class (it allocates a bit of memory to locate the property). All we have to do is implement the ```ITweenTarget<T>``` interface which contains a single method:
+
+```csharp
+public class SomeCustomClass : ITweenTarget<Vector3>
+{
+  public void setTweenedValue( Vector3 value )
+  {
+      myVector3 = value;
+  }
+}
+```
+
+That's it. SomeCustomClass is now a valid ```ITweenTarget<T>``` and it can tweened with a ```Vector3Tween``` (just pass it as the first parameter to the initialize method of the Vector3Tween).
+
+It was mentioned above that you can use the ZestKit tween engine without ZestKit. The ```Zest``` class contains the core tween engine and all of it's easing powers ready to use. If you are going that route, it is expected that you are a big girl/boy and can read the code and figure out how to use it so you're on your own from here.
+
+
+
+#### License
+
+[Attribution-NonCommercial-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode) with [simple explanation](http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US) with the attribution clause waived. You are free to use ZestKit in any and all games that you make. You cannot sell ZestKit directly or as part of a larger game asset.
