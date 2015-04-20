@@ -27,6 +27,7 @@ namespace ZestKit
 		protected T _fromValue;
 		protected T _toValue;
 		protected EaseType _easeType;
+		protected AnimationCurve _animationCurve;
 		protected bool _shouldRecycleTween = true;
 		protected Action<ITween<T>> _completionHandler;
 		protected Action<ITween<T>> _loopCompleteHandler;
@@ -50,6 +51,13 @@ namespace ZestKit
 		public ITween<T> setEaseType( EaseType easeType )
 		{
 			_easeType = easeType;
+			return this;
+		}
+
+
+		public ITween<T> setAnimationCurve( AnimationCurve animationCurve )
+		{
+			_animationCurve = animationCurve;
 			return this;
 		}
 
@@ -184,6 +192,7 @@ namespace ZestKit
 			_tweenState = TweenState.Complete;
 			_shouldRecycleTween = true;
 			_easeType = ZestKit.defaultEaseType;
+			_animationCurve = null;
 			
 			_delay = 0f;
 			_duration = 0f;

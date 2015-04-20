@@ -10,6 +10,7 @@ namespace ZestKit
 	public interface ITween<T> : ITweenControl where T : struct
 	{
 		ITween<T> setEaseType( EaseType easeType );
+		ITween<T> setAnimationCurve( AnimationCurve animationCurve );
 		ITween<T> setDelay( float delay );
 		ITween<T> setIsTimeScaleIndependant();
 		ITween<T> setCompletionHandler( Action<ITween<T>> completionHandler );

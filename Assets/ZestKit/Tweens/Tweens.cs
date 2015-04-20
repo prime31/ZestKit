@@ -9,7 +9,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( (int)Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( (int)Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( (int)Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -18,7 +21,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -27,7 +33,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -36,7 +45,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -45,7 +57,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -54,7 +69,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -63,7 +81,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 
@@ -72,7 +93,10 @@ namespace ZestKit
 	{
 		protected override void updateValue()
 		{
-			_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _animationCurve != null )
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			else
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
 	}
 

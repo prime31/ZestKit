@@ -120,6 +120,18 @@ namespace ZestKit
 			return tween;
 		}
 
+
+		public static ITween<Vector4> floatTo( this Material self, float duration, Vector4 to, string propertyName )
+		{
+			var tweenTarget = new MaterialVector4Target();
+			tweenTarget.prepareForUse( self, propertyName );
+
+			var tween = new Vector4Tween();
+			tween.initialize( tweenTarget, self.GetVector( propertyName ), to, duration );
+
+			return tween;
+		}
+
 		#endregion
 
 	}
