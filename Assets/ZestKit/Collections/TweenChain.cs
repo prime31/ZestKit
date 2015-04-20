@@ -13,7 +13,7 @@ namespace ZestKit
 		private Action<TweenChain> _completionHandler;
 
 
-		#region ITweenInternal
+		#region ITweenable
 
 		public bool tick()
 		{
@@ -81,7 +81,7 @@ namespace ZestKit
 		#endregion
 
 
-		#region TweenChain control
+		#region ITweenable control
 
 		public bool isRunning()
 		{
@@ -107,16 +107,22 @@ namespace ZestKit
 		}
 
 
-		public void stop( bool bringToCompletion )
-		{
-			stop();
-		}
-
-
-		public void stop()
+		/// <summary>
+		/// bringToCompletion is ignored for chains due to it not having a solid, specific meaning for a chain
+		/// </summary>
+		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
+		public void stop( bool bringToCompletion = false )
 		{
 			_currentTween = _tweenList.Count;
 		}
+
+
+		/// <summary>
+		/// this is ignored for TweenChains since it doesn't have a clear definition
+		/// </summary>
+		/// <param name="elapsedTime">Elapsed time.</param>
+		public void jumpToElapsedTime( float elapsedTime )
+		{}
 
 		#endregion
 	}

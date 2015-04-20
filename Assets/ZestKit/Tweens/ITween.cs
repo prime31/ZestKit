@@ -12,6 +12,7 @@ namespace ZestKit
 		ITween<T> setEaseType( EaseType easeType );
 		ITween<T> setAnimationCurve( AnimationCurve animationCurve );
 		ITween<T> setDelay( float delay );
+		ITween<T> setDuration( float duration );
 		ITween<T> setIsTimeScaleIndependant();
 		ITween<T> setCompletionHandler( Action<ITween<T>> completionHandler );
 		ITween<T> setLoops( LoopType loopType, int loops = 1, float delayBetweenLoops = 0f );
@@ -31,7 +32,8 @@ namespace ZestKit
 		void start();
 		void pause();
 		void resume();
-		void stop( bool bringToCompletion );
+		void stop( bool bringToCompletion = false );
+		void jumpToElapsedTime( float elapsedTime );
 	}
 	
 

@@ -11,7 +11,7 @@ namespace ZestKit
 	{
 		#region Transform tweens
 
-		public static ITween<Vector3> positionTo( this Transform self, float duration, Vector3 to )
+		public static ITween<Vector3> positionTo( this Transform self, Vector3 to, float duration )
 		{
 			var tween = Vector3TransformTween.nextAvailableTween();
 			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.Position );
@@ -21,7 +21,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> localPositionTo( this Transform self, float duration, Vector3 to )
+		public static ITween<Vector3> localPositionTo( this Transform self, Vector3 to, float duration )
 		{
 			var tween = Vector3TransformTween.nextAvailableTween();
 			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalPosition );
@@ -31,7 +31,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> localScaleTo( this Transform self, float duration, Vector3 to )
+		public static ITween<Vector3> localScaleTo( this Transform self, Vector3 to, float duration )
 		{
 			var tween = Vector3TransformTween.nextAvailableTween();
 			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalScale );
@@ -41,7 +41,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> eulersTo( this Transform self, float duration, Vector3 to )
+		public static ITween<Vector3> eulersTo( this Transform self, Vector3 to, float duration )
 		{
 			var tween = Vector3TransformTween.nextAvailableTween();
 			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.EulerAngles );
@@ -51,7 +51,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> localEulersTo( this Transform self, float duration, Vector3 to )
+		public static ITween<Vector3> localEulersTo( this Transform self, Vector3 to, float duration )
 		{
 			var tween = Vector3TransformTween.nextAvailableTween();
 			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalEulerAngles );
@@ -61,7 +61,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Quaternion> rotationTo( this Transform self, float duration, Quaternion to )
+		public static ITween<Quaternion> rotationTo( this Transform self, Quaternion to, float duration )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.Rotation );
 			var tween = new QuaternionTween();
@@ -71,7 +71,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Quaternion> localRotationTo( this Transform self, float duration, Quaternion to )
+		public static ITween<Quaternion> localRotationTo( this Transform self, Quaternion to, float duration )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.LocalRotation );
 			var tween = new QuaternionTween();
@@ -85,7 +85,7 @@ namespace ZestKit
 
 		#region Material tweens
 
-		public static ITween<Color> colorTo( this Material self, float duration, Color to, string propertyName = "_Color" )
+		public static ITween<Color> colorTo( this Material self, Color to, float duration, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialColorTarget();
 			tweenTarget.prepareForUse( self, propertyName );
@@ -97,7 +97,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> alphaTo( this Material self, float duration, float to, string propertyName = "_Color" )
+		public static ITween<float> alphaTo( this Material self, float to, float duration, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialAlphaTarget();
 			tweenTarget.prepareForUse( self, propertyName );
@@ -109,7 +109,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> floatTo( this Material self, float duration, float to, string propertyName = "_Color" )
+		public static ITween<float> floatTo( this Material self, float to, float duration, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialFloatTarget();
 			tweenTarget.prepareForUse( self, propertyName );
@@ -121,7 +121,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector4> floatTo( this Material self, float duration, Vector4 to, string propertyName )
+		public static ITween<Vector4> floatTo( this Material self, Vector4 to, float duration, string propertyName )
 		{
 			var tweenTarget = new MaterialVector4Target();
 			tweenTarget.prepareForUse( self, propertyName );

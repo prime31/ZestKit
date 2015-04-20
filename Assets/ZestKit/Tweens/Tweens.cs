@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+/// <summary>
+/// concrete implementations of all tweenable types
+/// </summary>
 namespace ZestKit
 {
 	public class IntTween : Tween<int>

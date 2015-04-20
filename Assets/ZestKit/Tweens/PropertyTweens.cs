@@ -72,7 +72,6 @@ namespace ZestKit
 	public class PropertyTarget<T> : ITweenTarget<T> where T : struct
 	{
 		protected Action<T> _setter;
-		protected Func<T> _getter;
 
 
 		public void setTweenedValue( T value )
@@ -84,9 +83,9 @@ namespace ZestKit
 		public PropertyTarget( object target, string propertyName )
 		{
 			_setter = PropertyTweenUtils.setterForProperty<Action<T>>( target, propertyName );
-			_getter = PropertyTweenUtils.getterForProperty<Func<T>>( target, propertyName );
+			//_getter = PropertyTweenUtils.getterForProperty<Func<T>>( target, propertyName );
 
-			if( _setter == null || _getter == null )
+			if( _setter == null )
 				Debug.LogError( "either the property (" + propertyName + ") setter or getter could not be found on the object " + target );
 		}
 	}
@@ -94,7 +93,7 @@ namespace ZestKit
 
 	public static class PropertyTweens
 	{
-		public static ITween<int> intPropertyTo( object self, string propertyName, float duration, int from, int to )
+		public static ITween<int> intPropertyTo( object self, string propertyName, int from, int to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<int>( self, propertyName );
 
@@ -105,7 +104,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> floatPropertyTo( object self, string propertyName, float duration, float from, float to )
+		public static ITween<float> floatPropertyTo( object self, string propertyName, float from, float to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<float>( self, propertyName );
 
@@ -116,7 +115,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector2> vector2PropertyTo( object self, string propertyName, float duration, Vector2 from, Vector2 to )
+		public static ITween<Vector2> vector2PropertyTo( object self, string propertyName, Vector2 from, Vector2 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector2>( self, propertyName );
 
@@ -127,7 +126,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> vector3PropertyTo( object self, string propertyName, float duration, Vector3 from, Vector3 to )
+		public static ITween<Vector3> vector3PropertyTo( object self, string propertyName, Vector3 from, Vector3 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector3>( self, propertyName );
 
@@ -138,7 +137,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector4> vector4PropertyTo( object self, string propertyName, float duration, Vector4 from, Vector4 to )
+		public static ITween<Vector4> vector4PropertyTo( object self, string propertyName, Vector4 from, Vector4 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector4>( self, propertyName );
 
@@ -149,7 +148,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Quaternion> quaternionPropertyTo( object self, string propertyName, float duration, Quaternion from, Quaternion to )
+		public static ITween<Quaternion> quaternionPropertyTo( object self, string propertyName, Quaternion from, Quaternion to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Quaternion>( self, propertyName );
 
@@ -160,7 +159,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Color> colorPropertyTo( object self, string propertyName, float duration, Color from, Color to )
+		public static ITween<Color> colorPropertyTo( object self, string propertyName, Color from, Color to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color>( self, propertyName );
 
@@ -171,7 +170,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Color32> color32PropertyTo( object self, string propertyName, float duration, Color32 from, Color32 to )
+		public static ITween<Color32> color32PropertyTo( object self, string propertyName, Color32 from, Color32 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color32>( self, propertyName );
 

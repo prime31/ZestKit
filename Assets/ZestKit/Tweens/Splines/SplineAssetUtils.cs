@@ -33,24 +33,19 @@ namespace ZestKit
 
 				return bytesToVector3List( loadAsset.bytes );
 			}
-			else if( Application.platform == RuntimePlatform.IPhonePlayer )
-			{
-				// at runtime on iOS, we load from the dataPath
-				path = Path.Combine( Path.Combine( Application.dataPath, "Raw" ), pathAssetName );
-			}
 			else
 			{
-				// in the editor we default to looking in the StreamingAssets folder
+				// at runtime on other platforms
 				path = Path.Combine( Application.streamingAssetsPath, pathAssetName );
 			}
 
-			#if UNITY_WEBPLAYER || NETFX_CORE || UNITY_WP8
+#if UNITY_WEBPLAYER || NETFX_CORE || UNITY_WP8
 			// it isnt possible to get here but the compiler needs it to be here anyway
 			return null;
-			#else
+#else
 			var bytes = File.ReadAllBytes( path );
 			return bytesToVector3List( bytes );
-			#endif
+#endif
 		}
 
 

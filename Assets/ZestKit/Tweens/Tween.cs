@@ -15,7 +15,7 @@ namespace ZestKit
 
 	public abstract class Tween<T> : ITweenable, ITween<T> where T : struct
 	{
-		enum TweenState
+		protected enum TweenState
 		{
 			Running,
 			Paused,
@@ -33,7 +33,7 @@ namespace ZestKit
 		protected Action<ITween<T>> _loopCompleteHandler;
 
 		// tween state
-		TweenState _tweenState = TweenState.Complete;
+		protected TweenState _tweenState = TweenState.Complete;
 		bool _isTimeScaleIndependent;
 		protected float _delay;
 		protected float _duration;
@@ -66,6 +66,13 @@ namespace ZestKit
 		{
 			_delay = delay;
 			_elapsedTime = -_delay;
+			return this;
+		}
+
+
+		public ITween<T> setDuration( float duration )
+		{
+			_duration = duration;
 			return this;
 		}
 
@@ -144,7 +151,7 @@ namespace ZestKit
 		}
 
 
-		public void start()
+		public virtual void start()
 		{
 			if( _tweenState == TweenState.Complete )
 			{
@@ -166,13 +173,37 @@ namespace ZestKit
 		}
 
 
-		public void stop( bool bringToCompletion )
+		public void stop( bool bringToCompletion = false )
 		{
 			_tweenState = TweenState.Complete;
-			_elapsedTime = _duration;
-			tick();
+
+			if( bringToCompletion )
+			{
+				// if we are running in reverse we finish up at 0 else we go to duration
+				_elapsedTime = _isRunningInReverse ? 0f : _duration;
+				_loopType = LoopType.None;
+				_loops = 0;
+
+				// ZestKit will handle removal on the next tick
+			}
+			else
+			{
+				ZestKit.instance.removeTween( this );
+			}
 		}
-		
+
+
+		/// <summary>
+		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
+		/// object whether it is paused, completed or running.
+		/// </summary>
+		/// <param name="elapsedTime">Elapsed time.</param>
+		public void jumpToElapsedTime( float elapsedTime )
+		{
+			_elapsedTime = Mathf.Clamp( elapsedTime, 0f, _duration );
+			updateValue();
+		}
+
 		
 		/// <summary>
 		/// reverses the current tween. if it was going forward it will be going backwards and vice versa.
@@ -204,6 +235,13 @@ namespace ZestKit
 		}
 
 
+		/// <summary>
+		/// resets all state to defaults and sets the initial state based on the paramters passed in
+		/// </summary>
+		/// <param name="target">Target.</param>
+		/// <param name="from">From.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
 		public void initialize( ITweenTarget<T> target, T from, T to, float duration )
 		{
 			resetState();
@@ -246,7 +284,7 @@ namespace ZestKit
 				_elapsedTime += deltaTime;
 			
 			// if we have a loopType and we are done do the loop
-			if( _loopType != LoopType.None && _tweenState == TweenState.Complete )
+			if( _loopType != LoopType.None && _tweenState == TweenState.Complete && _loops > 0 )
 				handleLooping();
 
 			if( _tweenState == TweenState.Complete )

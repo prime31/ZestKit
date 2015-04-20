@@ -75,14 +75,14 @@ namespace ZestKit
 		}
 
 
-		void removeTween( ITweenable tween, int index )
+		public void removeTween( ITweenable tween, int index )
 		{
 			_activeTweens.RemoveAt( index );
 			tween.recycleSelf();
 		}
 
 
-		void removeTween( ITweenable tween )
+		public void removeTween( ITweenable tween )
 		{
 			_activeTweens.Remove( tween );
 			tween.recycleSelf();
