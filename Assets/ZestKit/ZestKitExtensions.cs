@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 
 namespace ZestKit
@@ -11,71 +12,69 @@ namespace ZestKit
 	{
 		#region Transform tweens
 
-		public static ITween<Vector3> positionTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKpositionTo( this Transform self, Vector3 to, float duration )
 		{
-			var tween = Vector3TransformTween.nextAvailableTween();
-			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.Position );
+			var tween = TransformVector3Tween.nextAvailableTween();
+			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.Position );
 			tween.initialize( tween, self.position, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector3> localPositionTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalPositionTo( this Transform self, Vector3 to, float duration )
 		{
-			var tween = Vector3TransformTween.nextAvailableTween();
-			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalPosition );
+			var tween = TransformVector3Tween.nextAvailableTween();
+			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalPosition );
 			tween.initialize( tween, self.localPosition, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector3> localScaleTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalScaleTo( this Transform self, Vector3 to, float duration )
 		{
-			var tween = Vector3TransformTween.nextAvailableTween();
-			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalScale );
+			var tween = TransformVector3Tween.nextAvailableTween();
+			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalScale );
 			tween.initialize( tween, self.localScale, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector3> eulersTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKeulersTo( this Transform self, Vector3 to, float duration )
 		{
-			var tween = Vector3TransformTween.nextAvailableTween();
-			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.EulerAngles );
+			var tween = TransformVector3Tween.nextAvailableTween();
+			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.EulerAngles );
 			tween.initialize( tween, self.eulerAngles, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector3> localEulersTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalEulersTo( this Transform self, Vector3 to, float duration )
 		{
-			var tween = Vector3TransformTween.nextAvailableTween();
-			tween.setTargetAndType( self, Vector3TransformTween.TransformTargetType.LocalEulerAngles );
+			var tween = TransformVector3Tween.nextAvailableTween();
+			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalEulerAngles );
 			tween.initialize( tween, self.localEulerAngles, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Quaternion> rotationTo( this Transform self, Quaternion to, float duration )
+		public static ITween<Quaternion> ZKrotationTo( this Transform self, Quaternion to, float duration )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.Rotation );
-			var tween = new QuaternionTween();
-			tween.initialize( tweenTarget, self.rotation, to, duration );
+			var tween = new QuaternionTween( tweenTarget, self.rotation, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Quaternion> localRotationTo( this Transform self, Quaternion to, float duration )
+		public static ITween<Quaternion> ZKlocalRotationTo( this Transform self, Quaternion to, float duration )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.LocalRotation );
-			var tween = new QuaternionTween();
-			tween.initialize( tweenTarget, self.localRotation, to, duration );
+			var tween = new QuaternionTween( tweenTarget, self.localRotation, to, duration );
 
 			return tween;
 		}
@@ -85,49 +84,165 @@ namespace ZestKit
 
 		#region Material tweens
 
-		public static ITween<Color> colorTo( this Material self, Color to, float duration, string propertyName = "_Color" )
+		public static ITween<Color> ZKcolorTo( this Material self, Color to, float duration, string propertyName = "_Color" )
 		{
-			var tweenTarget = new MaterialColorTarget();
-			tweenTarget.prepareForUse( self, propertyName );
-
-			var tween = new ColorTween();
-			tween.initialize( tweenTarget, self.GetColor( propertyName ), to, duration );
+			var tweenTarget = new MaterialColorTarget( self, propertyName );
+			var tween = new ColorTween( tweenTarget, self.GetColor( propertyName ), to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<float> alphaTo( this Material self, float to, float duration, string propertyName = "_Color" )
+		public static ITween<float> ZKalphaTo( this Material self, float to, float duration, string propertyName = "_Color" )
 		{
-			var tweenTarget = new MaterialAlphaTarget();
-			tweenTarget.prepareForUse( self, propertyName );
-
-			var tween = new FloatTween();
-			tween.initialize( tweenTarget, self.GetColor( propertyName ).a, to, duration );
+			var tweenTarget = new MaterialAlphaTarget( self, propertyName );
+			var tween = new FloatTween( tweenTarget, self.GetColor( propertyName ).a, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<float> floatTo( this Material self, float to, float duration, string propertyName = "_Color" )
+		public static ITween<float> ZKfloatTo( this Material self, float to, float duration, string propertyName = "_Color" )
 		{
-			var tweenTarget = new MaterialFloatTarget();
-			tweenTarget.prepareForUse( self, propertyName );
-
-			var tween = new FloatTween();
-			tween.initialize( tweenTarget, self.GetFloat( propertyName ), to, duration );
+			var tweenTarget = new MaterialFloatTarget( self, propertyName );
+			var tween = new FloatTween( tweenTarget, self.GetFloat( propertyName ), to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector4> floatTo( this Material self, Vector4 to, float duration, string propertyName )
+		public static ITween<Vector4> ZKVector4To( this Material self, Vector4 to, float duration, string propertyName )
 		{
-			var tweenTarget = new MaterialVector4Target();
-			tweenTarget.prepareForUse( self, propertyName );
+			var tweenTarget = new MaterialVector4Target( self, propertyName );
+			var tween = new Vector4Tween( tweenTarget, self.GetVector( propertyName ), to, duration );
 
-			var tween = new Vector4Tween();
-			tween.initialize( tweenTarget, self.GetVector( propertyName ), to, duration );
+			return tween;
+		}
+
+		#endregion
+
+
+		#region AudioSource tweens
+
+		public static ITween<float> ZKvolumeTo( this AudioSource self, float to, float duration )
+		{
+			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Volume );
+			var tween = new FloatTween( tweenTarget, self.volume, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKpitchTo( this AudioSource self, float to, float duration )
+		{
+			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Pitch );
+			var tween = new FloatTween( tweenTarget, self.pitch, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKpanStereoTo( this AudioSource self, float to, float duration )
+		{
+			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.PanStereo );
+			var tween = new FloatTween( tweenTarget, self.panStereo, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
+		#region Camera tweens
+
+		public static ITween<float> ZKfieldOfViewTo( this Camera self, float to, float duration )
+		{
+			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.FieldOfView );
+			var tween = new FloatTween( tweenTarget, self.fieldOfView, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKorthographicSizeTo( this Camera self, float to, float duration )
+		{
+			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.OrthographicSize );
+			var tween = new FloatTween( tweenTarget, self.orthographicSize, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<Color> ZKbackgroundColorTo( this Camera self, Color to, float duration )
+		{
+			var tweenTarget = new CameraTarget( self );
+			var tween = new ColorTween( tweenTarget, self.backgroundColor, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
+		#region CanvasGroup tweens
+
+		public static ITween<float> ZKalphaTo( this CanvasGroup self, float to, float duration )
+		{
+			var tweenTarget = new CanvasGroupTarget( self );
+			var tween = new FloatTween( tweenTarget, self.alpha, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
+		#region Image tweens
+
+		public static ITween<float> ZKalphaTo( this Image self, float to, float duration )
+		{
+			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
+			var tween = new FloatTween( tweenTarget, self.color.a, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKfillAmountTo( this Image self, float to, float duration )
+		{
+			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.FillAmount );
+			var tween = new FloatTween( tweenTarget, self.fillAmount, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<Color> ZKcolorTo( this Image self, Color to, float duration )
+		{
+			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
+			var tween = new ColorTween( tweenTarget, self.color, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
+		#region RectTransform tweens
+
+		public static ITween<Vector2> ZKanchoredPositionTo( this RectTransform self, Vector2 to, float duration )
+		{
+			var tweenTarget = new RectTransformTarget( self );
+			var tween = new Vector2Tween( tweenTarget, self.anchoredPosition, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<Vector3> ZKanchoredPositionTo( this RectTransform self, Vector3 to, float duration )
+		{
+			var tweenTarget = new RectTransformTarget( self );
+			var tween = new Vector3Tween( tweenTarget, self.anchoredPosition3D, to, duration );
 
 			return tween;
 		}

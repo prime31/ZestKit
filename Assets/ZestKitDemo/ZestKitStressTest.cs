@@ -49,7 +49,7 @@ public class ZestKitStressTest : MonoBehaviour
 				targetPoint.y = _perlinNoiseGenerator.Noise( _timeY ) * 100 + _originalPositions[i].y;
 				targetPoint.z = _perlinNoiseGenerator.Noise( _timeZ ) * 100 + _originalPositions[i].z;
 
-				_cubes[i].positionTo( targetPoint, 1.0f ).start();
+				_cubes[i].ZKpositionTo( targetPoint, 1.0f ).start();
 
 				_updateDelta += Time.deltaTime * 100;
 			}
