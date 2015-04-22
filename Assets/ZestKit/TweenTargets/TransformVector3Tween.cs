@@ -6,21 +6,21 @@ namespace ZestKit
 {
 	/// <summary>
 	/// this is a special case since Transforms are by far the most tweened object. we encapsulate the Tween and the ITweenTarget
-	/// in a single, cacheable object
+	/// in a single, cacheable class
 	/// </summary>
-	public class Vector3TransformTween : Tween<Vector3>, ITweenTarget<Vector3>
+	public class TransformVector3Tween : Vector3Tween, ITweenTarget<Vector3>
 	{
 		#region Static caching
 
-		private static Stack<Vector3TransformTween> _vectorTransformTweenStack = new Stack<Vector3TransformTween>( 5 );
+		private static Stack<TransformVector3Tween> _vectorTransformTweenStack = new Stack<TransformVector3Tween>( 5 );
 
 
-		public static Vector3TransformTween nextAvailableTween()
+		public static TransformVector3Tween nextAvailableTween()
 		{
 			if( _vectorTransformTweenStack.Count > 0 )
 				return _vectorTransformTweenStack.Pop();
 
-			return new Vector3TransformTween();
+			return new TransformVector3Tween();
 		}
 
 		#endregion
@@ -86,7 +86,10 @@ namespace ZestKit
 			base.recycleSelf();
 
 			if( _shouldRecycleTween )
+			{
+				_transform = null;
 				_vectorTransformTweenStack.Push( this );
+			}
 		}
 	
 	}
