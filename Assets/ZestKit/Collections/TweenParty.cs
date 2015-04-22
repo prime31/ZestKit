@@ -24,6 +24,7 @@ namespace ZestKit
 			_toValue = duration;
 		}
 
+
 		#region ITweenTarget
 
 		/// <summary>

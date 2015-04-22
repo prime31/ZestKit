@@ -11,20 +11,26 @@ namespace ZestKit
 		bool _isRelativeTween;
 
 
-		public SplineTween( Transform transform, Spline spline, float duration, bool isRelativeTween = false )
+		public SplineTween( Transform transform, Spline spline, float duration )
 		{
 			_transform = transform;
 			_spline = spline;
 			_spline.buildPath();
 
 			initialize( this, _transform.position, Vector3.zero, duration );
-			_isRelativeTween = isRelativeTween;
 		}
 
 
 		public void setTweenedValue( Vector3 value )
 		{
 			_transform.position = value;
+		}
+
+
+		public override ITween<Vector3> setIsRelative()
+		{
+			_isRelativeTween = true;
+			return this;
 		}
 
 

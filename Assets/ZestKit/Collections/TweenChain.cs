@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 
 namespace ZestKit
@@ -81,7 +82,7 @@ namespace ZestKit
 		#endregion
 
 
-		#region ITweenable control
+		#region ITweenControl
 
 		public bool isRunning()
 		{
@@ -124,6 +125,18 @@ namespace ZestKit
 		public void jumpToElapsedTime( float elapsedTime )
 		{}
 
+
+		/// <summary>
+		/// when called via StartCoroutine this will continue until the TweenChain completes
+		/// </summary>
+		/// <returns>The for completion.</returns>
+		public IEnumerator waitForCompletion()
+		{
+			while( _currentTween < _tweenList.Count )
+				yield return null;
+		}
+
 		#endregion
+	
 	}
 }

@@ -8,6 +8,12 @@ namespace ZestKit
 	{
 		public static EaseType defaultEaseType = EaseType.QuartIn;
 
+		/// <summary>
+		/// if enabled, does a null check on the Unity.Object being tweened. If null, the tween is immediately stopped.
+		/// currently not implemented. perhaps adding a validate method to ITweenTarget is the best way to handle it.
+		/// </summary>
+		public static bool enableBabysitter = false;
+
 		private List<ITweenable> _activeTweens = new List<ITweenable>( 5 );
 
 

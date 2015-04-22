@@ -96,9 +96,7 @@ namespace ZestKit
 		public static ITween<int> intPropertyTo( object self, string propertyName, int from, int to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<int>( self, propertyName );
-
-			var tween = new IntTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new IntTween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
@@ -118,9 +116,7 @@ namespace ZestKit
 		public static ITween<Vector2> vector2PropertyTo( object self, string propertyName, Vector2 from, Vector2 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector2>( self, propertyName );
-
-			var tween = new Vector2Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new Vector2Tween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
@@ -140,9 +136,7 @@ namespace ZestKit
 		public static ITween<Vector4> vector4PropertyTo( object self, string propertyName, Vector4 from, Vector4 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector4>( self, propertyName );
-
-			var tween = new Vector4Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new Vector4Tween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
@@ -151,9 +145,7 @@ namespace ZestKit
 		public static ITween<Quaternion> quaternionPropertyTo( object self, string propertyName, Quaternion from, Quaternion to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Quaternion>( self, propertyName );
-
-			var tween = new QuaternionTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new QuaternionTween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
@@ -162,9 +154,7 @@ namespace ZestKit
 		public static ITween<Color> colorPropertyTo( object self, string propertyName, Color from, Color to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color>( self, propertyName );
-
-			var tween = new ColorTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new ColorTween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
@@ -173,9 +163,7 @@ namespace ZestKit
 		public static ITween<Color32> color32PropertyTo( object self, string propertyName, Color32 from, Color32 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color32>( self, propertyName );
-
-			var tween = new Color32Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			var tween = new Color32Tween( tweenTarget, from, to, duration );
 
 			return tween;
 		}
