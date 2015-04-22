@@ -283,4 +283,19 @@ namespace ZestKit
 		}
 	}
 
+
+	public class ScrollRectTarget : AbstractTweenTarget<ScrollRect,Vector2>
+	{
+		public override void setTweenedValue( Vector2 value )
+		{
+			_target.normalizedPosition = value;
+		}
+
+
+		public ScrollRectTarget( ScrollRect scrollRect )
+		{
+			_target = scrollRect;
+		}
+	}
+
 }

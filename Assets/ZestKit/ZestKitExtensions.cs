@@ -249,5 +249,18 @@ namespace ZestKit
 
 		#endregion
 
+
+		#region ScrollRect tweens
+
+		public static ITween<Vector2> ZKnormalizedPositionTo( this ScrollRect self, Vector2 to, float duration = 0.3f )
+		{
+			var tweenTarget = new ScrollRectTarget( self );
+			var tween = new Vector2Tween( tweenTarget, self.normalizedPosition, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
 	}
 }
