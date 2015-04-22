@@ -10,25 +10,25 @@ The 3rd tween library for Unity. Yes, you read that number correctly. First ther
 
 ### Quick Start or I Just Wanna Tween
 
-Import the files in the ZestKit folder into your project, add ```using ZestKit``` to your file and you are ready to start tweening. Using the [extension methods](http://csharp.net-tutorials.com/csharp-3.0/extension-methods/) (currently covering Transform and Material classes) will get you up and running in no time. Examples:
+Import the files in the ZestKit folder into your project, add ```using ZestKit``` to your file and you are ready to start tweening. Using the [extension methods](http://csharp.net-tutorials.com/csharp-3.0/extension-methods/) (currently covering Transform and Material classes) will get you up and running in no time. Note that all extension methods have the "ZK" prefix to avoid conflicts. Examples:
 
 ```csharp
 // tween position to Vector3.one over 0.3 seconds
-transform.positionTo( Vector3.one, 0.3f ).start();
+transform.ZKpositionTo( Vector3.one, 0.3f ).start();
 
 // tween eulerAngles to Vector3.zero over 0.3 seconds then ping-pong back to the original value
-transform.positionTo( Vector3.zero, 0.3f )
+transform.ZKpositionTo( Vector3.zero, 0.3f )
     .setLoops( LoopType.PingPong )
     .start();
 
 // tween the Material _Color property from black to yellow over 0.5 seconds
-material.colorTo( Color.yellow, 0.5f )
+material.ZKcolorTo( Color.yellow, 0.5f )
     .setFrom( Color.black )
     .start();
 
 // tween localScale independant of Time.timeScale with a 2 second delay before starting the tween
 // and get notified when the tween has finished specifying the easing equation to use
-transform.localScaleTo( new Vector3( 10f, 10f, 10f ), 0.5f )
+transform.ZKlocalScaleTo( new Vector3( 10f, 10f, 10f ), 0.5f )
     .setDelay( 2f )
     .setIsTimeScaleIndependant()
     .setCompletionHandler( myCompletionHandlerFunction )
