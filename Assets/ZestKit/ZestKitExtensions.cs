@@ -12,7 +12,7 @@ namespace ZestKit
 	{
 		#region Transform tweens
 
-		public static ITween<Vector3> ZKpositionTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKpositionTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
 			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.Position );
@@ -22,7 +22,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKlocalPositionTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalPositionTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
 			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalPosition );
@@ -32,7 +32,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKlocalScaleTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalScaleTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
 			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalScale );
@@ -42,7 +42,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKeulersTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKeulersTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
 			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.EulerAngles );
@@ -52,7 +52,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKlocalEulersTo( this Transform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKlocalEulersTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
 			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalEulerAngles );
@@ -62,7 +62,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Quaternion> ZKrotationTo( this Transform self, Quaternion to, float duration )
+		public static ITween<Quaternion> ZKrotationTo( this Transform self, Quaternion to, float duration = 0.3f )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.Rotation );
 			var tween = new QuaternionTween( tweenTarget, self.rotation, to, duration );
@@ -71,7 +71,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Quaternion> ZKlocalRotationTo( this Transform self, Quaternion to, float duration )
+		public static ITween<Quaternion> ZKlocalRotationTo( this Transform self, Quaternion to, float duration = 0.3f )
 		{
 			var tweenTarget = new TransformRotationTarget( self, TransformRotationTarget.TransformRotationType.LocalRotation );
 			var tween = new QuaternionTween( tweenTarget, self.localRotation, to, duration );
@@ -84,7 +84,7 @@ namespace ZestKit
 
 		#region Material tweens
 
-		public static ITween<Color> ZKcolorTo( this Material self, Color to, float duration, string propertyName = "_Color" )
+		public static ITween<Color> ZKcolorTo( this Material self, Color to, float duration = 0.3f, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialColorTarget( self, propertyName );
 			var tween = new ColorTween( tweenTarget, self.GetColor( propertyName ), to, duration );
@@ -93,7 +93,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKalphaTo( this Material self, float to, float duration, string propertyName = "_Color" )
+		public static ITween<float> ZKalphaTo( this Material self, float to, float duration = 0.3f, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialAlphaTarget( self, propertyName );
 			var tween = new FloatTween( tweenTarget, self.GetColor( propertyName ).a, to, duration );
@@ -102,7 +102,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKfloatTo( this Material self, float to, float duration, string propertyName = "_Color" )
+		public static ITween<float> ZKfloatTo( this Material self, float to, float duration = 0.3f, string propertyName = "_Color" )
 		{
 			var tweenTarget = new MaterialFloatTarget( self, propertyName );
 			var tween = new FloatTween( tweenTarget, self.GetFloat( propertyName ), to, duration );
@@ -124,7 +124,7 @@ namespace ZestKit
 
 		#region AudioSource tweens
 
-		public static ITween<float> ZKvolumeTo( this AudioSource self, float to, float duration )
+		public static ITween<float> ZKvolumeTo( this AudioSource self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Volume );
 			var tween = new FloatTween( tweenTarget, self.volume, to, duration );
@@ -133,7 +133,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKpitchTo( this AudioSource self, float to, float duration )
+		public static ITween<float> ZKpitchTo( this AudioSource self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Pitch );
 			var tween = new FloatTween( tweenTarget, self.pitch, to, duration );
@@ -142,7 +142,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKpanStereoTo( this AudioSource self, float to, float duration )
+		public static ITween<float> ZKpanStereoTo( this AudioSource self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.PanStereo );
 			var tween = new FloatTween( tweenTarget, self.panStereo, to, duration );
@@ -155,7 +155,7 @@ namespace ZestKit
 
 		#region Camera tweens
 
-		public static ITween<float> ZKfieldOfViewTo( this Camera self, float to, float duration )
+		public static ITween<float> ZKfieldOfViewTo( this Camera self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.FieldOfView );
 			var tween = new FloatTween( tweenTarget, self.fieldOfView, to, duration );
@@ -164,7 +164,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKorthographicSizeTo( this Camera self, float to, float duration )
+		public static ITween<float> ZKorthographicSizeTo( this Camera self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.OrthographicSize );
 			var tween = new FloatTween( tweenTarget, self.orthographicSize, to, duration );
@@ -173,7 +173,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Color> ZKbackgroundColorTo( this Camera self, Color to, float duration )
+		public static ITween<Color> ZKbackgroundColorTo( this Camera self, Color to, float duration = 0.3f )
 		{
 			var tweenTarget = new CameraTarget( self );
 			var tween = new ColorTween( tweenTarget, self.backgroundColor, to, duration );
@@ -186,7 +186,7 @@ namespace ZestKit
 
 		#region CanvasGroup tweens
 
-		public static ITween<float> ZKalphaTo( this CanvasGroup self, float to, float duration )
+		public static ITween<float> ZKalphaTo( this CanvasGroup self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new CanvasGroupTarget( self );
 			var tween = new FloatTween( tweenTarget, self.alpha, to, duration );
@@ -199,7 +199,7 @@ namespace ZestKit
 
 		#region Image tweens
 
-		public static ITween<float> ZKalphaTo( this Image self, float to, float duration )
+		public static ITween<float> ZKalphaTo( this Image self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
 			var tween = new FloatTween( tweenTarget, self.color.a, to, duration );
@@ -208,7 +208,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<float> ZKfillAmountTo( this Image self, float to, float duration )
+		public static ITween<float> ZKfillAmountTo( this Image self, float to, float duration = 0.3f )
 		{
 			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.FillAmount );
 			var tween = new FloatTween( tweenTarget, self.fillAmount, to, duration );
@@ -217,7 +217,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Color> ZKcolorTo( this Image self, Color to, float duration )
+		public static ITween<Color> ZKcolorTo( this Image self, Color to, float duration = 0.3f )
 		{
 			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
 			var tween = new ColorTween( tweenTarget, self.color, to, duration );
@@ -230,7 +230,7 @@ namespace ZestKit
 
 		#region RectTransform tweens
 
-		public static ITween<Vector2> ZKanchoredPositionTo( this RectTransform self, Vector2 to, float duration )
+		public static ITween<Vector2> ZKanchoredPositionTo( this RectTransform self, Vector2 to, float duration = 0.3f )
 		{
 			var tweenTarget = new RectTransformTarget( self );
 			var tween = new Vector2Tween( tweenTarget, self.anchoredPosition, to, duration );
@@ -239,7 +239,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKanchoredPositionTo( this RectTransform self, Vector3 to, float duration )
+		public static ITween<Vector3> ZKanchoredPositionTo( this RectTransform self, Vector3 to, float duration = 0.3f )
 		{
 			var tweenTarget = new RectTransformTarget( self );
 			var tween = new Vector3Tween( tweenTarget, self.anchoredPosition3D, to, duration );
