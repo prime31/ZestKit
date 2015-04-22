@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 
 namespace ZestKit
@@ -46,6 +47,7 @@ namespace ZestKit
 		bool _isRunningInReverse;
 
 
+
 		#region ITweenT implementation
 
 		public ITween<T> setEaseType( EaseType easeType )
@@ -83,20 +85,14 @@ namespace ZestKit
 			return this;
 		}
 		
-		
-		/// <summary>
-		/// chainable. sets the action that should be called when the tween is complete.
-		/// </summary>
+
 		public ITween<T> setCompletionHandler( Action<ITween<T>> completionHandler )
 		{
 			_completionHandler = completionHandler;
 			return this;
 		}
 		
-		
-		/// <summary>
-		/// chainable. set the loop type for the tween. a single pingpong loop means going from start-finish-start.
-		/// </summary>
+
 		public ITween<T> setLoops( LoopType loopType, int loops = 1, float delayBetweenLoops = 0f )
 		{
 			_loopType = loopType;
@@ -110,13 +106,7 @@ namespace ZestKit
 			return this;
 		}
 		
-		
-		/// <summary>
-		/// chainable. sets the action that should be called when a loop is complete. A loop is either when the first part of
-		/// a ping-pong animation completes or when starting over when using a restart-from-beginning loop type. Note that ping-pong
-		/// loops (which are really two part tweens) will not fire the loop completion handler on the last iteration. The normal
-		/// tween completion handler will fire though
-		/// </summary>
+
 		public ITween<T> setLoopCompletionHandler( Action<ITween<T>> loopCompleteHandler )
 		{
 			_loopCompleteHandler = loopCompleteHandler;
@@ -144,6 +134,13 @@ namespace ZestKit
 			return this;
 		}
 
+
+		abstract public ITween<T> setIsRelative();
+
+		#endregion
+
+
+		#region ITweenControl
 
 		public bool isRunning()
 		{
@@ -193,11 +190,6 @@ namespace ZestKit
 		}
 
 
-		/// <summary>
-		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
-		/// object whether it is paused, completed or running.
-		/// </summary>
-		/// <param name="elapsedTime">Elapsed time.</param>
 		public void jumpToElapsedTime( float elapsedTime )
 		{
 			_elapsedTime = Mathf.Clamp( elapsedTime, 0f, _duration );
@@ -211,6 +203,17 @@ namespace ZestKit
 		public void reverseTween()
 		{
 			_isRunningInReverse = !_isRunningInReverse;
+		}
+
+
+		/// <summary>
+		/// when called via StartCoroutine this will continue until the tween completes
+		/// </summary>
+		/// <returns>The for completion.</returns>
+		public IEnumerator waitForCompletion()
+		{
+			while( _tweenState != TweenState.Complete )
+				yield return null;
 		}
 
 		#endregion
@@ -236,7 +239,9 @@ namespace ZestKit
 
 
 		/// <summary>
-		/// resets all state to defaults and sets the initial state based on the paramters passed in
+		/// resets all state to defaults and sets the initial state based on the paramters passed in. This method serves
+		/// as an entry point so that Tween subclasses can call it and so that tweens can be recycled. When recycled,
+		/// the constructor will not be called again so this method encapsulates what the constructor would be doing.
 		/// </summary>
 		/// <param name="target">Target.</param>
 		/// <param name="from">From.</param>
@@ -253,7 +258,7 @@ namespace ZestKit
 		}
 
 
-		#region ITweenInternal
+		#region ITweenable
 
 		public bool tick()
 		{
@@ -331,18 +336,16 @@ namespace ZestKit
 			else
 				_tweenState = TweenState.Running;
 
-			_delay = _delayBetweenLoops;
-
 			if( _loopType == LoopType.RestartFromBeginning )
 			{
-				_elapsedTime = -_delay;
+				_elapsedTime = -_delayBetweenLoops;
 			}
 			else
 			{
 				if( _isRunningInReverse )
-					_elapsedTime += _delay;
+					_elapsedTime += _delayBetweenLoops;
 				else
-					_elapsedTime = -_delay;
+					_elapsedTime = -_delayBetweenLoops;
 			}
 		}
 			
