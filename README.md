@@ -14,21 +14,21 @@ Import the files in the ZestKit folder into your project, add ```using ZestKit``
 
 ```csharp
 // tween position to Vector3.one over 0.3 seconds
-transform.positionTo( 0.3f, Vector3.one ).start();
+transform.positionTo( Vector3.one, 0.3f ).start();
 
 // tween eulerAngles to Vector3.zero over 0.3 seconds then ping-pong back to the original value
-transform.positionTo( 0.3f, Vector3.zero )
+transform.positionTo( Vector3.zero, 0.3f )
     .setLoops( LoopType.PingPong )
     .start();
 
-// tween the Material _Color property from black to yellow
-material.colorTo( 0.5f, Color.yellow )
+// tween the Material _Color property from black to yellow over 0.5 seconds
+material.colorTo( Color.yellow, 0.5f )
     .setFrom( Color.black )
     .start();
 
 // tween localScale independant of Time.timeScale with a 2 second delay before starting the tween
 // and get notified when the tween has finished specifying the easing equation to use
-transform.localScaleTo( 0.5f, new Vector3( 10f, 10f, 10f )
+transform.localScaleTo( new Vector3( 10f, 10f, 10f ), 0.5f )
     .setDelay( 2f )
     .setIsTimeScaleIndependant()
     .setCompletionHandler( myCompletionHandlerFunction )
@@ -42,7 +42,7 @@ transform.localScaleTo( 0.5f, new Vector3( 10f, 10f, 10f )
 Out of the box, ZestKit can tween any int, float, Vector2, Vector3, Vector4, Quaternion, Color, Color32 and it has a built in path editor/tweener ("borrowed" from GoKit ;). ZestKit offers both strongly targeted and weakly targeted tweens. What's the difference between strongly and weakly targeted tweens? A strongly targeted tween is something ZestKit knows about out of the box. The most commonly used would be transform.position/rotation/scale, material.color, etc. A weakly targeted tween means ZestKit doesn't know about the object or property being tweened. For example, if you have a custom class (SomeCustomClass) that has a Vector3 property (myVector3) you can still tween this value with ZestKit by using a property tween. The following would do the trick:
 
 ```csharp
-PropertyTweens.vector3PropertyTo( someCustomClassInstance, "myVector3", 0.4f, Vector3.zero, Vector3.one )
+PropertyTweens.vector3PropertyTo( someCustomClassInstance, "myVector3", Vector3.zero, Vector3.one, 0.4f )
 ```
 
 
