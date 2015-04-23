@@ -20,7 +20,6 @@ namespace ZestKit
 		private int _insertIndex = 0;
 		private float _snapDistance = 5f;
 		private bool _showNodeDetails;
-		private bool _fileLoadSaveDetails;
 		private int _selectedNodeIndex = -1;
 		
 		
