@@ -12,5 +12,11 @@ namespace ZestKit
 		protected U _target;
 
 		abstract public void setTweenedValue( T value );
+
+
+		public void setTarget( U target )
+		{
+			_target = target;
+		}
 	}
 }
