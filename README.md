@@ -1,4 +1,4 @@
-##### NOTE: This is just the initial commit of ZestKit and it is not yet fully feature complete. There is no demo scene yet and the easy to use extension methods only cover Transform and Materials. More goodies are coming soon.
+##### NOTE: ZestKit and it is not yet fully battled tested and may contain some bugs. If you find any feel free to report them or send a pull request with the fix.
 
 
 
