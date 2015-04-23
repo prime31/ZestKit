@@ -45,15 +45,21 @@ namespace ZestKit
 		}
 
 
-		public static Color unclampedLerp( Color a, Color b, float t )
+		public static Color unclampedLerp( Color from, Color to, float t )
 		{
-			return new Color( a.r + ( b.r - a.r ) * t, a.g + ( b.g - a.g ) * t, a.b + ( b.b - a.b ) * t, a.a + ( b.a - a.a ) * t );
+			return new Color( from.r + ( to.r - from.r ) * t, from.g + ( to.g - from.g ) * t, from.b + ( to.b - from.b ) * t, from.a + ( to.a - from.a ) * t );
 		}
 
 
-		public static Color32 unclampedLerp( Color32 a, Color32 b, float t )
+		public static Color32 unclampedLerp( Color32 from, Color32 to, float t )
 		{
-			return new Color32( (byte)( (float)a.r + (float)( b.r - a.r ) * t ), (byte)( (float)a.g + (float)( b.g - a.g ) * t ), (byte)( (float)a.b + (float)( b.b - a.b ) * t ), (byte)( (float)a.a + (float)( b.a - a.a ) * t ) );
+			return new Color32( (byte)( (float)from.r + (float)( to.r - from.r ) * t ), (byte)( (float)from.g + (float)( to.g - from.g ) * t ), (byte)( (float)from.b + (float)( to.b - from.b ) * t ), (byte)( (float)from.a + (float)( to.a - from.a ) * t ) );
+		}
+
+
+		public static HSVColor unclampedLerp( HSVColor from, HSVColor to, float t )
+		{
+			return new HSVColor( from.hue + ( to.hue - from.hue ) * t, from.saturation + ( to.saturation - from.saturation ) * t, from.value + ( to.value - from.value ) * t );
 		}
 
 		#endregion
@@ -152,6 +158,18 @@ namespace ZestKit
 
 
 		public static Color32 ease( AnimationCurve curve, Color32 from, Color32 to, float t, float duration )
+		{
+			return unclampedLerp( from, to, curve.Evaluate( t / duration ) );
+		}
+
+
+		public static HSVColor ease( EaseType easeType, HSVColor from, HSVColor to, float t, float duration )
+		{
+			return unclampedLerp( from, to, EaseHelper.ease( easeType, t, duration ) );
+		}
+
+
+		public static HSVColor ease( AnimationCurve curve, HSVColor from, HSVColor to, float t, float duration )
 		{
 			return unclampedLerp( from, to, curve.Evaluate( t / duration ) );
 		}

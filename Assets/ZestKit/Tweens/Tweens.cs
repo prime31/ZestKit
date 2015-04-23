@@ -168,6 +168,11 @@ namespace ZestKit
 
 	public class ColorTween : Tween<Color>
 	{
+		bool _useHSVColorForTween;
+		HSVColor _fromHSVColor;
+		HSVColor _toHSVColor;
+
+
 		public ColorTween( ITweenTarget<Color> target, Color from, Color to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -181,12 +186,32 @@ namespace ZestKit
 		}
 
 
+		public ITween<Color> setUseHSVColorForTween()
+		{
+			_useHSVColorForTween = true;
+			_fromHSVColor = new HSVColor( _fromValue );
+			_toHSVColor = new HSVColor( _toValue );
+
+			return this;
+		}
+
+
 		protected override void updateValue()
 		{
-			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+			if( _useHSVColorForTween )
+			{
+				if( _animationCurve != null )
+					_target.setTweenedValue( Zest.ease( _animationCurve, _fromHSVColor, _toHSVColor, _elapsedTime, _duration ) );
+				else
+					_target.setTweenedValue( Zest.ease( _easeType, _fromHSVColor, _toHSVColor, _elapsedTime, _duration ) );
+			}
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			{
+				if( _animationCurve != null )
+					_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				else
+					_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			}
 		}
 	}
 
