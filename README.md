@@ -1,4 +1,4 @@
-##### NOTE: ZestKit and it is not yet fully battled tested and may contain some bugs. If you find any feel free to report them or send a pull request with the fix.
+##### NOTE: ZestKit is not yet fully battled tested and may contain some bugs. If you find any feel free to report them or send a pull request with the fix.
 
 
 
