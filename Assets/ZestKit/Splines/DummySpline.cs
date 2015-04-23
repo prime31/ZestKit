@@ -20,7 +20,7 @@ namespace ZestKit
 		public int pathResolution = 50;
 	
 	
-		public void OnDrawGizmos()
+		public void OnDrawGizmosSelected()
 		{
 			// the editor will draw paths when force straight line is on
 			if( !forceStraightLinePath )
