@@ -99,7 +99,7 @@ namespace ZestKit
 			_material.SetFloat( _propertyName, value );
 		}
 	}
-
+		
 
 	public class MaterialVector4Target : AbstractMaterialTarget, ITweenTarget<Vector4>
 	{
@@ -112,6 +112,36 @@ namespace ZestKit
 		public void setTweenedValue( Vector4 value )
 		{
 			_material.SetVector( _propertyName, value );
+		}
+	}
+
+
+	public class MaterialTextureOffsetTarget : AbstractMaterialTarget, ITweenTarget<Vector2>
+	{
+		public MaterialTextureOffsetTarget( Material material, string propertyName )
+		{
+			prepareForUse( material, propertyName );
+		}
+
+
+		public void setTweenedValue( Vector2 value )
+		{
+			_material.SetTextureOffset( _propertyName, value );
+		}
+	}
+
+
+	public class MaterialTextureScaleTarget : AbstractMaterialTarget, ITweenTarget<Vector2>
+	{
+		public MaterialTextureScaleTarget( Material material, string propertyName )
+		{
+			prepareForUse( material, propertyName );
+		}
+
+
+		public void setTweenedValue( Vector2 value )
+		{
+			_material.SetTextureScale( _propertyName, value );
 		}
 	}
 

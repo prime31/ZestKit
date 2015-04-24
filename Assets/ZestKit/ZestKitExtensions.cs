@@ -119,6 +119,24 @@ namespace ZestKit
 			return tween;
 		}
 
+
+		public static ITween<Vector2> ZKtextureOffsetTo( this Material self, Vector2 to, float duration, string propertyName )
+		{
+			var tweenTarget = new MaterialTextureOffsetTarget( self, propertyName );
+			var tween = new Vector2Tween( tweenTarget, self.GetTextureOffset( propertyName ), to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<Vector2> ZKtextureScaleTo( this Material self, Vector2 to, float duration, string propertyName )
+		{
+			var tweenTarget = new MaterialTextureScaleTarget( self, propertyName );
+			var tween = new Vector2Tween( tweenTarget, self.GetTextureScale( propertyName ), to, duration );
+
+			return tween;
+		}
+
 		#endregion
 
 
@@ -239,7 +257,7 @@ namespace ZestKit
 		}
 
 
-		public static ITween<Vector3> ZKanchoredPositionTo( this RectTransform self, Vector3 to, float duration = 0.3f )
+		public static ITween<Vector3> ZKanchoredPosition3DTo( this RectTransform self, Vector3 to, float duration = 0.3f )
 		{
 			var tweenTarget = new RectTransformTarget( self );
 			var tween = new Vector3Tween( tweenTarget, self.anchoredPosition3D, to, duration );
