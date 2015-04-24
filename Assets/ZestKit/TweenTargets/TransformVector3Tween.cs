@@ -73,11 +73,21 @@ namespace ZestKit
 
 		protected override void updateValue()
 		{
-			// special case for angle lerps so that they take the shortest possible rotation
-			if( _targetType == TransformTargetType.EulerAngles || _targetType == TransformTargetType.LocalEulerAngles )
-				setTweenedValue( Zest.easeAngle( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			// special case for non-relative angle lerps so that they take the shortest possible rotation
+			if( ( _targetType == TransformTargetType.EulerAngles || _targetType == TransformTargetType.LocalEulerAngles ) && !_isRelative )
+			{
+				if( _animationCurve != null )
+					setTweenedValue( Zest.easeAngle( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				else
+					setTweenedValue( Zest.easeAngle( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			}
 			else
-				setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			{
+				if( _animationCurve != null )
+					setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				else
+					setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+			}
 		}
 
 
