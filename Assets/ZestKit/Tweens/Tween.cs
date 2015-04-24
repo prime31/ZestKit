@@ -30,6 +30,7 @@ namespace ZestKit
 		protected EaseType _easeType;
 		protected AnimationCurve _animationCurve;
 		protected bool _shouldRecycleTween = true;
+		protected bool _isRelative;
 		protected Action<ITween<T>> _completionHandler;
 		protected Action<ITween<T>> _loopCompleteHandler;
 
@@ -225,6 +226,7 @@ namespace ZestKit
 			_isTimeScaleIndependent = false;
 			_tweenState = TweenState.Complete;
 			_shouldRecycleTween = true;
+			_isRelative = false;
 			_easeType = ZestKit.defaultEaseType;
 			_animationCurve = null;
 			
@@ -264,14 +266,18 @@ namespace ZestKit
 		{
 			if( _tweenState == TweenState.Paused )
 				return false;
-			
+
+			// when we loop we clamp values between 0 and duration. this will hold the excess that we clamped off so it can be reapplied
+			var elapsedTimeExcess = 0f;
 			if( !_isRunningInReverse && _elapsedTime >= _duration )
 			{
+				elapsedTimeExcess = _elapsedTime - _duration;
 				_elapsedTime = _duration;
 				_tweenState = TweenState.Complete;
 			}
 			else if( _isRunningInReverse && _elapsedTime <= 0 )
 			{
+				elapsedTimeExcess = 0 - _elapsedTime;
 				_elapsedTime = 0f;
 				_tweenState = TweenState.Complete;
 			}
@@ -280,6 +286,12 @@ namespace ZestKit
 			if( _elapsedTime >= 0 && _elapsedTime <= _duration )
 				updateValue();
 
+			// if we have a loopType and we are Complete (meaning we reached 0 or duration) handle the loop.
+			// handleLooping will take any excess elapsedTime and factor it in and call udpateValue if necessary to keep
+			// the tween perfectly accurate.
+			if( _loopType != LoopType.None && _tweenState == TweenState.Complete && _loops > 0 )
+				handleLooping( elapsedTimeExcess );
+
 			var deltaTime = _isTimeScaleIndependent ? Time.unscaledDeltaTime : Time.deltaTime;
 
 			// running in reverse? then we need to subtract deltaTime
@@ -287,10 +299,6 @@ namespace ZestKit
 				_elapsedTime -= deltaTime;
 			else
 				_elapsedTime += deltaTime;
-			
-			// if we have a loopType and we are done do the loop
-			if( _loopType != LoopType.None && _tweenState == TweenState.Complete && _loops > 0 )
-				handleLooping();
 
 			if( _tweenState == TweenState.Complete )
 			{
@@ -316,7 +324,7 @@ namespace ZestKit
 		/// <summary>
 		/// handles loop logic
 		/// </summary>
-		void handleLooping()
+		void handleLooping( float elapsedTimeExcess )
 		{
 			_loops--;
 			if( _loopType == LoopType.PingPong )
@@ -324,29 +332,36 @@ namespace ZestKit
 				reverseTween();
 			}
 
-			if( _loopType == LoopType.RestartFromBeginning || _loops % 2 == 1 )
+			if( _loopType == LoopType.RestartFromBeginning || _loops % 2 == 0 )
 			{
 				if( _loopCompleteHandler != null )
 					_loopCompleteHandler( this );
 			}
 
-			// kill our loop if we have no loops left and zero out the delay then prepare for use
-			if( _loops == 0 )
-				_loopType = LoopType.None;
-			else
+			// if we have loops left to process reset our state back to Running so we can continue processing them
+			if( _loops > 0 )
+			{
 				_tweenState = TweenState.Running;
 
-			if( _loopType == LoopType.RestartFromBeginning )
-			{
-				_elapsedTime = -_delayBetweenLoops;
-			}
-			else
-			{
-				if( _isRunningInReverse )
-					_elapsedTime += _delayBetweenLoops;
+				// now we need to set our elapsed time and factor in our elapsedTimeExcess
+				if( _loopType == LoopType.RestartFromBeginning )
+				{
+					_elapsedTime = elapsedTimeExcess - _delayBetweenLoops;
+				}
 				else
-					_elapsedTime = -_delayBetweenLoops;
+				{
+					if( _isRunningInReverse )
+						_elapsedTime += _delayBetweenLoops - elapsedTimeExcess;
+					else
+						_elapsedTime = elapsedTimeExcess - _delayBetweenLoops;
+				}
+					
+				// if we had an elapsedTimeExcess and no delayBetweenLoops update the value
+				if( _delayBetweenLoops == 0f && elapsedTimeExcess > 0f )
+					updateValue();
 			}
+
+
 		}
 			
 

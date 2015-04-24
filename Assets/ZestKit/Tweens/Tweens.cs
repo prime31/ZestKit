@@ -18,6 +18,7 @@ namespace ZestKit
 
 		public override ITween<int> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -47,6 +48,7 @@ namespace ZestKit
 
 		public override ITween<float> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -72,6 +74,7 @@ namespace ZestKit
 
 		public override ITween<Vector2> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -101,6 +104,7 @@ namespace ZestKit
 
 		public override ITween<Vector3> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -126,6 +130,7 @@ namespace ZestKit
 
 		public override ITween<Vector4> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -151,6 +156,7 @@ namespace ZestKit
 
 		public override ITween<Quaternion> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue *= _fromValue;
 			return this;
 		}
@@ -181,6 +187,7 @@ namespace ZestKit
 
 		public override ITween<Color> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue += _fromValue;
 			return this;
 		}
@@ -226,6 +233,7 @@ namespace ZestKit
 
 		public override ITween<Color32> setIsRelative()
 		{
+			_isRelative = true;
 			_toValue = (Color)_toValue + (Color)_fromValue;
 			return this;
 		}
