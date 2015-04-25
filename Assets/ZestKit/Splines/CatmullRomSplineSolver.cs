@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Prime31.ZestKit
 {
-	public class SplineCatmullRomSolver : AbstractSplineSolver
+	public class CatmullRomSplineSolver : AbstractSplineSolver
 	{
-		public SplineCatmullRomSolver( List<Vector3> nodes )
+		public CatmullRomSplineSolver( List<Vector3> nodes )
 		{
 			_nodes = nodes;
 		}

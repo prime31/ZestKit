@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Prime31.ZestKit
 {
-	public class SplineCubicBezierSolver : AbstractSplineSolver
+	public class CubicBezierSplineSolver : AbstractSplineSolver
 	{
-		public SplineCubicBezierSolver( List<Vector3> nodes )
+		public CubicBezierSplineSolver( List<Vector3> nodes )
 		{
 			_nodes = nodes;
 		}
@@ -15,9 +15,7 @@ namespace Prime31.ZestKit
 		#region AbstractSplineSolver
 
 		public override void closePath()
-		{
-
-		}
+		{}
 
 
 		public override Vector3 getPoint( float t )

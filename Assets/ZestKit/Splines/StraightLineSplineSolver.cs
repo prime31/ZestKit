@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Prime31.ZestKit
 {
-	public class SplineStraightLineSolver : AbstractSplineSolver
+	public class StraightLineSplineSolver : AbstractSplineSolver
 	{
 		private Dictionary<int, float> _segmentStartLocations;
 		private Dictionary<int, float> _segmentDistances;
 		private int _currentSegment;
 
 
-		public SplineStraightLineSolver( List<Vector3> nodes )
+		public StraightLineSplineSolver( List<Vector3> nodes )
 		{
 			_nodes = nodes;
 		}

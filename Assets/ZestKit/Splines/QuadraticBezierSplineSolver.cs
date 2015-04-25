@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Prime31.ZestKit
 {
-	public class SplineQuadraticBezierSolver : AbstractSplineSolver
+	public class QuadraticBezierSplineSolver : AbstractSplineSolver
 	{
-		public SplineQuadraticBezierSolver( List<Vector3> nodes )
+		public QuadraticBezierSplineSolver( List<Vector3> nodes )
 		{
 			_nodes = nodes;
 		}
@@ -49,8 +49,7 @@ namespace Prime31.ZestKit
 		#region AbstractSplineSolver
 
 		public override void closePath()
-		{
-		}
+		{}
 
 
 		public override Vector3 getPoint( float t )
