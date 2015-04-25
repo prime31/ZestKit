@@ -4,7 +4,7 @@ using Prime31.ZestKit;
 using System;
 
 
-public static class EaseTypesSelector
+public static class DemoGUIHelpers
 {
 	static string[] _allEaseTypes;
 	static GUIContent[] comboBoxList;
@@ -61,7 +61,7 @@ public static class EaseTypesSelector
 	}
 
 
-	static EaseTypesSelector()
+	static DemoGUIHelpers()
 	{
 		_allEaseTypes = Enum.GetNames( typeof( EaseType ) );
 
