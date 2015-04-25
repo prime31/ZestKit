@@ -18,6 +18,10 @@ namespace Prime31.ZestKit
 
 		public override void setTweenedValue( Quaternion value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			switch( _targetType )
 			{
 				case TransformRotationType.Rotation:
@@ -64,6 +68,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Color value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			_material.SetColor( _propertyName, value );
 		}
 	}
@@ -79,6 +87,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			var color = _material.GetColor( _propertyName );
 			color.a = value;
 			_material.SetColor( _propertyName, color );
@@ -96,6 +108,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			_material.SetFloat( _propertyName, value );
 		}
 	}
@@ -111,6 +127,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector4 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			_material.SetVector( _propertyName, value );
 		}
 	}
@@ -126,6 +146,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector2 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			_material.SetTextureOffset( _propertyName, value );
 		}
 	}
@@ -141,12 +165,15 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector2 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_material )
+				return;
+			
 			_material.SetTextureScale( _propertyName, value );
 		}
 	}
 
 	#endregion
-
 
 
 	public class AudioSourceFloatTarget : AbstractTweenTarget<AudioSource,float>
@@ -163,6 +190,10 @@ namespace Prime31.ZestKit
 
 		public override void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			switch( _tweenType )
 			{
 				case AudioSourceFloatType.Volume:
@@ -203,6 +234,10 @@ namespace Prime31.ZestKit
 
 		public override void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			switch( _targetType )
 			{
 				case CameraTargetType.OrthographicSize:
@@ -233,6 +268,10 @@ namespace Prime31.ZestKit
 	{
 		public override void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			_target.alpha = value;
 		}
 
@@ -261,6 +300,10 @@ namespace Prime31.ZestKit
 
 		public override void setTweenedValue( float value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			switch( _targetType )
 			{
 				case ImageTargetType.Alpha:
@@ -297,12 +340,20 @@ namespace Prime31.ZestKit
 	{
 		public override void setTweenedValue( Vector3 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			_target.anchoredPosition3D = value;
 		}
 
 
 		public void setTweenedValue( Vector2 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			_target.anchoredPosition = value;
 		}
 
@@ -318,6 +369,10 @@ namespace Prime31.ZestKit
 	{
 		public override void setTweenedValue( Vector2 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+			
 			_target.normalizedPosition = value;
 		}
 

@@ -9,12 +9,13 @@ namespace Prime31.ZestKit
 		public static EaseType defaultEaseType = EaseType.QuartIn;
 
 		/// <summary>
-		/// if enabled, does a null check on the Unity.Object being tweened. If null, the tween is immediately stopped.
-		/// currently not implemented. perhaps adding a validate method to ITweenTarget is the best way to handle it.
+		/// if enabled, does a null check on the object being tweened. If null, the tweened value will not be set.
+		/// Only AbstractTweenTarget subclasses and Transform tweens will do validation (that includes all the built in tweens).
+		/// It is up to any ITweenTarget custom implementations to add validation themselves if they want to take part in the babysitter.
 		/// </summary>
 		public static bool enableBabysitter = false;
 
-		private List<ITweenable> _activeTweens = new List<ITweenable>( 5 );
+		private List<ITweenable> _activeTweens = new List<ITweenable>();
 
 
 		/// <summary>
@@ -75,12 +76,21 @@ namespace Prime31.ZestKit
 
 		#region Tween management
 
+		/// <summary>
+		/// adds a tween to the active tweens list
+		/// </summary>
+		/// <param name="tween">Tween.</param>
 		public void addTween( ITweenable tween )
 		{
 			_activeTweens.Add( tween );
 		}
 
 
+		/// <summary>
+		/// removes the tween at index from the active tweens list.
+		/// </summary>
+		/// <param name="tween">Tween.</param>
+		/// <param name="index">Index.</param>
 		public void removeTween( ITweenable tween, int index )
 		{
 			_activeTweens.RemoveAt( index );
@@ -88,10 +98,35 @@ namespace Prime31.ZestKit
 		}
 
 
+		/// <summary>
+		/// removes a tween from the active tweens list. List.Remove can be quite slow so it is preferable to sue the other
+		/// removeTween variant.
+		/// </summary>
+		/// <param name="tween">Tween.</param>
 		public void removeTween( ITweenable tween )
 		{
 			_activeTweens.Remove( tween );
 			tween.recycleSelf();
+		}
+
+
+		/// <summary>
+		/// returns all the tweens that have a specific context. Tweens are returned as ITweenControl since that is all
+		/// that ZestKit knows about.
+		/// </summary>
+		/// <returns>The tweens with context.</returns>
+		/// <param name="context">Context.</param>
+		public List<ITweenControl> allTweensWithContext( object context )
+		{
+			var foundTweens = new List<ITweenControl>();
+
+			for( var i = 0; i < _activeTweens.Count; i++ )
+			{
+				if( _activeTweens[i].context == context )
+					foundTweens.Add( _activeTweens[i] );
+			}
+
+			return foundTweens;
 		}
 
 		#endregion

@@ -18,5 +18,11 @@ namespace Prime31.ZestKit
 		{
 			_target = target;
 		}
+
+
+		public bool validateTarget()
+		{
+			return !_target.Equals( null );
+		}
 	}
 }

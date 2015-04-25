@@ -8,6 +8,9 @@ namespace Prime31.ZestKit
 {
 	public class TweenChain : ITweenable
 	{
+		public object context { get; set; }
+
+
 		private List<ITweenable> _tweenList = new List<ITweenable>();
 		private int _currentTween = 0;
 		private bool _isPaused;

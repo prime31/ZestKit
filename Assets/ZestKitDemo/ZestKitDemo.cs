@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using Prime31.ZestKit;
 
 
+/// <summary>
+/// this demo scene shows all the most commonly used tweens. You can use the drop-down in the scene to select which ease type will
+/// be used globally and the slider to modify duration.
+/// </summary>
 public class ZestKitDemo : MonoBehaviour
 {
 	public Transform cube;
@@ -15,8 +19,8 @@ public class ZestKitDemo : MonoBehaviour
 
 	void OnGUI()
 	{
-		EaseTypesSelector.setupGUIButtons();
-		_duration = EaseTypesSelector.durationSlider( _duration );
+		DemoGUIHelpers.setupGUIButtons();
+		_duration = DemoGUIHelpers.durationSlider( _duration );
 
 
 		if( GUILayout.Button( "Position Tween with 2 PingPong Loops" ) )
@@ -115,6 +119,6 @@ public class ZestKitDemo : MonoBehaviour
 				.start();
 		}
 
-		EaseTypesSelector.easeTypesGUI();
+		DemoGUIHelpers.easeTypesGUI();
 	}
 }

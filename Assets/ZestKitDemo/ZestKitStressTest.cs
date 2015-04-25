@@ -5,8 +5,10 @@ using Prime31.ZestKit;
 
 public class ZestKitStressTest : MonoBehaviour
 {
-	private Transform[] _cubes = new Transform[1500];
-	private Vector3[] _originalPositions = new Vector3[1500];
+	private const int _totalCubes = 2500;
+
+	private Transform[] _cubes = new Transform[_totalCubes];
+	private Vector3[] _originalPositions = new Vector3[_totalCubes];
 	private Perlin _perlinNoiseGenerator = new Perlin();
 	private float _updateDelta = 0.0f;
 	private float _timeX;

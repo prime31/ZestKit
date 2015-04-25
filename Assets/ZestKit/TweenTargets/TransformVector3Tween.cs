@@ -12,7 +12,7 @@ namespace Prime31.ZestKit
 	{
 		#region Static caching
 
-		private static Stack<TransformVector3Tween> _vectorTransformTweenStack = new Stack<TransformVector3Tween>( 5 );
+		private static Stack<TransformVector3Tween> _vectorTransformTweenStack = new Stack<TransformVector3Tween>( 10 );
 
 
 		public static TransformVector3Tween nextAvailableTween()
@@ -41,6 +41,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector3 value )
 		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_transform )
+				return;
+			
 			switch( _targetType )
 			{
 				case TransformTargetType.Position:

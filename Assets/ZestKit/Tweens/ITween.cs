@@ -10,9 +10,6 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public interface ITween<T> : ITweenControl where T : struct
 	{
-		object context { get; }
-
-
 		/// <summary>
 		/// sets the ease type used for this tween
 		/// </summary>
@@ -96,10 +93,10 @@ namespace Prime31.ZestKit
 		/// <returns>The is relative tween.</returns>
 		ITween<T> setIsRelative();
 
-
 		/// <summary>
-		/// allows you to set any object reference retrievable via tween.context. This is very handy for avoiding
-		/// closure allocations for completion handler Actions.
+		/// allows you to set any object reference retrievable via tween.context. This is handy for avoiding
+		/// closure allocations for completion handler Actions. You can also search ZestKit for all tweens with a specific
+		/// context.
 		/// </summary>
 		/// <returns>The context.</returns>
 		/// <param name="context">Context.</param>
@@ -112,6 +109,9 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public interface ITweenControl
 	{
+		object context { get; }
+
+
 		/// <summary>
 		/// checks to see if a tween is running
 		/// </summary>
