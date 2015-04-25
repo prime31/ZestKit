@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public enum EaseType
 	{

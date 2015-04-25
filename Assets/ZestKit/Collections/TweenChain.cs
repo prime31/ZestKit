@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public class TweenChain : ITweenable
 	{

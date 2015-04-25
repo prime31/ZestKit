@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// standard easing equations simplified by replacing the b and c params (begin and change values) with 0 and

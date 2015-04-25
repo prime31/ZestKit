@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using ZestKit;
+using Prime31.ZestKit;
 
 
 public class ZestKitDemo : MonoBehaviour

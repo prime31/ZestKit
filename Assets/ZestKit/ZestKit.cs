@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public partial class ZestKit : MonoBehaviour
 	{

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Reflection;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// helper class to fetch property delegates

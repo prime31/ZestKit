@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// series of static methods to handle all common tween type structs along with unclamped lerps for them.

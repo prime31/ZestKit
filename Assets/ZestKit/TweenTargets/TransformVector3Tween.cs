@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// this is a special case since Transforms are by far the most tweened object. we encapsulate the Tween and the ITweenTarget

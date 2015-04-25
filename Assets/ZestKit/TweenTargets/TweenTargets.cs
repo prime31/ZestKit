@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public class TransformRotationTarget : AbstractTweenTarget<Transform,Quaternion>
 	{

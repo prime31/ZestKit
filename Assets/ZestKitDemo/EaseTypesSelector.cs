@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using ZestKit;
+using Prime31.ZestKit;
 using System;
 
 
@@ -83,7 +83,7 @@ public static class EaseTypesSelector
 		if( comboBoxControl.Show() )
 		{
 			var easeType = (EaseType)Enum.Parse( typeof( EaseType ), _allEaseTypes[comboBoxControl.SelectedItemIndex] );
-			ZestKit.ZestKit.defaultEaseType = easeType;
+			ZestKit.defaultEaseType = easeType;
 		}
 	}
 

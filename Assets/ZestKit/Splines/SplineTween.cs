@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public class SplineTween : Tween<Vector3>, ITweenTarget<Vector3>
 	{

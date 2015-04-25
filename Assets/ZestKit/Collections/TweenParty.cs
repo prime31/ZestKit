@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// helper class for managing a series of simultaneous tweens. An important item to note here is that the delay,

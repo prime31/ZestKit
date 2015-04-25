@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// this class adds extension methods for the most commonly used tweens

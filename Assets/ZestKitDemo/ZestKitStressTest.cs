@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using ZestKit;
+using Prime31.ZestKit;
 
 
 public class ZestKitStressTest : MonoBehaviour

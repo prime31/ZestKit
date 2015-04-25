@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public static class SplineAssetUtils
 	{

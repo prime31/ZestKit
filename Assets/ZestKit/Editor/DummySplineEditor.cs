@@ -8,7 +8,7 @@ using System.IO;
 
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	[CustomEditor( typeof( DummySpline ) )]
 	public class DummySplineEditor : Editor

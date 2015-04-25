@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// HSVColor uses a hue between 0 - 360 and saturation/value between 0 - 100%

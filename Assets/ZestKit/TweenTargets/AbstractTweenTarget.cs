@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// helper base class to make creating custom ITweenTargets as trivial as possible

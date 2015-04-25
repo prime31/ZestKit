@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// a series of strongly typed, chainable methods to setup various tween properties

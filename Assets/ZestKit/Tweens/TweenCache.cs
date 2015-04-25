@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public class TweenCache
 	{

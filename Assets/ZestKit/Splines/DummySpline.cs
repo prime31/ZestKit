@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// place this script on any GameObject to enable route editing. note that it is not required at runtime! it is
 /// only required to be in your scene while editing a path
 /// </summary>
-namespace ZestKit
+namespace Prime31.ZestKit
 {
 	public class DummySpline : MonoBehaviour
 	{
