@@ -36,6 +36,7 @@ public class ZestKitDemo : MonoBehaviour
 				.start();
 		}
 
+
 		if( GUILayout.Button( "AnimationCurve for Easing Scale" ) )
 		{
 			cube.ZKlocalScaleTo( new Vector3( 3f, 3f, 3f ), _duration )

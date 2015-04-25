@@ -51,6 +51,9 @@ namespace ZestKit
 
 		#region ITweenT implementation
 
+		public object context { get; protected set; }
+
+
 		public ITween<T> setEaseType( EaseType easeType )
 		{
 			_easeType = easeType;
@@ -138,6 +141,13 @@ namespace ZestKit
 
 		abstract public ITween<T> setIsRelative();
 
+
+		public ITween<T> setContext( object context )
+		{
+			this.context = context;
+			return this;
+		}
+
 		#endregion
 
 
@@ -222,6 +232,7 @@ namespace ZestKit
 
 		void resetState()
 		{
+			context = null;
 			_completionHandler = _loopCompleteHandler = null;
 			_isTimeScaleIndependent = false;
 			_tweenState = TweenState.Complete;

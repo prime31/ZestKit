@@ -10,6 +10,9 @@ namespace ZestKit
 	/// </summary>
 	public interface ITween<T> : ITweenControl where T : struct
 	{
+		object context { get; }
+
+
 		/// <summary>
 		/// sets the ease type used for this tween
 		/// </summary>
@@ -92,6 +95,15 @@ namespace ZestKit
 		/// </summary>
 		/// <returns>The is relative tween.</returns>
 		ITween<T> setIsRelative();
+
+
+		/// <summary>
+		/// allows you to set any object reference retrievable via tween.context. This is very handy for avoiding
+		/// closure allocations for completion handler Actions.
+		/// </summary>
+		/// <returns>The context.</returns>
+		/// <param name="context">Context.</param>
+		ITween<T> setContext( object context );
 	}
 
 
