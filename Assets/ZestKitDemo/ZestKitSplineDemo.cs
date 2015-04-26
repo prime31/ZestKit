@@ -65,33 +65,19 @@ public class ZestKitSplineDemo : MonoBehaviour
 				.start();
 		}
 
-	}
 
-	void blah()
-	{
-		// prep the Spline. absolute
-		//			var nodes = new Vector3[] { new Vector3( -9f, -4f ), new Vector3( -9f, -4f ), new Vector3( 0f, 1f, 1f ), new Vector3( 4f, 5f, 6f ), new Vector3( -9f, 5f, 0f ), new Vector3( 7f, 4f, 0f ) };
-		//			var spline = new Spline( nodes );
-		//			spline.closePath();
-		//
-		//			// setup the tween
-		//			var splineTween = new SplineTween( quad, spline, 2f );
-		//			splineTween.setDelay( 0.5f )
-		//				.setEaseType( EaseType.CubicInOut )
-		//				.start();
+		if( GUILayout.Button( "Runtime Spline (relative with PingPong)" ) )
+		{
+			var nodes = new Vector3[] { new Vector3( 0, 0 ), new Vector3( 0, 0 ), new Vector3( 4f, 4f, 4f ), new Vector3( -4f, 5f, 6f ), new Vector3( -2f, 2f, 0f ), new Vector3( 0f, 0f ) };
+			var spline = new Spline( nodes );
+			spline.closePath();
 
+			// setup the tween
+			new SplineTween( quad, spline, _duration )
+				.setIsRelative()
+				.setLoops( LoopType.PingPong )
+				.start();
+		}
 
-		// prep the Spline. relative
-		var nodes = new Vector3[] { new Vector3( 0, 0 ), new Vector3( 0, 0 ), new Vector3( 4f, 4f, 4f ), new Vector3( -4f, 5f, 6f ), new Vector3( -2f, 2f, 0f ), new Vector3( 0f, 0f ) };
-		//var spline = new Spline( "figureEight" ); // load from saved spline
-		var spline = new Spline( nodes );
-		spline.closePath();
-
-		// setup the tween
-		var splineTween = new SplineTween( quad, spline, 5f )
-			.setIsRelative();
-		splineTween.setDelay( 0.5f )
-			.setEaseType( EaseType.CubicInOut )
-			.start();
 	}
 }
