@@ -479,7 +479,7 @@ namespace Prime31.ZestKit
 						var distanceToNearestNode = Vector3.Distance( nearest, _target.nodes[_selectedNodeIndex] );
 						
 						// is it close enough to snap?
-						if( distanceToNearestNode <= _snapDistance )
+						if( distanceToNearestNode <= _snapDistance * 0.5f )
 						{
 							GUI.changed = true;
 							handleNodeMove( _selectedNodeIndex, nearest );

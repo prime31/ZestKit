@@ -112,11 +112,11 @@ namespace Prime31.ZestKit
 		public Vector3 getPointOnPath( float t )
 		{
 			// if the path is closed, we will allow t to wrap. if is not we need to clamp t
-			if( t < 0 || t > 1 )
+			if( t < 0f || t > 1f )
 			{
 				if( isClosed )
 				{
-					if( t < 0 )
+					if( t < 0f )
 						t += 1;
 					else
 						t -= 1;

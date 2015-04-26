@@ -99,12 +99,12 @@ public static class DemoGUIHelpers
 	}
 
 
-	public static float durationSlider( float duration )
+	public static float durationSlider( float duration, float maxDuration = 2f )
 	{
 		GUILayout.BeginHorizontal();
 		GUILayout.Label( string.Format( "Duration: {0:0.0}", duration ), GUILayout.Width( 80 ) );
 		GUI.skin.horizontalSlider.margin = new RectOffset( 4, 4, 10, 4 );
-		var result = GUILayout.HorizontalSlider( duration, 0f, 2f, GUILayout.ExpandWidth( true ) );
+		var result = GUILayout.HorizontalSlider( duration, 0f, maxDuration, GUILayout.ExpandWidth( true ) );
 		GUILayout.EndHorizontal();
 
 		return result;

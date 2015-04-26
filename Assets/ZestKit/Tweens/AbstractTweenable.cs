@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 
 namespace Prime31.ZestKit
@@ -41,6 +42,10 @@ namespace Prime31.ZestKit
 
 		public void start()
 		{
+			// dont add ourself twice!
+			if( _isActiveTween )
+				return;
+			
 			ZestKit.instance.addTween( this );
 			_isActiveTween = true;
 			_isPaused = false;

@@ -88,6 +88,7 @@ namespace Prime31.ZestKit
 				return false;
 			}
 
+			_isActiveTween = false;
 			return true;
 		}
 

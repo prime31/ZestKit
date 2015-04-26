@@ -119,6 +119,12 @@ public class ZestKitDemo : MonoBehaviour
 				.start();
 		}
 
+
+		if( GUILayout.Button( "Camera Shake" ) )
+		{
+			new CameraShakeTween( Camera.main ).start();
+		}
+
 		DemoGUIHelpers.easeTypesGUI();
 	}
 }

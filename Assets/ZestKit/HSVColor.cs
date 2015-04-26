@@ -36,7 +36,7 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// shifts the color making it brighter and less saturated (or vice versa for negative values)
+		/// shifts the color (value and saturation) making it brighter and less saturated (or vice versa for negative values)
 		/// </summary>
 		/// <param name="amount">Amount.</param>
 		public void shift( float amount )
@@ -195,5 +195,6 @@ namespace Prime31.ZestKit
 		}
 
 		#endregion
+	
 	}
 }

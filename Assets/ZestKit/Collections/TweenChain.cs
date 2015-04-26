@@ -36,6 +36,8 @@ namespace Prime31.ZestKit
 				{
 					if( _completionHandler != null )
 						_completionHandler( this );
+
+					_isActiveTween = false;
 					return true;
 				}
 			}
