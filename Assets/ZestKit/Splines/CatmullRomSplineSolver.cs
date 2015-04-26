@@ -49,16 +49,16 @@ namespace Prime31.ZestKit
 
 		public override Vector3 getPoint( float t )
 		{
-			int numSections = _nodes.Count - 3;
-			int currentNode = Mathf.Min( Mathf.FloorToInt( t * (float)numSections ), numSections - 1 );
-			float u = t * (float)numSections - (float)currentNode;
+			var numSections = _nodes.Count - 3;
+			var currentNode = Mathf.Min( Mathf.FloorToInt( t * (float)numSections ), numSections - 1 );
+			var u = t * (float)numSections - (float)currentNode;
 
-			Vector3 a = _nodes[currentNode];
-			Vector3 b = _nodes[currentNode + 1];
-			Vector3 c = _nodes[currentNode + 2];
-			Vector3 d = _nodes[currentNode + 3];
+			var a = _nodes[currentNode];
+			var b = _nodes[currentNode + 1];
+			var c = _nodes[currentNode + 2];
+			var d = _nodes[currentNode + 3];
 
-			return .5f *
+			return 0.5f *
 				(
 					( -a + 3f * b - 3f * c + d ) * ( u * u * u )
 					+ ( 2f * a - 5f * b + 4f * c - d ) * ( u * u )

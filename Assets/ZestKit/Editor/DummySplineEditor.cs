@@ -16,11 +16,11 @@ namespace Prime31.ZestKit
 		private DummySpline _target;
 		private GUIStyle _labelStyle;
 		private GUIStyle _indexStyle;
-		
-		private int _insertIndex = 0;
+
 		private float _snapDistance = 5f;
 		private bool _showNodeDetails;
 		private int _selectedNodeIndex = -1;
+		private bool _inEditMode;
 		
 		
 		#region Monobehaviour and Editor
@@ -40,10 +40,26 @@ namespace Prime31.ZestKit
 			
 			_target = (DummySpline)target;
 		}
-		
+
+
+		void OnDisable()
+		{
+			_target = null;
+			_labelStyle = null;
+			_indexStyle = null;
+		}
+
 		
 		public override void OnInspectorGUI()
 		{
+			showEditModeToggle();
+
+			if( !_inEditMode )
+			{
+				drawInstructions();
+				return;
+			}
+
 			// what kind of handles shall we use?
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.PrefixLabel( "Use Standard Handles" );
@@ -66,7 +82,39 @@ namespace Prime31.ZestKit
 			EditorGUILayout.PrefixLabel( "Route Color" );
 			_target.pathColor = EditorGUILayout.ColorField( _target.pathColor );
 			EditorGUILayout.EndHorizontal();
-			
+
+
+			// force bezier:
+			var previousChangedValue = GUI.changed;
+			GUI.changed = false;
+			GUI.enabled = !_target.forceStraightLinePath;
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.PrefixLabel( "Use Bezier Path" );
+			_target.useBezier = EditorGUILayout.Toggle( _target.useBezier );
+
+			// validate
+			if( GUI.changed && _target.useBezier )
+			{
+				// make sure we have enough nodes to use a bezier.  nodeCount - 1 must be divisible by 3
+				if( _target.nodes.Count < 4 )
+				{
+					Debug.LogError( "there must be at least 4 nodes to use a bezier" );
+					_target.useBezier = false;
+				}
+				else
+				{
+					var excessNodes = ( _target.nodes.Count - 1 ) % 3;
+					if( excessNodes > 0 )
+					{
+						_target.nodes.RemoveRange( _target.nodes.Count - excessNodes, excessNodes );
+						Debug.LogWarning( "trimming " + excessNodes + " from the node list to make a proper bezier spline" );
+					}
+				}
+			}
+			EditorGUILayout.EndHorizontal();
+			GUI.enabled = true;
+			GUI.changed = previousChangedValue;
+
 			
 			// force straight lines:
 			EditorGUILayout.BeginHorizontal();
@@ -89,22 +137,17 @@ namespace Prime31.ZestKit
 			if( _target.nodes.Count > 2 )
 			{
 				EditorGUILayout.BeginHorizontal();
-				EditorGUILayout.PrefixLabel( "Insert Node" );
-				_insertIndex = EditorGUILayout.IntField( _insertIndex );
-				if( GUILayout.Button( "Insert" ) )
-				{
-					// validate the index
-					if( _insertIndex >= 0 && _insertIndex < _target.nodes.Count )
-					{
-						// insert the node offsetting it a bit from the previous node
-						var copyNodeIndex = _insertIndex == 0 ? 0 : _insertIndex;
-						var copyNode = _target.nodes[copyNodeIndex];
-						copyNode.x += 10;
-						copyNode.z += 10;
-						
-						insertNodeAtIndex( copyNode, _insertIndex );
-					}
-				}
+
+				GUI.enabled = _selectedNodeIndex != 0;
+				if( GUILayout.Button( "Insert Node Before Selected" ) )
+					insertNodeAtIndex( _selectedNodeIndex, false );
+
+				GUI.enabled = _selectedNodeIndex != _target.nodes.Count - 1;
+				if( GUILayout.Button( "Insert Node After Selected" ) )
+					insertNodeAtIndex( _selectedNodeIndex, true );
+				
+				GUI.enabled = true;
+
 				EditorGUILayout.EndHorizontal();
 			}
 
@@ -126,7 +169,7 @@ namespace Prime31.ZestKit
 				var offset = Vector3.zero;
 				
 				// see what kind of path we are. the simplest case is just a straight line
-				var path = new Spline( _target.nodes, _target.forceStraightLinePath );
+				var path = new Spline( _target.nodes, _target.useBezier, _target.forceStraightLinePath );
 				if( path.splineType == SplineType.StraightLine || _target.nodes.Count < 5 )
 					offset = Vector3.zero - _target.nodes[0];
 				else
@@ -144,6 +187,50 @@ namespace Prime31.ZestKit
 			{
 				Undo.RecordObject( _target, "Path Vector Changed" );
 				_target.nodes.Reverse();
+				GUI.changed = true;
+			}
+
+
+			// shifters. thse only make sense for straight line and catmull rom
+			if( !_target.forceStraightLinePath && ( _target.nodes.Count > 4 && _target.useBezier ) )
+				GUI.enabled = false;
+			
+			GUILayout.BeginHorizontal();
+
+			if( GUILayout.Button( "Shift Nodes Left" ) )
+			{
+				Undo.RecordObject( _target, "Path Vector Changed" );
+
+				var firstItem = _target.nodes[0];
+				_target.nodes.RemoveAt( 0 );
+				_target.nodes.Add( firstItem );
+
+				GUI.changed = true;
+			}
+
+
+			if( GUILayout.Button( "Shift Nodes Right" ) )
+			{
+				Undo.RecordObject( _target, "Path Vector Changed" );
+
+				var lastItem = _target.nodes[_target.nodes.Count - 1];
+				_target.nodes.RemoveAt( _target.nodes.Count - 1 );
+				_target.nodes.Insert( 0, lastItem );
+
+				GUI.changed = true;
+			}
+
+			GUILayout.EndHorizontal();
+			GUI.enabled = true;
+
+
+			if( GUILayout.Button( "Clear Path" ) )
+			{
+				Undo.RecordObject( _target, "Path Vector Changed" );
+				_target.nodes.Clear();
+				_target.nodes.Add( _target.transform.position );
+				_target.nodes.Add( _target.transform.position + new Vector3( 5f, 5f ) );
+
 				GUI.changed = true;
 			}
 			
@@ -203,18 +290,8 @@ namespace Prime31.ZestKit
 					_target.nodes[i] = EditorGUILayout.Vector3Field( "Node " + ( i + 1 ), _target.nodes[i] );
 				EditorGUI.indentLevel--;
 			}
-			
-			
-			// instructions
-			EditorGUILayout.Space();
-			EditorGUILayout.HelpBox( "While dragging a node, hold down Ctrl and slowly move the cursor to snap to a nearby point\n\n" +
-			               "Click the 'Close Path' button to add a new node that will close out the current path.\n\n" +
-			               "Hold Command while dragging a node to snap in 5 point increments\n\n" +
-			               "Double click to add a new node at the end of the path\n\n" +
-						   "Hold down alt while adding a node to prepend the new node at the front of the route\n\n" +
-			               "Press delete or backspace to delete the selected node\n\n" +
-			               "NOTE: make sure you have the pan tool selected while editing paths", MessageType.None );
 
+			drawInstructions();
 			
 			// update and redraw:
 			if( GUI.changed )
@@ -223,18 +300,47 @@ namespace Prime31.ZestKit
 				Repaint();
 			}
 		}
+
+
+		void drawInstructions()
+		{
+			// instructions
+			EditorGUILayout.Space();
+			EditorGUILayout.HelpBox( "Press the 'Enter Edit Mode' button to lock the scene view and begin editing\n\n" +
+				"While dragging a node, hold down Ctrl and slowly move the cursor to snap to a nearby point\n\n" +
+				"Click the 'Close Path' button to add a new node that will close out the current path.\n\n" +
+				"Hold Command while dragging a node to snap in 5 point increments\n\n" +
+				"Double click to add a new node at the end of the path\n\n" +
+				"Hold down alt while double clicking to prepend the new node at the front of the route\n\n" +
+				"Press delete or backspace to delete the selected node\n\n" +
+				"When preparing relative tweens, click the 'Shift Path to Start at Origin' button. This will let you're spline" +
+				"tween start at the exact position of the object being tweened.\n\n" +
+				"NOTE: make sure you have the pan tool selected while editing paths! You can hold alt and click-drag" + 
+				"to pan the view", MessageType.None );
+		}
 		
 		
 		void OnSceneGUI()
 		{
 			if( !_target.gameObject.activeSelf )
 				return;
-			
+
+			if( _inEditMode )
+			{
+				HandleUtility.AddDefaultControl( GUIUtility.GetControlID( FocusType.Passive ) );
+			}
+			else
+			{
+				drawRoute();
+				return;
+			}
+
 			// handle current selection and node addition via double click or ctrl click
 			if( Event.current.type == EventType.mouseDown )
 			{
 				var nearestIndex = getNearestNodeForMousePosition( Event.current.mousePosition );
 				_selectedNodeIndex = nearestIndex;
+				Repaint();
 				
 				// double click to add
 				if( Event.current.clickCount > 1 )
@@ -246,9 +352,9 @@ namespace Prime31.ZestKit
 					
 					// if alt is down then prepend the node to the beginning
 					if( Event.current.alt )
-						insertNodeAtIndex( translatedPoint, 0 );
+						prependNode( translatedPoint );
 					else
-						appendNodeAtPoint( translatedPoint );
+						appendNode( translatedPoint );
 				}
 			}
 			
@@ -258,19 +364,22 @@ namespace Prime31.ZestKit
 				// shall we delete the selected node?
 				if( Event.current.keyCode == KeyCode.Delete || Event.current.keyCode == KeyCode.Backspace )
 				{
-					if (_target.nodes.Count > 2) {
+					if( _target.nodes.Count > 2 )
+					{
 						Undo.RecordObject( _target, "Path Node Deleted" );
 						Event.current.Use();
 						removeNodeAtIndex( _selectedNodeIndex );
 						_selectedNodeIndex = -1;
+						Repaint();
+						Event.current.Use();
 					}
 				}
 			}
 			
-			
+			var isBezierControlPoint = _selectedNodeIndex % 3 != 0;
 			if( _target.nodes.Count > 1 )
 			{
-				// allow path adjustment undo:
+				// allow path adjustment undo
 				Undo.RecordObject( _target, "Path Vector Changed" );
 				
 				// path begin and end labels or just one if the path is closed
@@ -286,14 +395,19 @@ namespace Prime31.ZestKit
 				
 				// draw the handles, arrows and lines
 				drawRoute();
+
+				// how big shall we draw the handles?
+				var distanceToTarget = Vector3.Distance( SceneView.lastActiveSceneView.camera.transform.position, _target.transform.position );
+				distanceToTarget = Mathf.Abs( distanceToTarget );
+				var handleSize = Mathf.Ceil( distanceToTarget / 75 );
 				
 				for( var i = 0; i < _target.nodes.Count; i++ )
 				{
 					Handles.color = _target.pathColor;
-					
+
 					// dont label the first and last nodes
 					if( i > 0 && i < _target.nodes.Count - 1 )
-						Handles.Label( _target.nodes[i] + new Vector3( 3f, 0, 1.5f ), i.ToString(), _indexStyle );
+						Handles.Label( _target.nodes[i] + new Vector3( 1f, 0.0f ), i.ToString(), _indexStyle );
 					
 					Handles.color = Color.white;
 					if( _target.useStandardHandles )
@@ -302,21 +416,24 @@ namespace Prime31.ZestKit
 					}
 					else
 					{
-						// how big shall we draw the handles?
-						var distanceToTarget = Vector3.Distance( SceneView.lastActiveSceneView.camera.transform.position, _target.transform.position );
-						distanceToTarget = Mathf.Abs( distanceToTarget );
-						var handleSize = Mathf.Ceil( distanceToTarget / 75 );
-						
-						_target.nodes[i] = Handles.FreeMoveHandle( _target.nodes[i],
+						// dont snap bezier handles
+						var snapper = isBezierControlPoint && _target.isMultiPointBezierSpline ? Vector3.zero : new Vector3( 5f, 5f, 5f );
+						EditorGUI.BeginChangeCheck();
+						var newNodePosition = Handles.FreeMoveHandle( _target.nodes[i],
 						                        Quaternion.identity,
 						                        handleSize,
-						                        new Vector3( 5, 0, 5 ),
+						                        snapper,
 						                        Handles.SphereCap );
+
+						if( EditorGUI.EndChangeCheck() )
+						{
+							handleNodeMove( i, newNodePosition );
+						}
 					}
 					
 
 					// should we snap?  we need at least 4 nodes because we dont snap to the previous and next nodes
-					if( Event.current.control && _target.nodes.Count > 3 )
+					if( Event.current.control && _target.nodes.Count > 3 && !( isBezierControlPoint && _target.isMultiPointBezierSpline ) )
 					{
 						// dont even bother checking for snapping to the previous/next nodes
 						var index = getNearestNode( _target.nodes[i], i, i + 1, i - 1 );
@@ -335,7 +452,7 @@ namespace Prime31.ZestKit
 							var color = Color.red;
 							color.a = 0.3f;
 							Handles.color = color;
-							Handles.SphereCap( 0, _target.nodes[i], Quaternion.identity, _snapDistance * 2 );
+							Handles.SphereCap( 0, _target.nodes[i], Quaternion.identity, _snapDistance );
 							//Handles.DrawWireDisc( _target.nodes[i], Vector3.up, _snapDistance );
 							Handles.color = Color.white;
 						}
@@ -350,17 +467,118 @@ namespace Prime31.ZestKit
 				}
 			} // end if
 		}
+
+
+		void showEditModeToggle()
+		{
+			var originalColor = GUI.color;
+			var text = _inEditMode ? "Exit Edit Mode" : "Enter Edit Mode";
+			GUI.color = _inEditMode ? Color.green : GUI.color;
+
+			if( GUILayout.Button( text ) )
+				_inEditMode = !_inEditMode;
+			_target.isInEditMode = _inEditMode;
+
+			SceneView.RepaintAll();
+
+			GUI.color = originalColor;
+		}
 		
 		#endregion
 		
 		
 		#region Private methods
-		
-		private void appendNodeAtPoint( Vector3 node )
+
+		private void handleNodeMove( int index, Vector3 pos )
 		{
-			_target.nodes.Add( node );
+			// non-beziers are just a simple set
+			if( !_target.isMultiPointBezierSpline )
+			{
+				_target.nodes[index] = pos;
+				return;
+			}
+
+			// beziers. let the fun begin. handles work differently than nodes
+			var deltaMove = pos - _target.nodes[index];
+			if( index % 3 == 0 )
+			{
+				_target.nodes[index] = pos;
+
+				// special cases are start and end nodes
+				if( index > 0 )
+					_target.nodes[index - 1] += deltaMove;
+
+				if( index < _target.nodes.Count - 2 )
+					_target.nodes[index + 1] += deltaMove;
+			}
+			else
+			{
+				// special case for first and last ctrl points
+				if( index == 1 || index == _target.nodes.Count - 2 )
+				{
+					_target.nodes[index] = pos;
+				}
+				else
+				{
+					_target.nodes[index] = pos;
+					int modeIndex = ( index + 1 ) / 3;
+
+					int middleIndex = modeIndex * 3;
+					int fixedIndex, enforcedIndex;
+					if( index <= middleIndex )
+					{
+						fixedIndex = middleIndex - 1;
+						enforcedIndex = middleIndex + 1;
+					}
+					else
+					{
+						fixedIndex = middleIndex + 1;
+						enforcedIndex = middleIndex - 1;
+					}
+
+					var middle = _target.nodes[middleIndex];
+					var enforcedTangent = middle - _target.nodes[fixedIndex];
+					_target.nodes[enforcedIndex] = middle + enforcedTangent;
+				}
+			}
+		}
+
+		
+		private void appendNode( Vector3 node )
+		{
+			if( _target.isMultiPointBezierSpline )
+			{
+				var lastNodeCtrlPoint = _target.nodes[_target.nodes.Count - 2];
+				var lastNode = _target.nodes[_target.nodes.Count - 1];
+
+				_target.nodes.Add( lastNode - ( lastNodeCtrlPoint - lastNode ) ); // 2nd control point for the last node
+				_target.nodes.Add( node + ( lastNodeCtrlPoint - lastNode ) ); // control point for new node
+				_target.nodes.Add( node ); // new node
+			}
+			else
+			{
+				_target.nodes.Add( node );
+			}
 			
 			GUI.changed = true;
+		}
+
+
+		private void prependNode( Vector3 node )
+		{
+			if( _target.isMultiPointBezierSpline )
+			{
+				var firstNodeCtrlPoint = _target.nodes[1];
+				var firstNode = _target.nodes[0];
+
+				_target.nodes.Insert( 0, firstNode - ( firstNodeCtrlPoint - firstNode ) ); // 2nd control point for the first node
+				_target.nodes.Insert( 0, node + ( firstNodeCtrlPoint - firstNode ) ); // control point for new node
+				_target.nodes.Insert( 0, node ); // new node
+			}
+			else
+			{
+				_target.nodes.Insert( 0, node );
+			}
 		}
 		
 		
@@ -368,20 +586,72 @@ namespace Prime31.ZestKit
 		{
 			if( index >= _target.nodes.Count || index < 0 )
 				return;
-			
-			_target.nodes.RemoveAt( index );
+
+			if( _target.isMultiPointBezierSpline )
+			{
+				if( index % 3 == 0 )
+				{
+					// we want to remove the node before through the node after index but we need to be careful for index = 0
+					if( index == 0 )
+						_target.nodes.RemoveRange( index, 3 );
+					else
+						_target.nodes.RemoveRange( index - 1, 3 );
+				}
+				else
+				{
+					Debug.LogError( "Sorry. You cannot remove control points of a bezier curve" );
+				}
+			}
+			else
+			{
+				_target.nodes.RemoveAt( index );
+			}
 			
 			GUI.changed = true;
 		}
-		
-		
+
+
+		private void insertNodeAtIndex( int index, bool isAfter )
+		{
+			Undo.RecordObject( _target, "Insert Node" );
+
+			if( _target.isMultiPointBezierSpline )
+			{
+				if( index % 3 != 0 )
+				{
+					Debug.LogError( "you cant insert a node before or after a bezier control point" );
+					return;
+				}
+
+				var firstCtrlPointIndex = isAfter ? index : index - 3;
+				var secondCtrlPointIndex = isAfter ? index + 3 : index;
+				var insertIndex = isAfter ? index + 2 : index - 1;
+				var ctrlPointOffset = _target.nodes[index + 1] - _target.nodes[index];
+
+				var nodeLocation = Vector3.Lerp( _target.nodes[firstCtrlPointIndex], _target.nodes[secondCtrlPointIndex], 0.5f );
+				Debug.Log( "first: " + firstCtrlPointIndex + ", second: " + secondCtrlPointIndex );
+
+				_target.nodes.Insert( insertIndex, nodeLocation - ctrlPointOffset ); // 1st control point for new node
+				_target.nodes.Insert( insertIndex, nodeLocation ); // new node
+				_target.nodes.Insert( insertIndex, nodeLocation + ctrlPointOffset ); // 2nd control point for new node
+			}
+			else
+			{
+				var firstIndex = isAfter ? index : index - 1;
+				var secondIndex = isAfter ? index + 1 : index;
+				var insertIndex = isAfter ? index + 1 : index;
+				insertNodeAtIndex( Vector3.Lerp( _target.nodes[firstIndex], _target.nodes[secondIndex], 0.5f ), insertIndex );
+			}
+		}
+
+
+		// this is only called from insertNodeBetweenIndices so we dont do anything special for beziers
 		private void insertNodeAtIndex( Vector3 node, int index )
 		{
 			// validate the index
 			if( index >= 0 && index < _target.nodes.Count )
 			{
 				_target.nodes.Insert( index, node );
-				
 				GUI.changed = true;
 			}
 		}
@@ -459,7 +729,7 @@ namespace Prime31.ZestKit
 		private void closeRoute()
 		{
 			// we will use the GoSpline class to handle the dirtywork of closing the path
-			var path = new Spline( _target.nodes, _target.forceStraightLinePath );
+			var path = new Spline( _target.nodes, _target.useBezier, _target.forceStraightLinePath );
 			path.closePath();
 			
 			_target.nodes = path.nodes;

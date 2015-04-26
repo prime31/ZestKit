@@ -9,7 +9,8 @@ namespace Prime31.ZestKit
 		StraightLine, // 2 points
 		QuadraticBezier, // 3 points
 		CubicBezier, // 4 points
-		CatmullRom // 5+ points
+		CatmullRom, // 5+ points
+		Bezier // 5+ points
 	}
 
 
@@ -35,28 +36,36 @@ namespace Prime31.ZestKit
 
 
 		// default constructor
-		public Spline( List<Vector3> nodes, bool useStraightLines = false )
+		public Spline( List<Vector3> nodes, bool useBezierIfPossible = false, bool useStraightLines = false )
 		{
 			// determine spline type and solver based on number of nodes
 			if( useStraightLines || nodes.Count == 2 )
 			{
 				splineType = SplineType.StraightLine;
-				_solver = new SplineStraightLineSolver( nodes );
+				_solver = new StraightLineSplineSolver( nodes );
 			}
 			else if( nodes.Count == 3 )
 			{
 				splineType = SplineType.QuadraticBezier;
-				_solver = new SplineQuadraticBezierSolver( nodes );
+				_solver = new QuadraticBezierSplineSolver( nodes );
 			}
 			else if( nodes.Count == 4 )
 			{
 				splineType = SplineType.CubicBezier;
-				_solver = new SplineCubicBezierSolver( nodes );
+				_solver = new CubicBezierSplineSolver( nodes );
 			}
 			else
 			{
-				splineType = SplineType.CatmullRom;
-				_solver = new SplineCatmullRomSolver( nodes );
+				if( useBezierIfPossible )
+				{
+					splineType = SplineType.Bezier;
+					_solver = new BezierSplineSolver( nodes );
+				}
+				else
+				{
+					splineType = SplineType.CatmullRom;
+					_solver = new CatmullRomSplineSolver( nodes );
+				}
 			}
 		}
 
@@ -162,10 +171,14 @@ namespace Prime31.ZestKit
 		}
 
 
-		public void drawGizmos( float resolution )
+		public void drawGizmos( float resolution, bool isInEditMode )
 		{
-			_solver.drawGizmos();
+			if( _solver.nodes.Count == 0 )
+				return;
 
+			if( isInEditMode )
+				_solver.drawGizmos();
+			
 			var previousPoint = _solver.getPoint( 0 );
 
 			resolution *= _solver.nodes.Count;
@@ -182,11 +195,11 @@ namespace Prime31.ZestKit
 		/// <summary>
 		/// helper for drawing gizmos in the editor
 		/// </summary>
-		public static void drawGizmos( Vector3[] path, float resolution = 50 )
+		public static void drawGizmos( Vector3[] path, float resolution = 50, bool isInEditMode = false )
 		{
 			// horribly inefficient but it only runs in the editor
 			var spline = new Spline( path );
-			spline.drawGizmos( resolution );
+			spline.drawGizmos( resolution, isInEditMode );
 		}
 	}
 }

@@ -14,10 +14,21 @@ namespace Prime31.ZestKit
 	{
 		public string pathName = string.Empty;
 		public Color pathColor = Color.magenta; // color of the path if visible in the editor
-		public List<Vector3> nodes = new List<Vector3>() { Vector3.zero, Vector3.zero };
+		public List<Vector3> nodes = new List<Vector3>() { Vector3.zero, Vector3.one };
 		public bool useStandardHandles = false;
 		public bool forceStraightLinePath = false;
-		public int pathResolution = 50;
+		public bool useBezier = false;
+		public int pathResolution = 30;
+		public bool isInEditMode;
+
+
+		public bool isMultiPointBezierSpline
+		{
+			get
+			{
+				return nodes.Count > 4 && !forceStraightLinePath && useBezier;
+			}
+		}
 	
 	
 		public void OnDrawGizmosSelected()
@@ -25,9 +36,9 @@ namespace Prime31.ZestKit
 			// the editor will draw paths when force straight line is on
 			if( !forceStraightLinePath )
 			{
-				var spline = new Spline( nodes );
+				var spline = new Spline( nodes, useBezier, forceStraightLinePath );
 				Gizmos.color = pathColor;
-				spline.drawGizmos( pathResolution );
+				spline.drawGizmos( pathResolution, isInEditMode );
 			}
 		}
 

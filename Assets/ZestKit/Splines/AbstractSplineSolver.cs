@@ -25,7 +25,6 @@ namespace Prime31.ZestKit
 		protected Dictionary<float, float> _segmentTimeForDistance; // holds data in the form [time:distance] as a lookup table
 
 
-
 		// the default implementation breaks the spline down into segments and approximates distance by adding up
 		// the length of each segment
 		public virtual void buildPath()
