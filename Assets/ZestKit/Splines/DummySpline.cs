@@ -26,7 +26,7 @@ namespace Prime31.ZestKit
 		{
 			get
 			{
-				return nodes.Count > 4 && !forceStraightLinePath && useBezier;
+				return nodes.Count >= 4 && !forceStraightLinePath && useBezier;
 			}
 		}
 	

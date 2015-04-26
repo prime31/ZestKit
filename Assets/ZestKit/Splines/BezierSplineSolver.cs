@@ -82,21 +82,19 @@ namespace Prime31.ZestKit
 		/// <param name="p3">P3.</param>
 		Vector3 getPoint( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
 		{
-			float u = 1 - t;
-			float tt = t * t;
-			float uu = u * u;
-			float uuu = uu * u;
-			float ttt = tt * t;
+			var u = 1f - t;
+			var tt = t * t;
+			var uu = u * u;
+			var uuu = uu * u;
+			var ttt = tt * t;
 
 			var p = uuu * p0; //first term
-
-			p += 3 * uu * t * p1; //second term
-			p += 3 * u * tt * p2; //third term
+			p += 3f * uu * t * p1; //second term
+			p += 3f * u * tt * p2; //third term
 			p += ttt * p3; //fourth term
 
 			return p;
 		}
-
 
 
 		#region AbstractSplineSolver

@@ -68,13 +68,13 @@ namespace Prime31.ZestKit
 				}
 			}
 		}
+			
 
-
-		public Spline( Vector3[] nodes, bool useStraightLines = false ) : this( new List<Vector3>( nodes ), useStraightLines )
+		public Spline( string pathAssetName, bool useBezierIfPossible = false, bool useStraightLines = false ) : this( SplineAssetUtils.nodeListFromAsset( pathAssetName ), useBezierIfPossible, useStraightLines )
 		{}
 
 
-		public Spline( string pathAssetName, bool useStraightLines = false ) : this( SplineAssetUtils.nodeListFromAsset( pathAssetName ), useStraightLines )
+		public Spline( Vector3[] nodes, bool useBezierIfPossible = false, bool useStraightLines = false ) : this( new List<Vector3>( nodes ), useBezierIfPossible, useStraightLines )
 		{}
 
 
@@ -195,10 +195,10 @@ namespace Prime31.ZestKit
 		/// <summary>
 		/// helper for drawing gizmos in the editor
 		/// </summary>
-		public static void drawGizmos( Vector3[] path, float resolution = 50, bool isInEditMode = false )
+		public static void drawGizmos( Vector3[] nodes, float resolution = 50, bool isInEditMode = false )
 		{
 			// horribly inefficient but it only runs in the editor
-			var spline = new Spline( path );
+			var spline = new Spline( new List<Vector3>( nodes ) );
 			spline.drawGizmos( resolution, isInEditMode );
 		}
 	}

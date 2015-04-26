@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 
 
+// TODO: really should add settings for free, mirrored and aligned handles
+
 
 namespace Prime31.ZestKit
 {
@@ -59,6 +61,9 @@ namespace Prime31.ZestKit
 				drawInstructions();
 				return;
 			}
+
+			if( _target.useBezier && _target.nodes.Count < 4 )
+				_target.useBezier = false;
 
 			// what kind of handles shall we use?
 			EditorGUILayout.BeginHorizontal();
@@ -170,7 +175,7 @@ namespace Prime31.ZestKit
 				
 				// see what kind of path we are. the simplest case is just a straight line
 				var path = new Spline( _target.nodes, _target.useBezier, _target.forceStraightLinePath );
-				if( path.splineType == SplineType.StraightLine || _target.nodes.Count < 5 )
+				if( path.splineType == SplineType.StraightLine || path.splineType == SplineType.Bezier || _target.nodes.Count < 5 )
 					offset = Vector3.zero - _target.nodes[0];
 				else
 					offset = Vector3.zero - _target.nodes[1];
@@ -230,6 +235,17 @@ namespace Prime31.ZestKit
 				_target.nodes.Clear();
 				_target.nodes.Add( _target.transform.position );
 				_target.nodes.Add( _target.transform.position + new Vector3( 5f, 5f ) );
+
+				GUI.changed = true;
+			}
+
+
+			if( GUILayout.Button( "Move z-axis Values to 0" ) )
+			{
+				Undo.RecordObject( _target, "Path Vector Changed" );
+
+				for( var i = 0; i < _target.nodes.Count; i++ )
+					_target.nodes[i] = new Vector3( _target.nodes[i].x, _target.nodes[i].y, 0f );
 
 				GUI.changed = true;
 			}
@@ -396,23 +412,30 @@ namespace Prime31.ZestKit
 				// draw the handles, arrows and lines
 				drawRoute();
 
+
+//				var distanceToTarget = Vector3.Distance( SceneView.lastActiveSceneView.camera.transform.position, _target.transform.position );
+//				distanceToTarget = Mathf.Abs( distanceToTarget );
+//				var handleSize = Mathf.Ceil( distanceToTarget / 75 );
+
 				// how big shall we draw the handles?
-				var distanceToTarget = Vector3.Distance( SceneView.lastActiveSceneView.camera.transform.position, _target.transform.position );
-				distanceToTarget = Mathf.Abs( distanceToTarget );
-				var handleSize = Mathf.Ceil( distanceToTarget / 75 );
+				var handleSize = HandleUtility.GetHandleSize( _target.transform.position ) * 0.2f;
 				
 				for( var i = 0; i < _target.nodes.Count; i++ )
 				{
 					Handles.color = _target.pathColor;
 
-					// dont label the first and last nodes
+					// dont label the first and last nodes or ctrl handles on a bezier
 					if( i > 0 && i < _target.nodes.Count - 1 )
+						if( !( _target.isMultiPointBezierSpline && i % 3 != 0 ) )
 						Handles.Label( _target.nodes[i] + new Vector3( 1f, 0.0f ), i.ToString(), _indexStyle );
 					
 					Handles.color = Color.white;
 					if( _target.useStandardHandles )
 					{
-						_target.nodes[i] = Handles.PositionHandle( _target.nodes[i], Quaternion.identity );
+						EditorGUI.BeginChangeCheck();
+						var newNodePosition = Handles.PositionHandle( _target.nodes[i], Quaternion.identity );
+						if( EditorGUI.EndChangeCheck() )
+							handleNodeMove( i, newNodePosition );
 					}
 					else
 					{
@@ -426,34 +449,48 @@ namespace Prime31.ZestKit
 						                        Handles.SphereCap );
 
 						if( EditorGUI.EndChangeCheck() )
-						{
 							handleNodeMove( i, newNodePosition );
-						}
 					}
 					
 
 					// should we snap?  we need at least 4 nodes because we dont snap to the previous and next nodes
 					if( Event.current.control && _target.nodes.Count > 3 && !( isBezierControlPoint && _target.isMultiPointBezierSpline ) )
 					{
-						// dont even bother checking for snapping to the previous/next nodes
-						var index = getNearestNode( _target.nodes[i], i, i + 1, i - 1 );
-						var nearest = _target.nodes[index];
-						var distanceToNearestNode = Vector3.Distance( nearest, _target.nodes[i] );
+						// dont even bother checking for snapping to the previous/next nodes and we can disregard all ctrl points for beziers
+						var excludedNodes = new List<int>();
+						excludedNodes.Add( _selectedNodeIndex );
+
+						if( _target.isMultiPointBezierSpline )
+						{
+							for( var nodeIndex = 0; nodeIndex < _target.nodes.Count; nodeIndex++ )
+							{
+								if( nodeIndex != _selectedNodeIndex && nodeIndex % 3 != 0 || Mathf.Abs( _selectedNodeIndex - nodeIndex ) < 5 )
+									excludedNodes.Add( nodeIndex );
+							}
+						}
+						else
+						{
+							excludedNodes.Add( _selectedNodeIndex - 1 );
+							excludedNodes.Add( _selectedNodeIndex + 1 );
+						}
+
+						var nearestIndex = getNearestNode( _target.nodes[_selectedNodeIndex], excludedNodes.ToArray() );
+						var nearest = _target.nodes[nearestIndex];
+						var distanceToNearestNode = Vector3.Distance( nearest, _target.nodes[_selectedNodeIndex] );
 						
 						// is it close enough to snap?
 						if( distanceToNearestNode <= _snapDistance )
 						{
 							GUI.changed = true;
-							_target.nodes[i] = nearest;
+							handleNodeMove( _selectedNodeIndex, nearest );
 						}
-						else if( distanceToNearestNode <= _snapDistance * 2 )
+						else if( distanceToNearestNode <= _snapDistance * 25f && !excludedNodes.Contains( i ) )
 						{
 							// show which nodes are getting close enough to snap to
 							var color = Color.red;
 							color.a = 0.3f;
 							Handles.color = color;
 							Handles.SphereCap( 0, _target.nodes[i], Quaternion.identity, _snapDistance );
-							//Handles.DrawWireDisc( _target.nodes[i], Vector3.up, _snapDistance );
 							Handles.color = Color.white;
 						}
 					}					
@@ -591,9 +628,11 @@ namespace Prime31.ZestKit
 			{
 				if( index % 3 == 0 )
 				{
-					// we want to remove the node before through the node after index but we need to be careful for index = 0
+					// we want to remove the node before through the node after index but we need to be careful for index = 0 && count - 1
 					if( index == 0 )
 						_target.nodes.RemoveRange( index, 3 );
+					else if( index == _target.nodes.Count - 1 )
+						_target.nodes.RemoveRange( index - 2, 3 );
 					else
 						_target.nodes.RemoveRange( index - 1, 3 );
 				}
@@ -605,6 +644,13 @@ namespace Prime31.ZestKit
 			else
 			{
 				_target.nodes.RemoveAt( index );
+			}
+
+			if( _target.nodes.Count < 2 )
+			{
+				_target.nodes.Clear();
+				_target.nodes.Add( _target.transform.position );
+				_target.nodes.Add( _target.transform.position + new Vector3( 5f, 5f ) );
 			}
 			
 			GUI.changed = true;
@@ -720,7 +766,7 @@ namespace Prime31.ZestKit
 			}
 			
 			// make sure we are close enough to a node
-			if( bestDistance < 10 )
+			if( bestDistance < 10f )
 				return index;
 			return -1;
 		}
