@@ -20,6 +20,7 @@ namespace Prime31.ZestKit
 		public bool useBezier = false;
 		public int pathResolution = 30;
 		public bool isInEditMode;
+		public bool closePath;
 
 
 		public bool isMultiPointBezierSpline
@@ -37,6 +38,9 @@ namespace Prime31.ZestKit
 			if( !forceStraightLinePath )
 			{
 				var spline = new Spline( nodes, useBezier, forceStraightLinePath );
+				if( closePath )
+					spline.closePath();
+				
 				Gizmos.color = pathColor;
 				spline.drawGizmos( pathResolution, isInEditMode );
 			}

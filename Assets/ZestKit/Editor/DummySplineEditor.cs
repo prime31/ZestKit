@@ -22,7 +22,6 @@ namespace Prime31.ZestKit
 		private float _snapDistance = 5f;
 		private bool _showNodeDetails;
 		private int _selectedNodeIndex = -1;
-		private bool _inEditMode;
 		
 		
 		#region Monobehaviour and Editor
@@ -56,7 +55,7 @@ namespace Prime31.ZestKit
 		{
 			showEditModeToggle();
 
-			if( !_inEditMode )
+			if( !_target.isInEditMode )
 			{
 				drawInstructions();
 				return;
@@ -90,16 +89,14 @@ namespace Prime31.ZestKit
 
 
 			// force bezier:
-			var previousChangedValue = GUI.changed;
-			GUI.changed = false;
 			GUI.enabled = !_target.forceStraightLinePath;
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.PrefixLabel( "Use Bezier Path" );
+			EditorGUI.BeginChangeCheck();
 			_target.useBezier = EditorGUILayout.Toggle( _target.useBezier );
-
-			// validate
-			if( GUI.changed && _target.useBezier )
+			if( EditorGUI.EndChangeCheck() && _target.useBezier )
 			{
+				// validate
 				// make sure we have enough nodes to use a bezier.  nodeCount - 1 must be divisible by 3
 				if( _target.nodes.Count < 4 )
 				{
@@ -118,15 +115,32 @@ namespace Prime31.ZestKit
 			}
 			EditorGUILayout.EndHorizontal();
 			GUI.enabled = true;
-			GUI.changed = previousChangedValue;
 
 			
 			// force straight lines:
+			GUI.enabled = !_target.useBezier;
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.PrefixLabel( "Force Straight Line Path" );
 			_target.forceStraightLinePath = EditorGUILayout.Toggle( _target.forceStraightLinePath );
 			EditorGUILayout.EndHorizontal();
+			GUI.enabled = true;
+
+
+			// close path. only relevant for node counts greater than 5
+			if( _target.nodes.Count < 5 )
+				GUI.enabled = false;
 			
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.PrefixLabel( "Close Path" );
+			EditorGUI.BeginChangeCheck();
+			_target.closePath = EditorGUILayout.Toggle( _target.closePath );
+			if( EditorGUI.EndChangeCheck() )
+			{
+				if( _target.closePath )
+					closeRoute();
+			}
+			EditorGUILayout.EndHorizontal();
+			GUI.enabled = true;
 			
 			// resolution
 			EditorGUILayout.BeginHorizontal();
@@ -143,11 +157,11 @@ namespace Prime31.ZestKit
 			{
 				EditorGUILayout.BeginHorizontal();
 
-				GUI.enabled = _selectedNodeIndex != 0;
+				GUI.enabled = _selectedNodeIndex != 0 && _selectedNodeIndex != -1;
 				if( GUILayout.Button( "Insert Node Before Selected" ) )
 					insertNodeAtIndex( _selectedNodeIndex, false );
 
-				GUI.enabled = _selectedNodeIndex != _target.nodes.Count - 1;
+				GUI.enabled = _selectedNodeIndex != _target.nodes.Count - 1 && _selectedNodeIndex != -1;
 				if( GUILayout.Button( "Insert Node After Selected" ) )
 					insertNodeAtIndex( _selectedNodeIndex, true );
 				
@@ -157,15 +171,6 @@ namespace Prime31.ZestKit
 			}
 
 
-			// close route?
-			if( GUILayout.Button( "Close Path" ) )
-			{
-				Undo.RecordObject( _target, "Path Vector Changed" );
-				closeRoute();
-				GUI.changed = true;
-			}
-			
-			
 			// shift the start point to the origin
 			if( GUILayout.Button( "Shift Path to Start at Origin" ) )
 			{
@@ -197,36 +202,35 @@ namespace Prime31.ZestKit
 
 
 			// shifters. thse only make sense for straight line and catmull rom
-			if( !_target.forceStraightLinePath && ( _target.nodes.Count > 4 && _target.useBezier ) )
-				GUI.enabled = false;
-			
-			GUILayout.BeginHorizontal();
+			if( _target.forceStraightLinePath || ( _target.nodes.Count > 4 && !_target.useBezier ) )
+			{			
+				GUILayout.BeginHorizontal();
 
-			if( GUILayout.Button( "Shift Nodes Left" ) )
-			{
-				Undo.RecordObject( _target, "Path Vector Changed" );
+				if( GUILayout.Button( "Shift Nodes Left" ) )
+				{
+					Undo.RecordObject( _target, "Path Vector Changed" );
 
-				var firstItem = _target.nodes[0];
-				_target.nodes.RemoveAt( 0 );
-				_target.nodes.Add( firstItem );
+					var firstItem = _target.nodes[0];
+					_target.nodes.RemoveAt( 0 );
+					_target.nodes.Add( firstItem );
 
-				GUI.changed = true;
+					GUI.changed = true;
+				}
+
+
+				if( GUILayout.Button( "Shift Nodes Right" ) )
+				{
+					Undo.RecordObject( _target, "Path Vector Changed" );
+
+					var lastItem = _target.nodes[_target.nodes.Count - 1];
+					_target.nodes.RemoveAt( _target.nodes.Count - 1 );
+					_target.nodes.Insert( 0, lastItem );
+
+					GUI.changed = true;
+				}
+
+				GUILayout.EndHorizontal();
 			}
-
-
-			if( GUILayout.Button( "Shift Nodes Right" ) )
-			{
-				Undo.RecordObject( _target, "Path Vector Changed" );
-
-				var lastItem = _target.nodes[_target.nodes.Count - 1];
-				_target.nodes.RemoveAt( _target.nodes.Count - 1 );
-				_target.nodes.Insert( 0, lastItem );
-
-				GUI.changed = true;
-			}
-
-			GUILayout.EndHorizontal();
-			GUI.enabled = true;
 
 
 			if( GUILayout.Button( "Clear Path" ) )
@@ -341,7 +345,7 @@ namespace Prime31.ZestKit
 			if( !_target.gameObject.activeSelf )
 				return;
 
-			if( _inEditMode )
+			if( _target.isInEditMode )
 			{
 				HandleUtility.AddDefaultControl( GUIUtility.GetControlID( FocusType.Passive ) );
 			}
@@ -509,12 +513,11 @@ namespace Prime31.ZestKit
 		void showEditModeToggle()
 		{
 			var originalColor = GUI.color;
-			var text = _inEditMode ? "Exit Edit Mode" : "Enter Edit Mode";
-			GUI.color = _inEditMode ? Color.green : GUI.color;
+			var text = _target.isInEditMode ? "Exit Edit Mode" : "Enter Edit Mode";
+			GUI.color = _target.isInEditMode ? Color.green : GUI.color;
 
 			if( GUILayout.Button( text ) )
-				_inEditMode = !_inEditMode;
-			_target.isInEditMode = _inEditMode;
+				_target.isInEditMode = !_target.isInEditMode;
 
 			SceneView.RepaintAll();
 
@@ -532,35 +535,66 @@ namespace Prime31.ZestKit
 			if( !_target.isMultiPointBezierSpline )
 			{
 				_target.nodes[index] = pos;
+
+				// handle closed paths. we only care about straight line and catmull rom here. bezier is handled below
+				if( _target.closePath )
+				{
+					if( _target.forceStraightLinePath )
+					{
+						if( index == 0 )
+							_target.nodes[_target.nodes.Count - 1] = pos;
+						else if( index == _target.nodes.Count - 1 )
+							_target.nodes[0] = pos;
+					}
+					else // catmull rom keeps the second and second from last nodes in check
+					{
+						if( index == 1 )
+							_target.nodes[_target.nodes.Count - 2] = pos;
+						else if( index == _target.nodes.Count - 2 )
+							_target.nodes[1] = pos;
+					}
+				}
 				return;
 			}
 
-			// beziers. let the fun begin. handles work differently than nodes
+			// beziers. let the fun begin. ctrl points work differently than nodes
 			var deltaMove = pos - _target.nodes[index];
 			if( index % 3 == 0 )
 			{
 				_target.nodes[index] = pos;
 
-				// special cases are start and end nodes
+				// special cases are start and end nodes. we need to move their single ctrl point
 				if( index > 0 )
 					_target.nodes[index - 1] += deltaMove;
 
 				if( index < _target.nodes.Count - 2 )
 					_target.nodes[index + 1] += deltaMove;
+
+				// handle closed paths. we need to keep our first/last points in sync
+				if( _target.closePath && index == 0 )
+				{
+					_target.nodes[_target.nodes.Count - 2] += deltaMove;
+					_target.nodes[_target.nodes.Count - 1] = pos;
+				}
+				else if( _target.closePath && index == _target.nodes.Count - 1 )
+				{
+					_target.nodes[0] = pos;
+					_target.nodes[1] += deltaMove;
+				}
 			}
 			else
 			{
-				// special case for first and last ctrl points
-				if( index == 1 || index == _target.nodes.Count - 2 )
+				// special case for first and last ctrl points. they be free unless we are a closed path
+				if( !_target.closePath && ( index == 1 || index == _target.nodes.Count - 2 ) )
 				{
 					_target.nodes[index] = pos;
 				}
 				else
 				{
 					_target.nodes[index] = pos;
-					int modeIndex = ( index + 1 ) / 3;
+					var modeIndex = ( index + 1 ) / 3;
 
-					int middleIndex = modeIndex * 3;
+					var middleIndex = modeIndex * 3;
 					int fixedIndex, enforcedIndex;
 					if( index <= middleIndex )
 					{
@@ -572,6 +606,9 @@ namespace Prime31.ZestKit
 						fixedIndex = middleIndex + 1;
 						enforcedIndex = middleIndex - 1;
 					}
+
+					// wrap enforcedIndex in case we are messing with the first/last ctrl point of a closed path
+					enforcedIndex = (int)Mathf.Repeat( enforcedIndex, _target.nodes.Count - 1 );
 
 					var middle = _target.nodes[middleIndex];
 					var enforcedTangent = middle - _target.nodes[fixedIndex];
@@ -668,14 +705,15 @@ namespace Prime31.ZestKit
 					Debug.LogError( "you cant insert a node before or after a bezier control point" );
 					return;
 				}
-
+					
 				var firstCtrlPointIndex = isAfter ? index : index - 3;
 				var secondCtrlPointIndex = isAfter ? index + 3 : index;
 				var insertIndex = isAfter ? index + 2 : index - 1;
-				var ctrlPointOffset = _target.nodes[index + 1] - _target.nodes[index];
+
+				var ctrlPointOffsetIndex = isAfter ? index + 1 : index - 1;
+				var ctrlPointOffset = _target.nodes[ctrlPointOffsetIndex] - _target.nodes[index];
 
 				var nodeLocation = Vector3.Lerp( _target.nodes[firstCtrlPointIndex], _target.nodes[secondCtrlPointIndex], 0.5f );
-				Debug.Log( "first: " + firstCtrlPointIndex + ", second: " + secondCtrlPointIndex );
 
 				_target.nodes.Insert( insertIndex, nodeLocation - ctrlPointOffset ); // 1st control point for new node
 				_target.nodes.Insert( insertIndex, nodeLocation ); // new node
@@ -707,7 +745,7 @@ namespace Prime31.ZestKit
 		{
 			// no need to draw arrows for tiny segments
 			var distance = Vector3.Distance( point1, point2 );
-			if( distance < 40 )
+			if( distance < 10 )
 				return;
 			
 			// we dont want to be exactly in the middle so we offset the length of the arrow
@@ -718,7 +756,7 @@ namespace Prime31.ZestKit
 			// get the midpoint between the 2 points
 			var dir = Vector3.Lerp( point1, point2, lerpModifier );
 			var quat = Quaternion.LookRotation( point2 - point1 );
-			Handles.ArrowCap( 0, dir, quat, 25 );
+			Handles.ArrowCap( 0, dir, quat, 5 );
 			
 			Handles.color = Color.white;
 		}

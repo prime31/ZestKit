@@ -11,21 +11,13 @@ using System.IO;
 
 public class ZestKitDLLMaker : Editor
 {
-	[MenuItem( "File/ZestKit/Create ZestKit.dll..." )]
+	[MenuItem( "File/Create ZestKit DLLs..." )]
 	static void createDLL()
 	{
-		if( createDLL( false, "ZestKit.dll" ) )
-			EditorUtility.DisplayDialog( "ZestKit", "ZestKit.dll should now be on your desktop.", "OK" );
+		if( createDLL( false, "ZestKit.dll" ) && createDLL( true, "ZestKit.Editor.dll" ) )
+			EditorUtility.DisplayDialog( "ZestKit", "ZestKit DLLs should now be on your desktop.", "OK" );
 	}
-
-
-	[MenuItem( "File/ZestKit/Create ZestKit.Editor.dll..." )]
-	static void createEditorDLL()
-	{
-		if( createDLL( true, "ZestKit.Editor.dll" ) )
-			EditorUtility.DisplayDialog( "ZestKit", "ZestKit.Editor.dll should now be on your desktop. Stick it in an Editor folder in your Unity project to use it.", "OK" );
-	}
-
+		
 
 	static bool createDLL( bool isEditorDLL, string DLLName )
 	{
@@ -41,20 +33,18 @@ public class ZestKitDLLMaker : Editor
 
 		if( isEditorDLL )
 		{
-			compileParams.ReferencedAssemblies.Add( Path.Combine( Application.dataPath.Replace( "Assets", string.Empty ), "Library/ScriptAssemblies/Assembly-CSharp.dll" ) );
 			compileParams.ReferencedAssemblies.Add( Path.Combine( EditorApplication.applicationContentsPath, "Frameworks/Managed/UnityEditor.dll" ) );
+			compileParams.ReferencedAssemblies.Add( Path.Combine( System.Environment.GetFolderPath( System.Environment.SpecialFolder.Desktop ), "ZestKit.dll" ) );
 		}
 
-
 		var source = isEditorDLL ? getSourceForEditorDLL() : getSourceForDLL();
-
-		Debug.Log( "source len: " + source.Length );
 
 		var codeProvider = new CSharpCodeProvider( new Dictionary<string,string> { { "CompilerVersion", "v3.0" } } );
 		var compilerResults = codeProvider.CompileAssemblyFromSource( compileParams, source );
 
 		if( compilerResults.Errors.Count > 0 )
 		{
+			Debug.Log( "Errors creating DLL: " + DLLName );
 			foreach( var error in compilerResults.Errors )
 				Debug.LogError( error.ToString() );
 
@@ -71,7 +61,7 @@ public class ZestKitDLLMaker : Editor
 
 		foreach( var file in Directory.GetFiles( path, "*.cs", SearchOption.AllDirectories ) )
 		{
-			if( !file.Contains( "DummySplineEditor" ) && !file.Contains( "Demo" ) && !file.Contains( "/Editor" ) )
+			if( !file.Contains( "DummySpline" ) && !file.Contains( "Demo" ) && !file.Contains( "/Editor" ) )
 				source.Add( File.ReadAllText( file ) );
 		}
 
@@ -83,7 +73,7 @@ public class ZestKitDLLMaker : Editor
 	{
 		var source = new List<string>();
 
-		foreach( var file in Directory.GetFiles( path, "DummySplineEditor.cs", SearchOption.AllDirectories ) )
+		foreach( var file in Directory.GetFiles( path, "DummySpline*.cs", SearchOption.AllDirectories ) )
 		{
 			source.Add( File.ReadAllText( file ) );
 		}

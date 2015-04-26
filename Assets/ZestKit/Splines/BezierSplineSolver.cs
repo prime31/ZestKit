@@ -100,7 +100,26 @@ namespace Prime31.ZestKit
 		#region AbstractSplineSolver
 
 		public override void closePath()
-		{}
+		{
+			// if the first and last node are not the same move them to the midpoint between them
+			if( _nodes[0] != _nodes[_nodes.Count - 1] )
+			{
+				var midPoint = Vector3.Lerp( _nodes[0], _nodes[_nodes.Count - 1], 0.5f );
+				var deltaMove = midPoint - _nodes[0];
+
+				_nodes[0] = _nodes[_nodes.Count - 1] = midPoint;
+
+				// shift the ctrl points
+				_nodes[1] += deltaMove;
+				_nodes[_nodes.Count - 2] -= deltaMove;
+			}
+
+			// normalize the ctrl points
+			var firstCtrlPoint = _nodes[1];
+			var middlePoint = _nodes[0];
+			var enforcedTangent = middlePoint - firstCtrlPoint;
+			_nodes[_nodes.Count - 2] = middlePoint + enforcedTangent;
+		}
 
 
 		/// <summary>
@@ -154,4 +173,5 @@ namespace Prime31.ZestKit
 
 		#endregion
 	}
+
 }
