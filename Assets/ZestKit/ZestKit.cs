@@ -111,6 +111,17 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
+		/// stops all tweens optionlly bringing them all to completion
+		/// </summary>
+		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
+		public void stopAllTweens( bool bringToCompletion = false )
+		{
+			for( var i = _activeTweens.Count - 1; i >= 0; --i )
+				_activeTweens[i].stop( bringToCompletion );
+		}
+
+
+		/// <summary>
 		/// returns all the tweens that have a specific context. Tweens are returned as ITweenControl since that is all
 		/// that ZestKit knows about.
 		/// </summary>

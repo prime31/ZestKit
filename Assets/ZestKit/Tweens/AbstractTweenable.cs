@@ -15,6 +15,11 @@ namespace Prime31.ZestKit
 	public abstract class AbstractTweenable : ITweenable
 	{
 		protected bool _isPaused;
+
+		/// <summary>
+		/// AbstractTweenable are often kept around after they complete. This flag lets them know internally if they are currently
+		/// being tweened by ZestKit so that they can readd themselves if necessary.
+		/// </summary>
 		protected bool _isActiveTween;
 
 

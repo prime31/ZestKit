@@ -33,6 +33,7 @@ namespace Prime31.ZestKit
 		protected bool _isRelative;
 		protected Action<ITween<T>> _completionHandler;
 		protected Action<ITween<T>> _loopCompleteHandler;
+		protected ITweenable _nextTween;
 
 		// tween state
 		protected TweenState _tweenState = TweenState.Complete;
@@ -148,6 +149,17 @@ namespace Prime31.ZestKit
 			return this;
 		}
 
+
+		public ITween<T> setNextTween( ITweenControl nextTween )
+		{
+			if( nextTween is ITweenable )
+				_nextTween = nextTween as ITweenable;
+			else
+				Debug.LogError( "attempted to set a tween that does not implement ITweenable as the nextTween!" );
+
+			return this;
+		}
+
 		#endregion
 
 
@@ -230,47 +242,6 @@ namespace Prime31.ZestKit
 		#endregion
 
 
-		void resetState()
-		{
-			context = null;
-			_completionHandler = _loopCompleteHandler = null;
-			_isTimeScaleIndependent = false;
-			_tweenState = TweenState.Complete;
-			_shouldRecycleTween = true;
-			_isRelative = false;
-			_easeType = ZestKit.defaultEaseType;
-			_animationCurve = null;
-			
-			_delay = 0f;
-			_duration = 0f;
-			_elapsedTime = 0f;
-			_loopType = LoopType.None;
-			_delayBetweenLoops = 0f;
-			_loops = 0;
-			_isRunningInReverse = false;
-		}
-
-
-		/// <summary>
-		/// resets all state to defaults and sets the initial state based on the paramters passed in. This method serves
-		/// as an entry point so that Tween subclasses can call it and so that tweens can be recycled. When recycled,
-		/// the constructor will not be called again so this method encapsulates what the constructor would be doing.
-		/// </summary>
-		/// <param name="target">Target.</param>
-		/// <param name="from">From.</param>
-		/// <param name="to">To.</param>
-		/// <param name="duration">Duration.</param>
-		public void initialize( ITweenTarget<T> target, T from, T to, float duration )
-		{
-			resetState();
-
-			_target = target;
-			_fromValue = from;
-			_toValue = to;
-			_duration = duration;
-		}
-
-
 		#region ITweenable
 
 		public bool tick()
@@ -316,6 +287,13 @@ namespace Prime31.ZestKit
 				if( _completionHandler != null )
 					_completionHandler( this );
 
+				// if we have a nextTween add it to ZestKit so that it can start running
+				if( _nextTween != null )
+				{
+					_nextTween.start();
+					_nextTween = null;
+				}
+
 				return true;
 			}
 
@@ -326,10 +304,61 @@ namespace Prime31.ZestKit
 		public virtual void recycleSelf()
 		{
 			if( _shouldRecycleTween )
+			{
 				_target = null;
+				_nextTween = null;
+			}
 		}
-			
+
 		#endregion
+
+
+		void resetState()
+		{
+			context = null;
+			_completionHandler = _loopCompleteHandler = null;
+			_isTimeScaleIndependent = false;
+			_tweenState = TweenState.Complete;
+			_shouldRecycleTween = true;
+			_isRelative = false;
+			_easeType = ZestKit.defaultEaseType;
+			_animationCurve = null;
+
+			if( _nextTween != null )
+			{
+				_nextTween.recycleSelf();
+				_nextTween = null;
+			}
+			
+			_delay = 0f;
+			_duration = 0f;
+			_elapsedTime = 0f;
+			_loopType = LoopType.None;
+			_delayBetweenLoops = 0f;
+			_loops = 0;
+			_isRunningInReverse = false;
+		}
+
+
+		/// <summary>
+		/// resets all state to defaults and sets the initial state based on the paramters passed in. This method serves
+		/// as an entry point so that Tween subclasses can call it and so that tweens can be recycled. When recycled,
+		/// the constructor will not be called again so this method encapsulates what the constructor would be doing.
+		/// </summary>
+		/// <param name="target">Target.</param>
+		/// <param name="from">From.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
+		public void initialize( ITweenTarget<T> target, T from, T to, float duration )
+		{
+			// reset state in case we were recycled
+			resetState();
+
+			_target = target;
+			_fromValue = from;
+			_toValue = to;
+			_duration = duration;
+		}
 
 		
 		/// <summary>

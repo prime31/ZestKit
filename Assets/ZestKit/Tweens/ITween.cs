@@ -101,6 +101,14 @@ namespace Prime31.ZestKit
 		/// <returns>The context.</returns>
 		/// <param name="context">Context.</param>
 		ITween<T> setContext( object context );
+
+		/// <summary>
+		/// allows you to add a tween that will get run after this tween completes. Note that nextTween must be an ITweenable!
+		/// Also note that all ITweenTs are ITweenable.
+		/// </summary>
+		/// <returns>The next tween.</returns>
+		/// <param name="nextTween">Next tween.</param>
+		ITween<T> setNextTween( ITweenControl nextTween );
 	}
 
 
@@ -110,7 +118,6 @@ namespace Prime31.ZestKit
 	public interface ITweenControl
 	{
 		object context { get; }
-
 
 		/// <summary>
 		/// checks to see if a tween is running

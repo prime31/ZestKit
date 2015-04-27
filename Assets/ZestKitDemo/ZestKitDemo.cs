@@ -71,9 +71,10 @@ public class ZestKitDemo : MonoBehaviour
 		}
 
 
-		if( GUILayout.Button( "Rotation to 0, 310, 0" ) )
+		if( GUILayout.Button( "Rotation to 310, 90 -> localScale" ) )
 		{
-			cube.ZKlocalEulersTo( new Vector3( 310f, 0f ), _duration )
+			cube.ZKlocalEulersTo( new Vector3( 310f, 90f ), _duration )
+				.setNextTween( cube.ZKlocalScaleTo( new Vector3( 2f, 4f, 2f ) ).setLoops( LoopType.PingPong ) )
 				.start();
 		}
 
