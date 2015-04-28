@@ -15,7 +15,7 @@ namespace Prime31.ZestKit
 		public static ITween<Vector3> ZKpositionTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
-			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.Position );
+			tween.setTargetAndType( self, TransformTargetType.Position );
 			tween.initialize( tween, self.position, to, duration );
 
 			return tween;
@@ -25,7 +25,7 @@ namespace Prime31.ZestKit
 		public static ITween<Vector3> ZKlocalPositionTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
-			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalPosition );
+			tween.setTargetAndType( self, TransformTargetType.LocalPosition );
 			tween.initialize( tween, self.localPosition, to, duration );
 
 			return tween;
@@ -35,7 +35,7 @@ namespace Prime31.ZestKit
 		public static ITween<Vector3> ZKlocalScaleTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
-			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalScale );
+			tween.setTargetAndType( self, TransformTargetType.LocalScale );
 			tween.initialize( tween, self.localScale, to, duration );
 
 			return tween;
@@ -45,7 +45,7 @@ namespace Prime31.ZestKit
 		public static ITween<Vector3> ZKeulersTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
-			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.EulerAngles );
+			tween.setTargetAndType( self, TransformTargetType.EulerAngles );
 			tween.initialize( tween, self.eulerAngles, to, duration );
 
 			return tween;
@@ -55,7 +55,7 @@ namespace Prime31.ZestKit
 		public static ITween<Vector3> ZKlocalEulersTo( this Transform self, Vector3 to, float duration = 0.3f )
 		{
 			var tween = TransformVector3Tween.nextAvailableTween();
-			tween.setTargetAndType( self, TransformVector3Tween.TransformTargetType.LocalEulerAngles );
+			tween.setTargetAndType( self, TransformTargetType.LocalEulerAngles );
 			tween.initialize( tween, self.localEulerAngles, to, duration );
 
 			return tween;
@@ -274,6 +274,46 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new ScrollRectTarget( self );
 			var tween = new Vector2Tween( tweenTarget, self.normalizedPosition, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
+		#region Light tweens
+
+		public static ITween<float> ZKintensityTo( this Light self, float to, float duration = 0.3f )
+		{
+			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.Intensity );
+			var tween = new FloatTween( tweenTarget, self.intensity, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKrangeTo( this Light self, float to, float duration = 0.3f )
+		{
+			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.Range );
+			var tween = new FloatTween( tweenTarget, self.range, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<float> ZKspotAngleTo( this Light self, float to, float duration = 0.3f )
+		{
+			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.SpotAngle );
+			var tween = new FloatTween( tweenTarget, self.spotAngle, to, duration );
+
+			return tween;
+		}
+
+
+		public static ITween<Color> ZKcolorTo( this Light self, Color to, float duration = 0.3f )
+		{
+			var tweenTarget = new LightTarget( self );
+			var tween = new ColorTween( tweenTarget, self.color, to, duration );
 
 			return tween;
 		}

@@ -5,6 +5,18 @@ using System.Collections.Generic;
 namespace Prime31.ZestKit
 {
 	/// <summary>
+	/// useful enum for any transform related property tweens
+	/// </summary>
+	public enum TransformTargetType
+	{
+		Position,
+		LocalPosition,
+		LocalScale,
+		EulerAngles,
+		LocalEulerAngles
+	}
+
+	/// <summary>
 	/// this is a special case since Transforms are by far the most tweened object. we encapsulate the Tween and the ITweenTarget
 	/// in a single, cacheable class
 	/// </summary>
@@ -24,16 +36,6 @@ namespace Prime31.ZestKit
 		}
 
 		#endregion
-
-
-		public enum TransformTargetType
-		{
-			Position,
-			LocalPosition,
-			LocalScale,
-			EulerAngles,
-			LocalEulerAngles
-		}
 
 		Transform _transform;
 		TransformTargetType _targetType;

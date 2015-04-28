@@ -49,7 +49,10 @@ namespace Prime31.ZestKit
 		{
 			// dont add ourself twice!
 			if( _isActiveTween )
+			{
+				_isPaused = false;
 				return;
+			}
 			
 			ZestKit.instance.addTween( this );
 			_isActiveTween = true;

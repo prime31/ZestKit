@@ -296,7 +296,14 @@ namespace Prime31.ZestKit
 		}
 
 		ImageTargetType _targetType;
-		
+
+
+		public ImageTarget( Image image, ImageTargetType targetType = ImageTargetType.Alpha )
+		{
+			_target = image;
+			_targetType = targetType;
+		}
+
 
 		public override void setTweenedValue( float value )
 		{
@@ -321,13 +328,6 @@ namespace Prime31.ZestKit
 		public void setTweenedValue( Color value )
 		{
 			_target.color = value;
-		}
-
-
-		public ImageTarget( Image image, ImageTargetType targetType = ImageTargetType.Alpha )
-		{
-			_target = image;
-			_targetType = targetType;
 		}
 	}
 
@@ -380,6 +380,63 @@ namespace Prime31.ZestKit
 		public ScrollRectTarget( ScrollRect scrollRect )
 		{
 			_target = scrollRect;
+		}
+	}
+
+
+	/// <summary>
+	/// when used with a Color the color property will be tweened and when used with a float tween the LightTargetType
+	/// passed to the constructor dictates what property is tweened.
+	/// </summary>
+	public class LightTarget : AbstractTweenTarget<Light,Color>, ITweenTarget<float>
+	{
+		public enum LightTargetType
+		{
+			Intensity,
+			Range,
+			SpotAngle
+		}
+
+		LightTargetType _targetType;
+
+
+		public LightTarget( Light light, LightTargetType targetType = LightTargetType.Intensity )
+		{
+			_target = light;
+			_targetType = targetType;
+		}
+
+
+		public override void setTweenedValue( Color value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+
+			_target.color = value;
+		}
+
+
+		public void setTweenedValue( float value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+
+			switch( _targetType )
+			{
+				case LightTargetType.Intensity:
+					_target.intensity = value;
+					break;
+				case LightTargetType.Range:
+					_target.range = value;
+					break;
+				case LightTargetType.SpotAngle:
+					_target.spotAngle = value;
+					break;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
 		}
 	}
 
