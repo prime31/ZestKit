@@ -15,7 +15,20 @@ namespace Prime31.ZestKit
 		/// </summary>
 		public static bool enableBabysitter = false;
 
-		private List<ITweenable> _activeTweens = new List<ITweenable>();
+		/// <summary>
+		/// if true, the active tween list will be cleared when a new level loads
+		/// </summary>
+		public static bool removeAllTweensOnLevelLoad = false;
+
+		/// <summary>
+		/// internal list of all the currently active tweens
+		/// </summary>
+		List<ITweenable> _activeTweens = new List<ITweenable>();
+
+		/// <summary>
+		/// sed to stop instances being created while the application is quitting
+		/// </summary>
+		bool _applicationIsQuitting;
 
 
 		/// <summary>
@@ -26,7 +39,7 @@ namespace Prime31.ZestKit
 		{
 			get
 			{
-				if( !_instance )
+				if( !_instance && !_applicationIsQuitting )
 				{
 					// check if there is a GoKitLite instance already available in the scene graph before creating one
 					_instance = FindObjectOfType( typeof( ZestKit ) ) as ZestKit;
@@ -53,10 +66,18 @@ namespace Prime31.ZestKit
 		}
 
 
-		private void OnApplicationQuit()
+		void OnApplicationQuit()
 		{
 			_instance = null;
 			Destroy( gameObject );
+			_applicationIsQuitting = true;
+		}
+
+
+		void OnLevelWasLoaded( int level )
+		{
+			if( removeAllTweensOnLevelLoad )
+				_activeTweens.Clear();
 		}
 
 
