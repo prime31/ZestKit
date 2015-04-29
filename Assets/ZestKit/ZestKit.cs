@@ -28,7 +28,7 @@ namespace Prime31.ZestKit
 		/// <summary>
 		/// sed to stop instances being created while the application is quitting
 		/// </summary>
-		bool _applicationIsQuitting;
+		static bool _applicationIsQuitting;
 
 
 		/// <summary>
