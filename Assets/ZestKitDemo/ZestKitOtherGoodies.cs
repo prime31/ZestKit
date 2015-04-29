@@ -28,11 +28,13 @@ public class ZestKitOtherGoodies : MonoBehaviour
 	void OnGUI()
 	{
 		DemoGUIHelpers.setupGUIButtons();
-		_duration = DemoGUIHelpers.durationSlider( _duration );
 
 
 		if( _springTween == null )
 		{
+			_duration = DemoGUIHelpers.durationSlider( _duration );
+
+
 			if( GUILayout.Button( "Custom Property Tween (wackyDoodleWidth)" ) )
 			{
 				PropertyTweens.floatPropertyTo( this, "wackyDoodleWidth", 1f, 6f, _duration )
@@ -100,6 +102,8 @@ public class ZestKitOtherGoodies : MonoBehaviour
 			{
 				_springTween = new TransformSpringTween( cube, TransformTargetType.LocalScale, cube.localScale );
 			}
+
+			DemoGUIHelpers.easeTypesGUI();
 		}
 		else
 		{
@@ -112,6 +116,12 @@ public class ZestKitOtherGoodies : MonoBehaviour
 
 			springSliders();
 
+			var prefix = _springTween.targetType == TransformTargetType.Position ? "Spring position to:" : "Spring scale to:";
+			var mousePosWorld = Camera.main.ScreenToWorldPoint( Input.mousePosition );
+			var labelText = string.Format( "{0}\nx: {1:F1}\ny: {2:F1}", prefix, mousePosWorld.x, mousePosWorld.y );
+			GUI.Label( new Rect( Input.mousePosition.x, Screen.height - Input.mousePosition.y - 50f, 130f, 50f ), labelText );
+
+
 			if( GUILayout.Button( "Stop Spring" ) )
 			{
 				_springTween.stop();
@@ -120,9 +130,6 @@ public class ZestKitOtherGoodies : MonoBehaviour
 				cube.localScale = Vector3.one;
 			}
 		}
-
-
-		DemoGUIHelpers.easeTypesGUI();
 	}
 
 
@@ -142,14 +149,14 @@ public class ZestKitOtherGoodies : MonoBehaviour
 	void springSliders()
 	{
 		GUILayout.BeginHorizontal();
-		GUILayout.Label( "Damping Ratio", GUILayout.Width( 80 ) );
+		GUILayout.Label( "Damping Ratio", GUILayout.Width( 110 ) );
 		GUI.skin.horizontalSlider.margin = new RectOffset( 4, 4, 10, 4 );
 		_springTween.dampingRatio = GUILayout.HorizontalSlider( _springTween.dampingRatio, 0.1f, 0.75f, GUILayout.ExpandWidth( true ) );
 		GUILayout.EndHorizontal();
 
 
 		GUILayout.BeginHorizontal();
-		GUILayout.Label( "Angular Frequency", GUILayout.Width( 80 ) );
+		GUILayout.Label( "Angular Frequency", GUILayout.Width( 110 ) );
 		GUI.skin.horizontalSlider.margin = new RectOffset( 4, 4, 10, 4 );
 		_springTween.angularFrequency = GUILayout.HorizontalSlider( _springTween.angularFrequency, 1f, Mathf.PI * 12f, GUILayout.ExpandWidth( true ) );
 		GUILayout.EndHorizontal();

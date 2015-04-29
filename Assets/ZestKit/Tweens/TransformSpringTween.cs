@@ -6,6 +6,8 @@ namespace Prime31.ZestKit
 {
 	public class TransformSpringTween : AbstractTweenable
 	{
+		public TransformTargetType targetType { get { return _targetType; } }
+		
 		Transform _transform;
 		TransformTargetType _targetType;
 		Vector3 _targetValue;
@@ -24,10 +26,10 @@ namespace Prime31.ZestKit
 		/// should be between 0.01f, 1f to avoid unstable systems.</param>
 		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
 		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
-		public TransformSpringTween( Transform transform, TransformTargetType taretType, Vector3 targetValue )
+		public TransformSpringTween( Transform transform, TransformTargetType targetType, Vector3 targetValue )
 		{
 			_transform = transform;
-			_targetType = taretType;
+			_targetType = targetType;
 			setTargetValue( targetValue );
 		}
 
