@@ -22,15 +22,6 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public class TransformVector3Tween : Vector3Tween, ITweenTarget<Vector3>
 	{
-		#region Static caching
-
-		public static TransformVector3Tween nextAvailableTween()
-		{
-			return TweenCache<TransformVector3Tween>.pop();
-		}
-
-		#endregion
-
 		Transform _transform;
 		TransformTargetType _targetType;
 
@@ -98,7 +89,7 @@ namespace Prime31.ZestKit
 			if( _shouldRecycleTween )
 			{
 				_transform = null;
-				TweenCache<TransformVector3Tween>.push( this );
+				QuickCache<TransformVector3Tween>.push( this );
 			}
 		}
 	}

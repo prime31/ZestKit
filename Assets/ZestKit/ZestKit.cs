@@ -20,6 +20,26 @@ namespace Prime31.ZestKit
 		/// </summary>
 		public static bool removeAllTweensOnLevelLoad = false;
 
+
+		#region Caching rules
+
+		/// <summary>
+		/// automatic caching of various types is supported here. Note that caching will only work when using extension methods to start
+		/// the tweens or if you fetch a tween from the cache when doing custom tweens. See the extension method implementations for
+		/// how to fetch a cached tween.
+		/// </summary>
+		public static bool cacheIntTweens = false;
+		public static bool cacheFloatTweens = false;
+		public static bool cacheVector2Tweens = false;
+		public static bool cacheVector3Tweens = false;
+		public static bool cacheVector4Tweens = false;
+		public static bool cacheQuaternionTweens = false;
+		public static bool cacheColorTweens = false;
+		public static bool cacheColor32Tweens = false;
+
+		#endregion
+
+
 		/// <summary>
 		/// internal list of all the currently active tweens
 		/// </summary>

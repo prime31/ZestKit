@@ -10,6 +10,10 @@ namespace Prime31.ZestKit
 {
 	public class IntTween : Tween<int>
 	{
+		public IntTween()
+		{}
+
+
 		public IntTween( ITweenTarget<int> target, int from, int to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -30,6 +34,15 @@ namespace Prime31.ZestKit
 				_target.setTweenedValue( (int)Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
 			else
 				_target.setTweenedValue( (int)Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheIntTweens )
+				QuickCache<IntTween>.push( this );
 		}
 	}
 
@@ -61,11 +74,24 @@ namespace Prime31.ZestKit
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheFloatTweens )
+				QuickCache<FloatTween>.push( this );
+		}
 	}
 
 
 	public class Vector2Tween : Tween<Vector2>
 	{
+		public Vector2Tween()
+		{}
+
+
 		public Vector2Tween( ITweenTarget<Vector2> target, Vector2 from, Vector2 to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -86,6 +112,15 @@ namespace Prime31.ZestKit
 				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheVector2Tweens )
+				QuickCache<Vector2Tween>.push( this );
 		}
 	}
 
@@ -117,11 +152,24 @@ namespace Prime31.ZestKit
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheVector3Tweens )
+				QuickCache<Vector3Tween>.push( this );
+		}
 	}
 
 
 	public class Vector4Tween : Tween<Vector4>
 	{
+		public Vector4Tween()
+		{}
+
+
 		public Vector4Tween( ITweenTarget<Vector4> target, Vector4 from, Vector4 to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -143,11 +191,24 @@ namespace Prime31.ZestKit
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheVector4Tweens )
+				QuickCache<Vector4Tween>.push( this );
+		}
 	}
 
 
 	public class QuaternionTween : Tween<Quaternion>
 	{
+		public QuaternionTween()
+		{}
+
+
 		public QuaternionTween( ITweenTarget<Quaternion> target, Quaternion from, Quaternion to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -169,11 +230,24 @@ namespace Prime31.ZestKit
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheQuaternionTweens )
+				QuickCache<QuaternionTween>.push( this );
+		}
 	}
 
 
 	public class ColorTween : Tween<Color>
 	{
+		public ColorTween()
+		{}
+
+
 		public ColorTween( ITweenTarget<Color> target, Color from, Color to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -195,11 +269,24 @@ namespace Prime31.ZestKit
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
 		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheColorTweens )
+				QuickCache<ColorTween>.push( this );
+		}
 	}
 
 
 	public class Color32Tween : Tween<Color32>
 	{
+		public Color32Tween()
+		{}
+
+
 		public Color32Tween( ITweenTarget<Color32> target, Color32 from, Color32 to, float duration )
 		{
 			initialize( target, from, to, duration );
@@ -220,6 +307,15 @@ namespace Prime31.ZestKit
 				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
 			else
 				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+		}
+
+
+		public override void recycleSelf()
+		{
+			base.recycleSelf();
+
+			if( _shouldRecycleTween && ZestKit.cacheColor32Tweens )
+				QuickCache<Color32Tween>.push( this );
 		}
 	}
 

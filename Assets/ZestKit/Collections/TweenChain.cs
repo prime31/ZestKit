@@ -66,7 +66,6 @@ namespace Prime31.ZestKit
 		#endregion
 
 
-
 		#region ITweenControl
 
 		/// <summary>

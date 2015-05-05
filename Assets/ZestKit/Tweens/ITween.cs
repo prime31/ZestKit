@@ -79,8 +79,8 @@ namespace Prime31.ZestKit
 		ITween<T> prepareForReuse( T from, T to, float duration );
 
 		/// <summary>
-		/// if true (the default) the tween will be recycled after use. Currently, only the most commonly used
-		/// tweens are recycled.
+		/// if true (the default) the tween will be recycled after use. All Tween<T> subclasses have their own associated automatic
+		/// caching if configured in the ZestKit class.
 		/// </summary>
 		/// <returns>The recycle tween.</returns>
 		/// <param name="shouldRecycleTween">If set to <c>true</c> should recycle tween.</param>
