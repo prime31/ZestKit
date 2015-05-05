@@ -108,16 +108,25 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <returns>The next tween.</returns>
 		/// <param name="nextTween">Next tween.</param>
-		ITween<T> setNextTween( ITweenControl nextTween );
+		ITween<T> setNextTween( ITweenable nextTween );
 	}
-
+	
 
 	/// <summary>
-	/// standard tween playback controls
+	/// all of the methods needed to for a tween to be added to ZestKit. Any non-tweens that want to take part in ZestKit can implement this.
 	/// </summary>
-	public interface ITweenControl
+	public interface ITweenable
 	{
-		object context { get; }
+		/// <summary>
+		/// called by ZestKit each frame like an internal Update
+		/// </summary>
+		bool tick();
+
+		/// <summary>
+		/// called by ZestKit when a tween is removed. Subclasses can optionally recycle themself. Subclasses
+		/// should first check the _shouldRecycleTween bool in their implementation!
+		/// </summary>
+		void recycleSelf();
 
 		/// <summary>
 		/// checks to see if a tween is running
@@ -145,6 +154,17 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
 		void stop( bool bringToCompletion = false );
+	}
+		
+
+
+	/// <summary>
+	/// more specific tween playback controls here.
+	/// </summary>
+	public interface ITweenControl : ITweenable
+	{
+		object context { get; }
+
 
 		/// <summary>
 		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
@@ -158,25 +178,6 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <returns>The for completion.</returns>
 		IEnumerator waitForCompletion();
-	}
-	
-
-	/// <summary>
-	/// all of the methods needed to control a tween. Any non-tweens that want to take part in ZestKit can implement this.
-	/// The TweenChain is a good example of how it can be used.
-	/// </summary>
-	public interface ITweenable : ITweenControl
-	{
-		/// <summary>
-		/// called by ZestKit each frame like an internal Update
-		/// </summary>
-		bool tick();
-
-		/// <summary>
-		/// called by ZestKit when a tween is removed. Subclasses can optionally recycle themself. Subclasses
-		/// should first check the _shouldRecycleTween bool in their implementation!
-		/// </summary>
-		void recycleSelf();
 	}
 
 

@@ -63,10 +63,8 @@ namespace Prime31.ZestKit
 
 		public override bool tick()
 		{
-			if( _isPaused )
-				return false;
-
-			setTweenedValue( Zest.fastSpring( getCurrentValueOfTweenedTargetType(), _targetValue, ref _velocity, dampingRatio, angularFrequency ) );
+			if( !_isPaused )
+				setTweenedValue( Zest.fastSpring( getCurrentValueOfTweenedTargetType(), _targetValue, ref _velocity, dampingRatio, angularFrequency ) );
 
 			return false;
 		}

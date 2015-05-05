@@ -14,7 +14,7 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public class TweenParty : FloatTween, ITweenTarget<float>
 	{
-		private List<ITweenable> _tweenList = new List<ITweenable>();
+		private List<ITweenControl> _tweenList = new List<ITweenControl>();
 
 
 		public TweenParty( float duration )
@@ -76,10 +76,6 @@ namespace Prime31.ZestKit
 			}
 		}
 
-		#endregion
-
-
-		#region ITweenable
 
 		public override void recycleSelf()
 		{
@@ -88,6 +84,7 @@ namespace Prime31.ZestKit
 			
 			for( var i = 0; i < _tweenList.Count; i++ )
 				_tweenList[i].recycleSelf();
+
 			_tweenList.Clear();
 		}
 
@@ -98,17 +95,8 @@ namespace Prime31.ZestKit
 
 		public TweenParty addTween( ITweenControl tween )
 		{
-			// make sure we have a legit ITweenable
-			if( tween is ITweenable )
-			{
-				// resume gets the tween into Playing mode so we can tick it
-				tween.resume();
-				_tweenList.Add( tween as ITweenable );
-			}
-			else
-			{
-				Debug.LogError( "attempted to add a tween that does not implement ITweenable to a TweenParty!" );
-			}
+			tween.resume();
+			_tweenList.Add( tween );
 
 			return this;
 		}

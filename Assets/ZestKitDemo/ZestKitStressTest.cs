@@ -8,15 +8,10 @@ public class ZestKitStressTest : MonoBehaviour
 	private const int _totalCubes = 2500;
 
 	private Transform[] _cubes = new Transform[_totalCubes];
-	private Vector3[] _originalPositions = new Vector3[_totalCubes];
 	private Perlin _perlinNoiseGenerator = new Perlin();
-	private float _updateDelta = 0.0f;
-	private float _timeX;
-	private float _timeY;
-	private float _timeZ;
 
 
-	void Start()
+	void Awake()
 	{
 		Application.targetFrameRate = 60;
 
@@ -25,41 +20,32 @@ public class ZestKitStressTest : MonoBehaviour
 		{
 			var cube = GameObject.CreatePrimitive( PrimitiveType.Cube );
 			Destroy( cube.GetComponent<BoxCollider>() );
-			cube.transform.position = new Vector3( i * 0.1f - 10, cube.transform.position.y, i % 10 );
+			cube.transform.position = new Vector3( i * 0.1f - 40f, cube.transform.position.y - 10f, i % 10 );
 			_cubes[i] = cube.transform;
-			_originalPositions[i] = cube.transform.position;
 		}
-
-		StartCoroutine( runTest() );
 	}
 
 
-	private IEnumerator runTest()
+	void Start()
 	{
-		var waiter = new WaitForSeconds( 1.0f );
+		float timeX, timeY, timeZ;
 		var targetPoint = Vector3.zero;
-
-		while( true )
+		for( var i = 0; i < _cubes.Length; i++ )
 		{
-			for( var i = 0; i < _cubes.Length; i++ )
-			{
-				_timeX = _updateDelta * 0.15f;
-				_timeY = _updateDelta * 0.3f;
-				_timeZ = _updateDelta * 3.0f;
+			timeX = 4f;
+			timeY = Random.Range( -2f, 2f ) * 2f;
+			timeZ = Random.Range( -2f, 2f ) * 3.0f;
 
-				targetPoint.x = _perlinNoiseGenerator.Noise( _timeX ) * 100 + _originalPositions[i].x;
-				targetPoint.y = _perlinNoiseGenerator.Noise( _timeY ) * 100 + _originalPositions[i].y;
-				targetPoint.z = _perlinNoiseGenerator.Noise( _timeZ ) * 100 + _originalPositions[i].z;
+			targetPoint.x = _perlinNoiseGenerator.Noise( timeX ) * 100 + _cubes[i].position.x;
+			targetPoint.y = _perlinNoiseGenerator.Noise( timeY ) * 100 + _cubes[i].position.y;
+			targetPoint.z = _perlinNoiseGenerator.Noise( timeZ ) * 100 + _cubes[i].position.z;
 
-				_cubes[i].ZKpositionTo( targetPoint, 1.0f ).start();
-
-				_updateDelta += Time.deltaTime * 100;
-			}
-
-			yield return waiter;
+			_cubes[i].ZKpositionTo( targetPoint, 1.0f )
+				.setLoops( LoopType.PingPong, 99999, 0.1f )
+				.start();
 		}
 	}
-
+		
 
 	public class Perlin
 	{
@@ -78,12 +64,6 @@ public class ZestKitStressTest : MonoBehaviour
 		float s_curve( float t )
 		{
 			return t * t * ( 3.0F - 2.0F * t );
-		}
-
-
-		float lerp( float t, float a, float b )
-		{
-			return a + t * ( b - a );
 		}
 
 
@@ -119,85 +99,7 @@ public class ZestKitStressTest : MonoBehaviour
 			u = rx0 * g1[p[bx0]];
 			v = rx1 * g1[p[bx1]];
 
-			return( lerp( sx, u, v ) );
-		}
-
-
-		public float Noise( float x, float y )
-		{
-			int bx0, bx1, by0, by1, b00, b10, b01, b11;
-			float rx0, rx1, ry0, ry1, sx, sy, a, b, u, v;
-			int i, j;
-
-			setup( x, out bx0, out bx1, out rx0, out rx1 );
-			setup( y, out by0, out by1, out ry0, out ry1 );
-
-			i = p[bx0];
-			j = p[bx1];
-
-			b00 = p[i + by0];
-			b10 = p[j + by0];
-			b01 = p[i + by1];
-			b11 = p[j + by1];
-
-			sx = s_curve( rx0 );
-			sy = s_curve( ry0 );
-
-			u = at2( rx0, ry0, g2[b00, 0], g2[b00, 1] );
-			v = at2( rx1, ry0, g2[b10, 0], g2[b10, 1] );
-			a = lerp( sx, u, v );
-
-			u = at2( rx0, ry1, g2[b01, 0], g2[b01, 1] );
-			v = at2( rx1, ry1, g2[b11, 0], g2[b11, 1] );
-			b = lerp( sx, u, v );
-
-			return lerp( sy, a, b );
-		}
-
-
-		public float Noise( float x, float y, float z )
-		{
-			int bx0, bx1, by0, by1, bz0, bz1, b00, b10, b01, b11;
-			float rx0, rx1, ry0, ry1, rz0, rz1, sy, sz, a, b, c, d, t, u, v;
-			int i, j;
-
-			setup( x, out bx0, out bx1, out rx0, out rx1 );
-			setup( y, out by0, out by1, out ry0, out ry1 );
-			setup( z, out bz0, out bz1, out rz0, out rz1 );
-
-			i = p[bx0];
-			j = p[bx1];
-
-			b00 = p[i + by0];
-			b10 = p[j + by0];
-			b01 = p[i + by1];
-			b11 = p[j + by1];
-
-			t = s_curve( rx0 );
-			sy = s_curve( ry0 );
-			sz = s_curve( rz0 );
-
-			u = at3( rx0, ry0, rz0, g3[b00 + bz0, 0], g3[b00 + bz0, 1], g3[b00 + bz0, 2] );
-			v = at3( rx1, ry0, rz0, g3[b10 + bz0, 0], g3[b10 + bz0, 1], g3[b10 + bz0, 2] );
-			a = lerp( t, u, v );
-
-			u = at3( rx0, ry1, rz0, g3[b01 + bz0, 0], g3[b01 + bz0, 1], g3[b01 + bz0, 2] );
-			v = at3( rx1, ry1, rz0, g3[b11 + bz0, 0], g3[b11 + bz0, 1], g3[b11 + bz0, 2] );
-			b = lerp( t, u, v );
-
-			c = lerp( sy, a, b );
-
-			u = at3( rx0, ry0, rz1, g3[b00 + bz1, 0], g3[b00 + bz1, 2], g3[b00 + bz1, 2] );
-			v = at3( rx1, ry0, rz1, g3[b10 + bz1, 0], g3[b10 + bz1, 1], g3[b10 + bz1, 2] );
-			a = lerp( t, u, v );
-
-			u = at3( rx0, ry1, rz1, g3[b01 + bz1, 0], g3[b01 + bz1, 1], g3[b01 + bz1, 2] );
-			v = at3( rx1, ry1, rz1, g3[b11 + bz1, 0], g3[b11 + bz1, 1], g3[b11 + bz1, 2] );
-			b = lerp( t, u, v );
-
-			d = lerp( sy, a, b );
-
-			return lerp( sz, c, d );
+			return( Mathf.Lerp( sx, u, v ) );
 		}
 
 

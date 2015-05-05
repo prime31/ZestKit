@@ -150,93 +150,10 @@ namespace Prime31.ZestKit
 		}
 
 
-		public ITween<T> setNextTween( ITweenControl nextTween )
+		public ITween<T> setNextTween( ITweenable nextTween )
 		{
-			if( nextTween is ITweenable )
-				_nextTween = nextTween as ITweenable;
-			else
-				Debug.LogError( "attempted to set a tween that does not implement ITweenable as the nextTween!" );
-
+			_nextTween = nextTween;
 			return this;
-		}
-
-		#endregion
-
-
-		#region ITweenControl
-
-		public bool isRunning()
-		{
-			return _tweenState == TweenState.Running;
-		}
-
-
-		public virtual void start()
-		{
-			if( _tweenState == TweenState.Complete )
-			{
-				_tweenState = TweenState.Running;
-				ZestKit.instance.addTween( this );
-			}
-		}
-
-
-		public void pause()
-		{
-			_tweenState = TweenState.Paused;
-		}
-
-
-		public void resume()
-		{
-			_tweenState = TweenState.Running;
-		}
-
-
-		public void stop( bool bringToCompletion = false )
-		{
-			_tweenState = TweenState.Complete;
-
-			if( bringToCompletion )
-			{
-				// if we are running in reverse we finish up at 0 else we go to duration
-				_elapsedTime = _isRunningInReverse ? 0f : _duration;
-				_loopType = LoopType.None;
-				_loops = 0;
-
-				// ZestKit will handle removal on the next tick
-			}
-			else
-			{
-				ZestKit.instance.removeTween( this );
-			}
-		}
-
-
-		public void jumpToElapsedTime( float elapsedTime )
-		{
-			_elapsedTime = Mathf.Clamp( elapsedTime, 0f, _duration );
-			updateValue();
-		}
-
-		
-		/// <summary>
-		/// reverses the current tween. if it was going forward it will be going backwards and vice versa.
-		/// </summary>
-		public void reverseTween()
-		{
-			_isRunningInReverse = !_isRunningInReverse;
-		}
-
-
-		/// <summary>
-		/// when called via StartCoroutine this will continue until the tween completes
-		/// </summary>
-		/// <returns>The for completion.</returns>
-		public IEnumerator waitForCompletion()
-		{
-			while( _tweenState != TweenState.Complete )
-				yield return null;
 		}
 
 		#endregion
@@ -308,6 +225,85 @@ namespace Prime31.ZestKit
 				_target = null;
 				_nextTween = null;
 			}
+		}
+
+
+		public bool isRunning()
+		{
+			return _tweenState == TweenState.Running;
+		}
+
+
+		public virtual void start()
+		{
+			if( _tweenState == TweenState.Complete )
+			{
+				_tweenState = TweenState.Running;
+				ZestKit.instance.addTween( this );
+			}
+		}
+
+
+		public void pause()
+		{
+			_tweenState = TweenState.Paused;
+		}
+
+
+		public void resume()
+		{
+			_tweenState = TweenState.Running;
+		}
+
+
+		public void stop( bool bringToCompletion = false )
+		{
+			_tweenState = TweenState.Complete;
+
+			if( bringToCompletion )
+			{
+				// if we are running in reverse we finish up at 0 else we go to duration
+				_elapsedTime = _isRunningInReverse ? 0f : _duration;
+				_loopType = LoopType.None;
+				_loops = 0;
+
+				// ZestKit will handle removal on the next tick
+			}
+			else
+			{
+				ZestKit.instance.removeTween( this );
+			}
+		}
+			
+		#endregion
+
+
+		#region ITweenControl
+
+		public void jumpToElapsedTime( float elapsedTime )
+		{
+			_elapsedTime = Mathf.Clamp( elapsedTime, 0f, _duration );
+			updateValue();
+		}
+
+		
+		/// <summary>
+		/// reverses the current tween. if it was going forward it will be going backwards and vice versa.
+		/// </summary>
+		public void reverseTween()
+		{
+			_isRunningInReverse = !_isRunningInReverse;
+		}
+
+
+		/// <summary>
+		/// when called via StartCoroutine this will continue until the tween completes
+		/// </summary>
+		/// <returns>The for completion.</returns>
+		public IEnumerator waitForCompletion()
+		{
+			while( _tweenState != TweenState.Complete )
+				yield return null;
 		}
 
 		#endregion

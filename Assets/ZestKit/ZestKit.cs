@@ -148,14 +148,14 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <returns>The tweens with context.</returns>
 		/// <param name="context">Context.</param>
-		public List<ITweenControl> allTweensWithContext( object context )
+		public List<ITweenable> allTweensWithContext( object context )
 		{
-			var foundTweens = new List<ITweenControl>();
+			var foundTweens = new List<ITweenable>();
 
 			for( var i = 0; i < _activeTweens.Count; i++ )
 			{
-				if( _activeTweens[i].context == context )
-					foundTweens.Add( _activeTweens[i] );
+				if( _activeTweens[i] is ITweenable && ( _activeTweens[i] as ITweenControl ).context == context )
+					foundTweens.Add( _activeTweens[i] as ITweenable );
 			}
 
 			return foundTweens;

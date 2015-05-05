@@ -53,12 +53,38 @@ namespace Prime31.ZestKit
 			_tweenList.Clear();
 		}
 
+
+		/// <summary>
+		/// bringToCompletion is ignored for chains due to it not having a solid, specific meaning for a chain
+		/// </summary>
+		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
+		public override void stop( bool bringToCompletion = false )
+		{
+			_currentTween = _tweenList.Count;
+		}
+
+		#endregion
+
+
+
+		#region ITweenControl
+
+		/// <summary>
+		/// when called via StartCoroutine this will continue until the TweenChain completes
+		/// </summary>
+		/// <returns>The for completion.</returns>
+		public IEnumerator waitForCompletion()
+		{
+			while( _currentTween < _tweenList.Count )
+				yield return null;
+		}
+
 		#endregion
 
 
 		#region TweenChain management
 
-		public TweenChain appendTween( ITweenControl tween )
+		public TweenChain appendTween( ITweenable tween )
 		{
 			// make sure we have a legit ITweenable
 			if( tween is ITweenable )
@@ -82,31 +108,6 @@ namespace Prime31.ZestKit
 		{
 			_completionHandler = completionHandler;
 			return this;
-		}
-
-		#endregion
-
-
-		#region ITweenControl
-
-		/// <summary>
-		/// bringToCompletion is ignored for chains due to it not having a solid, specific meaning for a chain
-		/// </summary>
-		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
-		public override void stop( bool bringToCompletion = false )
-		{
-			_currentTween = _tweenList.Count;
-		}
-
-
-		/// <summary>
-		/// when called via StartCoroutine this will continue until the TweenChain completes
-		/// </summary>
-		/// <returns>The for completion.</returns>
-		public override IEnumerator waitForCompletion()
-		{
-			while( _currentTween < _tweenList.Count )
-				yield return null;
 		}
 
 		#endregion

@@ -7,7 +7,7 @@ namespace Prime31.ZestKit
 {
 	/// <summary>
 	/// AbstractTweenable serves as a base for any custom classes you might want to make that can be ticked. These differ from
-	/// ITweens in that they dont implement the ITweenT interface. What does that mean? It just says they an AbstractTweenable
+	/// ITweens in that they dont implement the ITweenT interface. What does that mean? It just says that an AbstractTweenable
 	/// is not just moving a value from start to finish. It can do anything at all that requires a tick each frame.
 	/// 
 	/// The TweenChain is one example of AbstractTweenable for reference.
@@ -30,13 +30,6 @@ namespace Prime31.ZestKit
 
 		public virtual void recycleSelf()
 		{}
-
-		#endregion
-
-
-		#region ITweenControl
-
-		public object context { get; set; }
 
 
 		public bool isRunning()
@@ -77,18 +70,6 @@ namespace Prime31.ZestKit
 			ZestKit.instance.removeTween( this );
 			_isActiveTween = false;
 			_isPaused = true;
-		}
-
-
-		public virtual void jumpToElapsedTime( float elapsedTime )
-		{
-			throw new System.NotImplementedException();
-		}
-
-
-		public virtual IEnumerator waitForCompletion()
-		{
-			throw new System.NotImplementedException();
 		}
 
 		#endregion
