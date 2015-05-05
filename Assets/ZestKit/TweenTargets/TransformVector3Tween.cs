@@ -24,15 +24,9 @@ namespace Prime31.ZestKit
 	{
 		#region Static caching
 
-		private static Stack<TransformVector3Tween> _vectorTransformTweenStack = new Stack<TransformVector3Tween>( 10 );
-
-
 		public static TransformVector3Tween nextAvailableTween()
 		{
-			if( _vectorTransformTweenStack.Count > 0 )
-				return _vectorTransformTweenStack.Pop();
-
-			return new TransformVector3Tween();
+			return TweenCache<TransformVector3Tween>.pop();
 		}
 
 		#endregion
@@ -104,9 +98,8 @@ namespace Prime31.ZestKit
 			if( _shouldRecycleTween )
 			{
 				_transform = null;
-				_vectorTransformTweenStack.Push( this );
+				TweenCache<TransformVector3Tween>.push( this );
 			}
 		}
-	
 	}
 }

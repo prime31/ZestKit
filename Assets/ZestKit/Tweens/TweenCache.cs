@@ -5,32 +5,26 @@ using System.Collections.Generic;
 
 namespace Prime31.ZestKit
 {
-	public class TweenCache
+	/// <summary>
+	/// simple static class that can be used to pool any object. this is meant for use with non-Unity classes such as tweens.
+	/// </summary>
+	public static class TweenCache<T> where T : new()
 	{
-		private static Dictionary<Type,Stack<object>> _cache = new Dictionary<Type,Stack<object>>();
+		private static Stack<T> _objectStack = new Stack<T>( 10 );
 
 
-		public static T get<T>() where T : new()
+		public static T pop()
 		{
-			var type = typeof( T );
+			if( _objectStack.Count > 0 )
+				return _objectStack.Pop();
 
-			if( !_cache.ContainsKey( type ) )
-				_cache[type] = new Stack<object>( 3 );
-			
-			if( _cache[type].Count == 0 )
-				return new T();
-
-			return (T)_cache[type].Pop();
+			return new T();
 		}
 
 
-		public static void put( object item )
+		public static void push( T obj )
 		{
-			var type = item.GetType();
-			if( !_cache.ContainsKey( type ) )
-				_cache[type] = new Stack<object>( 3 );
-
-			_cache[type].Push( item );
+			_objectStack.Push( obj );
 		}
 	}
 }
