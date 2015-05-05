@@ -163,6 +163,11 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public interface ITweenControl : ITweenable
 	{
+		/// <summary>
+		/// handy property that you can use in any callbacks (such as a completion handler) to avoid allocations when using
+		/// anonymous Actions
+		/// </summary>
+		/// <value>The context.</value>
 		object context { get; }
 
 
