@@ -175,7 +175,7 @@ namespace Prime31.ZestKit
 			for( var i = 0; i < _activeTweens.Count; i++ )
 			{
 				if( _activeTweens[i] is ITweenable && ( _activeTweens[i] as ITweenControl ).context == context )
-					foundTweens.Add( _activeTweens[i] as ITweenable );
+					foundTweens.Add( _activeTweens[i] );
 			}
 
 			return foundTweens;
@@ -193,6 +193,49 @@ namespace Prime31.ZestKit
 			{
 				if( _activeTweens[i] is ITweenable && ( _activeTweens[i] as ITweenControl ).context == context )
 					_activeTweens[i].stop( bringToCompletion );
+			}
+		}
+
+
+		/// <summary>
+		/// returns all the tweens that have a specific target. Tweens are returned as ITweenControl since that is all
+		/// that ZestKit knows about.
+		/// </summary>
+		/// <returns>The tweens with target.</returns>
+		/// <param name="target">target.</param>
+		public List<ITweenable> allTweensWithTarget( object target )
+		{
+			var foundTweens = new List<ITweenable>();
+
+			for( var i = 0; i < _activeTweens.Count; i++ )
+			{
+				if( _activeTweens[i] is ITweenControl )
+				{
+					var tweenControl = _activeTweens[i] as ITweenControl;
+					if( tweenControl.getTargetObject() == target )
+						foundTweens.Add( _activeTweens[i] as ITweenable );
+				}
+			}
+
+			return foundTweens;
+		}
+
+
+		/// <summary>
+		/// stops all the tweens that have a specific target
+		/// that ZestKit knows about.
+		/// </summary>
+		/// <param name="target">target.</param>
+		public void stopAllTweensWithTarget( object target, bool bringToCompletion = false )
+		{
+			for( var i = _activeTweens.Count - 1; i >= 0; --i )
+			{
+				if( _activeTweens[i] is ITweenControl )
+				{
+					var tweenControl = _activeTweens[i] as ITweenControl;
+					if( tweenControl.getTargetObject() == target )
+						tweenControl.stop( bringToCompletion );
+				}
 			}
 		}
 

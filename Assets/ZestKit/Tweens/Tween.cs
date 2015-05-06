@@ -306,6 +306,12 @@ namespace Prime31.ZestKit
 				yield return null;
 		}
 
+
+		public object getTargetObject()
+		{
+			return _target.getTargetObject();
+		}
+
 		#endregion
 
 

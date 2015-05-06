@@ -55,6 +55,12 @@ namespace Prime31.ZestKit
 			_material = material;
 			_propertyName = propertyName;
 		}
+
+
+		public object getTargetObject()
+		{
+			return _material;
+		}
 	}
 
 
@@ -74,6 +80,7 @@ namespace Prime31.ZestKit
 			
 			_material.SetColor( _propertyName, value );
 		}
+
 	}
 
 

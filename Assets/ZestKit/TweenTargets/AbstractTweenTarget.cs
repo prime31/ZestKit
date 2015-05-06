@@ -24,5 +24,11 @@ namespace Prime31.ZestKit
 		{
 			return !_target.Equals( null );
 		}
+
+
+		public object getTargetObject()
+		{
+			return _target;
+		}
 	}
 }

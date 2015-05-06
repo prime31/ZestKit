@@ -40,6 +40,12 @@ namespace Prime31.ZestKit
 			}
 		}
 
+
+		public new object getTargetObject()
+		{
+			return null;
+		}
+
 		#endregion
 
 

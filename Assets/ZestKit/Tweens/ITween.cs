@@ -124,7 +124,6 @@ namespace Prime31.ZestKit
 		/// <value>The context.</value>
 		object context { get; }
 
-
 		/// <summary>
 		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
 		/// object whether it is paused, completed or running.
@@ -137,6 +136,13 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <returns>The for completion.</returns>
 		IEnumerator waitForCompletion();
+
+		/// <summary>
+		/// gets the target of the tween or null for TweenTargets that arent necessarily all about a single object.
+		/// it's only real use is for ZestKit to find a list of tweens by target.
+		/// </summary>
+		/// <returns>The target object.</returns>
+		object getTargetObject();
 	}
 	
 
@@ -198,5 +204,12 @@ namespace Prime31.ZestKit
 		/// </summary>
 		/// <param name="value">Value.</param>
 		void setTweenedValue( T value );
+
+		/// <summary>
+		/// gets the target of the tween or null for TweenTargets that arent necessarily all about a single object.
+		/// it's only real use is for ZestKit to find a list of tweens by target.
+		/// </summary>
+		/// <returns>The target object.</returns>
+		object getTargetObject();
 	}
 }

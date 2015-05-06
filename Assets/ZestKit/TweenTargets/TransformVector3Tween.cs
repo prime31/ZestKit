@@ -55,6 +55,12 @@ namespace Prime31.ZestKit
 		}
 
 
+		public new object getTargetObject()
+		{
+			return _transform;
+		}
+
+
 		public void setTargetAndType( Transform transform, TransformTargetType targetType )
 		{
 			_transform = transform;

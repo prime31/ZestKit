@@ -45,5 +45,11 @@ namespace Prime31.ZestKit
 
 			setTweenedValue( position );
 		}
+
+
+		public new object getTargetObject()
+		{
+			return _transform;
+		}
 	}
 }
