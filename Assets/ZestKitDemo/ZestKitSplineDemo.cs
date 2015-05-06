@@ -30,7 +30,7 @@ public class ZestKitSplineDemo : MonoBehaviour
 				.setIsRelative()
 				.start();
 		}
-
+			
 
 		if( GUILayout.Button( "Figure Eight Spline Tween (absolute)" ) )
 		{

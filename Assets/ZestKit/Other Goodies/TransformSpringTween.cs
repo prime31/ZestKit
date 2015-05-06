@@ -44,7 +44,7 @@ namespace Prime31.ZestKit
 			_velocity = Vector3.zero;
 			_targetValue = targetValue;
 
-			if( !_isActiveTween )
+			if( !_isCurrentlyManagedByZestKit )
 				start();
 		}
 

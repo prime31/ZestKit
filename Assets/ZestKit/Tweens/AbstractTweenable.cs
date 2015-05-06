@@ -20,7 +20,7 @@ namespace Prime31.ZestKit
 		/// AbstractTweenable are often kept around after they complete. This flag lets them know internally if they are currently
 		/// being tweened by ZestKit so that they can readd themselves if necessary.
 		/// </summary>
-		protected bool _isActiveTween;
+		protected bool _isCurrentlyManagedByZestKit;
 
 
 		#region ITweenable
@@ -34,21 +34,21 @@ namespace Prime31.ZestKit
 
 		public bool isRunning()
 		{
-			return _isActiveTween && !_isPaused;
+			return _isCurrentlyManagedByZestKit && !_isPaused;
 		}
 
 
 		public void start()
 		{
 			// dont add ourself twice!
-			if( _isActiveTween )
+			if( _isCurrentlyManagedByZestKit )
 			{
 				_isPaused = false;
 				return;
 			}
 			
 			ZestKit.instance.addTween( this );
-			_isActiveTween = true;
+			_isCurrentlyManagedByZestKit = true;
 			_isPaused = false;
 		}
 
@@ -68,7 +68,7 @@ namespace Prime31.ZestKit
 		public virtual void stop( bool bringToCompletion = false )
 		{
 			ZestKit.instance.removeTween( this );
-			_isActiveTween = false;
+			_isCurrentlyManagedByZestKit = false;
 			_isPaused = true;
 		}
 

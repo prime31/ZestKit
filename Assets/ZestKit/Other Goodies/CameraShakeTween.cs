@@ -43,7 +43,7 @@ namespace Prime31.ZestKit
 		public void shake( float shakeIntensity = 0.3f, float shakeDegredation = 0.95f, Vector3 shakeDirection = default( Vector3 ) )
 		{
 			// guard against adding a weaker shake to an already running shake
-			if( !_isActiveTween || _shakeIntensity < shakeIntensity )
+			if( !_isCurrentlyManagedByZestKit || _shakeIntensity < shakeIntensity )
 			{
 				_shakeDirection = shakeDirection.normalized;
 				_shakeIntensity = shakeIntensity;
@@ -53,7 +53,7 @@ namespace Prime31.ZestKit
 				_shakeDegredation = shakeDegredation;
 			}
 
-			if( !_isActiveTween )
+			if( !_isCurrentlyManagedByZestKit )
 				start();
 		}
 
@@ -88,7 +88,7 @@ namespace Prime31.ZestKit
 				return false;
 			}
 
-			_isActiveTween = false;
+			_isCurrentlyManagedByZestKit = false;
 			return true;
 		}
 
