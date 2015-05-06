@@ -103,6 +103,16 @@ public class ZestKitOtherGoodies : MonoBehaviour
 				_springTween = new TransformSpringTween( cube, TransformTargetType.LocalScale, cube.localScale );
 			}
 
+
+			if( GUILayout.Button( "Run Action Every 1s After 2s Delay" ) )
+			{
+				ActionTask.every( 2f, 1f, this, task =>
+				{
+					// by using the context we get away with not allocating when passing this Action around!
+					( task.context as ZestKitOtherGoodies ).methodCalledForDemonstrationPurposes();
+				});
+			}
+
 			DemoGUIHelpers.easeTypesGUI();
 		}
 		else
@@ -130,6 +140,12 @@ public class ZestKitOtherGoodies : MonoBehaviour
 				cube.localScale = Vector3.one;
 			}
 		}
+	}
+
+
+	void methodCalledForDemonstrationPurposes()
+	{
+		Debug.Log( "methodCalledForDemonstrationPurposes was called at " + Time.time );
 	}
 
 
