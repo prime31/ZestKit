@@ -28,23 +28,32 @@ namespace Prime31.ZestKit
 
 		#region static convenience constructors
 
+		/// <summary>
+		/// creates an ActionTask but does not start it!
+		/// </summary>
+		/// <param name="action">Action.</param>
 		public static ActionTask create( Action<ActionTask> action )
 		{
-			var task = QuickCache<ActionTask>.pop();
-			return task.setAction( action );
+			return QuickCache<ActionTask>.pop()
+				.setAction( action );
 		}
 
 
+		/// <summary>
+		/// creates an ActionTask with a context but does not start it!
+		/// </summary>
+		/// <param name="action">Action.</param>
+		/// <param name="context">Context.</param>
 		public static ActionTask create( Action<ActionTask> action, object context )
 		{
-			var task = QuickCache<ActionTask>.pop();
-			return task.setAction( action )
+			return QuickCache<ActionTask>.pop()
+				.setAction( action )
 				.setContext( context );
 		}
 
 
 		/// <summary>
-		/// calls the Action every repeatsDelay seconds
+		/// calls the Action every repeatsDelay seconds. The ActionTask is automatically started for you.
 		/// </summary>
 		/// <param name="initialDelay">Initial delay.</param>
 		/// <param name="repeatDelay">Repeat delay.</param>
@@ -52,8 +61,8 @@ namespace Prime31.ZestKit
 		/// <param name="action">Action.</param>
 		public static ActionTask every( float repeatDelay, object context, Action<ActionTask> action )
 		{
-			var task = QuickCache<ActionTask>.pop();
-			task.setAction( action )
+			var task = QuickCache<ActionTask>.pop()
+				.setAction( action )
 				.setRepeats( repeatDelay )
 				.setContext( context );
 			task.start();
@@ -63,7 +72,7 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// calls the Action every repeatsDelay seconds after the initial delay.
+		/// calls the Action every repeatsDelay seconds after the initial delay. The ActionTask is automatically started for you.
 		/// </summary>
 		/// <param name="initialDelay">Initial delay.</param>
 		/// <param name="repeatDelay">Repeat delay.</param>
@@ -71,8 +80,8 @@ namespace Prime31.ZestKit
 		/// <param name="action">Action.</param>
 		public static ActionTask every( float initialDelay, float repeatDelay, object context, Action<ActionTask> action )
 		{
-			var task = QuickCache<ActionTask>.pop();
-			task.setAction( action )
+			var task = QuickCache<ActionTask>.pop()
+				.setAction( action )
 				.setRepeats( repeatDelay )
 				.setContext( context )
 				.setDelay( initialDelay );
@@ -83,15 +92,15 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// calls the action after an initial delay
+		/// calls the action after an initial delay. The ActionTask is automatically started for you.
 		/// </summary>
 		/// <param name="initialDelay">Initial delay.</param>
 		/// <param name="context">Context.</param>
 		/// <param name="action">Action.</param>
-		public static ActionTask after( float initialDelay, object context, Action<ActionTask> action )
+		public static ActionTask afterDelay( float initialDelay, object context, Action<ActionTask> action )
 		{
-			var task = QuickCache<ActionTask>.pop();
-			task.setAction( action )
+			var task = QuickCache<ActionTask>.pop()
+				.setAction( action )
 				.setDelay( initialDelay )
 				.setContext( context );
 			task.start();
