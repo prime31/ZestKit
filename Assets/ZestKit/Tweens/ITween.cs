@@ -110,6 +110,34 @@ namespace Prime31.ZestKit
 		/// <param name="nextTween">Next tween.</param>
 		ITween<T> setNextTween( ITweenable nextTween );
 	}
+		
+
+	/// <summary>
+	/// more specific tween playback controls here.
+	/// </summary>
+	public interface ITweenControl : ITweenable
+	{
+		/// <summary>
+		/// handy property that you can use in any callbacks (such as a completion handler) to avoid allocations when using
+		/// anonymous Actions
+		/// </summary>
+		/// <value>The context.</value>
+		object context { get; }
+
+
+		/// <summary>
+		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
+		/// object whether it is paused, completed or running.
+		/// </summary>
+		/// <param name="elapsedTime">Elapsed time.</param>
+		void jumpToElapsedTime( float elapsedTime );
+
+		/// <summary>
+		/// when called from StartCoroutine it will yield until the tween is complete
+		/// </summary>
+		/// <returns>The for completion.</returns>
+		IEnumerator waitForCompletion();
+	}
 	
 
 	/// <summary>
@@ -155,35 +183,7 @@ namespace Prime31.ZestKit
 		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
 		void stop( bool bringToCompletion = false );
 	}
-		
 
-
-	/// <summary>
-	/// more specific tween playback controls here.
-	/// </summary>
-	public interface ITweenControl : ITweenable
-	{
-		/// <summary>
-		/// handy property that you can use in any callbacks (such as a completion handler) to avoid allocations when using
-		/// anonymous Actions
-		/// </summary>
-		/// <value>The context.</value>
-		object context { get; }
-
-
-		/// <summary>
-		/// warps the tween to elapsedTime clamping it between 0 and duration. this will immediately update the tweened
-		/// object whether it is paused, completed or running.
-		/// </summary>
-		/// <param name="elapsedTime">Elapsed time.</param>
-		void jumpToElapsedTime( float elapsedTime );
-
-		/// <summary>
-		/// when called from StartCoroutine it will yield until the tween is complete
-		/// </summary>
-		/// <returns>The for completion.</returns>
-		IEnumerator waitForCompletion();
-	}
 
 
 	/// <summary>
