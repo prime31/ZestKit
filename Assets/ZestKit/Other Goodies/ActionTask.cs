@@ -15,10 +15,20 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public class ActionTask : AbstractTweenable
 	{
+		/// <summary>
+		/// provides access to the context for this task
+		/// </summary>
+		/// <value>The context.</value>
 		public object context { get; private set; }
-		public float elapsedTime { get { return _elapsedTime; } }
+
+		/// <summary>
+		/// provides the elapsed time not included the initial delay that this task has been running
+		/// </summary>
+		/// <value>The elapsed time.</value>
+		public float elapsedTime { get { return _unfilteredElapsedTime; } }
 
 		Action<ActionTask> _action;
+		float _unfilteredElapsedTime;
 		float _elapsedTime;
 		float _initialDelay = 0f;
 		float _repeatDelay = 0f;
@@ -206,7 +216,7 @@ namespace Prime31.ZestKit
 					}
 					else
 					{
-						_isActiveTween = false;
+						_isCurrentlyManagedByZestKit = false;
 						return true;
 					}
 				}
@@ -231,7 +241,7 @@ namespace Prime31.ZestKit
 				_action( this );
 			}
 
-
+			_unfilteredElapsedTime += deltaTime;
 			_elapsedTime += deltaTime;
 
 			return false;
@@ -240,6 +250,11 @@ namespace Prime31.ZestKit
 
 		public override void recycleSelf()
 		{
+			_unfilteredElapsedTime = _elapsedTime = _initialDelay = _repeatDelay = 0f;
+			_isPaused = _isCurrentlyManagedByZestKit = _repeats = _isTimeScaleIndependent = false;
+			context = null;
+			_action = null;
+
 			QuickCache<ActionTask>.push( this );
 		}
 
