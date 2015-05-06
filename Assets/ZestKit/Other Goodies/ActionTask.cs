@@ -44,6 +44,25 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
+		/// calls the Action every repeatsDelay seconds
+		/// </summary>
+		/// <param name="initialDelay">Initial delay.</param>
+		/// <param name="repeatDelay">Repeat delay.</param>
+		/// <param name="context">Context.</param>
+		/// <param name="action">Action.</param>
+		public static ActionTask every( float repeatDelay, object context, Action<ActionTask> action )
+		{
+			var task = QuickCache<ActionTask>.pop();
+			task.setAction( action )
+				.setRepeats( repeatDelay )
+				.setContext( context );
+			task.start();
+
+			return task;
+		}
+
+
+		/// <summary>
 		/// calls the Action every repeatsDelay seconds after the initial delay.
 		/// </summary>
 		/// <param name="initialDelay">Initial delay.</param>
