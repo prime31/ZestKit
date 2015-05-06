@@ -181,6 +181,21 @@ namespace Prime31.ZestKit
 			return foundTweens;
 		}
 
+
+		/// <summary>
+		/// stops all the tweens with a given context
+		/// </summary>
+		/// <returns>The tweens with context.</returns>
+		/// <param name="context">Context.</param>
+		public void stopAllTweensWithContext( object context, bool bringToCompletion = false )
+		{
+			for( var i = _activeTweens.Count - 1; i >= 0; --i )
+			{
+				if( _activeTweens[i] is ITweenable && ( _activeTweens[i] as ITweenControl ).context == context )
+					_activeTweens[i].stop( bringToCompletion );
+			}
+		}
+
 		#endregion
 
 	}
