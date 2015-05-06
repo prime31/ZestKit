@@ -106,11 +106,6 @@ public class ZestKitOtherGoodies : MonoBehaviour
 
 			if( GUILayout.Button( "Run Action Every 1s After 2s Delay" ) )
 			{
-		ActionTask.afterDelay( 1f, this, task =>
-		{
-			var myClassReference = task.context as MyClass;
-
-		} );
 				ActionTask.every( 2f, 1f, this, task =>
 				{
 					// by using the context we get away with not allocating when passing this Action around!
