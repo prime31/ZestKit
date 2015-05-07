@@ -92,9 +92,18 @@ public class ZestKitOtherGoodies : MonoBehaviour
 			}
 
 
+			GUILayout.Space( 10 );
 			if( GUILayout.Button( "Start Spring Position" ) )
 			{
 				_springTween = new TransformSpringTween( cube, TransformTargetType.Position, cube.position );
+			}
+
+
+			if( GUILayout.Button( "Start Spring Position (overdamped)" ) )
+			{
+				_springTween = new TransformSpringTween( cube, TransformTargetType.Position, cube.position );
+				_springTween.dampingRatio = 1.5f;
+				_springTween.angularFrequency = 20f;
 			}
 
 
@@ -102,6 +111,7 @@ public class ZestKitOtherGoodies : MonoBehaviour
 			{
 				_springTween = new TransformSpringTween( cube, TransformTargetType.LocalScale, cube.localScale );
 			}
+			GUILayout.Space( 10 );
 
 
 			if( GUILayout.Button( "Run Action Every 1s After 2s Delay" ) )

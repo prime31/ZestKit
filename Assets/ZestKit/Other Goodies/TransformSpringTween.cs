@@ -13,8 +13,18 @@ namespace Prime31.ZestKit
 		Vector3 _targetValue;
 		Vector3 _velocity;
 
-		// these are public for easier value tweaking at design time
+		// configuration of dampingRatio and angularFrequency are public for easier value tweaking at design time
+
+		/// <summary>
+		/// lower values are less damped and higher values are more damped resulting in less springiness.
+		/// should be between 0.01f, 1f to avoid unstable systems.
+		/// </summary>
 		public float dampingRatio = 0.23f;
+
+		/// <summary>
+		/// An angular frequency of 2pi (radians per second) means the oscillation completes one
+		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stableThe angular frequency.
+		/// </summary>
 		public float angularFrequency = 25;
 
 
