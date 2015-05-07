@@ -113,6 +113,34 @@ public class ZestKitOtherGoodies : MonoBehaviour
 				});
 			}
 
+
+			if( GUILayout.Button( "ActionTask Interoperability" ) )
+			{
+				Debug.Log( "The Story: An ActionTask with a 2s delay will be created with a continueWith ActionTask appended to it that will tick every 0.3s for 2s. The original ActionTask will have a waitFor called that is an ActionTask with a 1s delay. Follow?" );
+				Debug.Log( "--- current time: " + Time.time );
+
+				ActionTask.afterDelay( 2f, this, task =>
+				{
+					Debug.Log( "--- root task ticked: " + Time.time );
+				}).continueWith
+				(
+					ActionTask.create( this, task =>
+					{
+						Debug.Log( "+++ continueWith task elapsed time: " + task.elapsedTime );
+						if( task.elapsedTime > 2f )
+							task.stop();
+					})
+					.setDelay( 1f )
+					.setRepeats( 0.3f )
+				).waitFor
+				(
+					ActionTask.afterDelay( 1f, this, task =>
+					{
+						Debug.Log( "--- waitFor ticked: " + Time.time );
+					})
+				);
+			}
+
 			DemoGUIHelpers.easeTypesGUI();
 		}
 		else

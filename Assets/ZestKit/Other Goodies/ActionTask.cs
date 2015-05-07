@@ -35,6 +35,9 @@ namespace Prime31.ZestKit
 		bool _repeats = false;
 		bool _isTimeScaleIndependent = false;
 
+		ActionTask _continueWithTask;
+		ActionTask _waitForTask;
+
 
 		#region static convenience constructors
 
@@ -52,9 +55,9 @@ namespace Prime31.ZestKit
 		/// <summary>
 		/// creates an ActionTask with a context but does not start it!
 		/// </summary>
-		/// <param name="action">Action.</param>
 		/// <param name="context">Context.</param>
-		public static ActionTask create( Action<ActionTask> action, object context )
+		/// <param name="action">Action.</param>
+		public static ActionTask create( object context, Action<ActionTask> action )
 		{
 			return QuickCache<ActionTask>.pop()
 				.setAction( action )
@@ -126,6 +129,109 @@ namespace Prime31.ZestKit
 		{}
 
 
+		#region AbstractTweenable
+
+		public override bool tick()
+		{
+			// if we have a waitForTask we dont do anything until it completes
+			if( _waitForTask != null )
+			{
+				if( _waitForTask.isRunning() )
+					return false;
+				_waitForTask = null;
+			}
+
+			if( _isPaused )
+				return false;
+
+
+			var deltaTime = _isTimeScaleIndependent ? Time.unscaledDeltaTime : Time.deltaTime;
+
+			// handle our initial delay first
+			if( _initialDelay > 0f )
+			{
+				_initialDelay -= deltaTime;
+
+				// catch the overflow if we have any. if we end up less than 0 while decrementing our initial delay we make that our elapsedTime
+				// so that the Action gets called and so that we keep time accurately.
+				if( _initialDelay < 0f )
+				{
+					_elapsedTime = -_initialDelay;
+					_action( this );
+
+					// if we repeat continue on. if not, then we end things here
+					if( _repeats )
+					{
+						return false;
+					}
+					else
+					{
+						// all done. run the continueWith if we have one
+						if( _continueWithTask != null )
+							_continueWithTask.start();
+
+						_isCurrentlyManagedByZestKit = false;
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+
+			// done with initial delay. now we either tick the Action every frame or use the repeatDelay to delay calls to the Action
+			if( _repeatDelay > 0f )
+			{
+				if( _elapsedTime > _repeatDelay )
+				{
+					_elapsedTime -= _repeatDelay;
+					_action( this );
+				}
+			}
+			else
+			{
+				_action( this );
+			}
+
+			_unfilteredElapsedTime += deltaTime;
+			_elapsedTime += deltaTime;
+
+			return false;
+		}
+
+
+		/// <summary>
+		/// stops the task optionally running the continueWith task if it is present
+		/// </summary>
+		/// <param name="runContinueWithTaskIfPresent">If set to <c>true</c> run continue with task if present.</param>
+		public override void stop( bool runContinueWithTaskIfPresent = true )
+		{
+			if( runContinueWithTaskIfPresent && _continueWithTask != null )
+				_continueWithTask.start();
+
+			// call base AFTER we do our thing since it will recycle us
+			base.stop();
+		}
+
+
+		public override void recycleSelf()
+		{
+			_unfilteredElapsedTime = _elapsedTime = _initialDelay = _repeatDelay = 0f;
+			_isPaused = _isCurrentlyManagedByZestKit = _repeats = _isTimeScaleIndependent = false;
+			context = null;
+			_action = null;
+			_continueWithTask = _waitForTask = null;
+
+			QuickCache<ActionTask>.push( this );
+		}
+
+		#endregion
+
+
+		#region Configuration
+
 		/// <summary>
 		/// sets the Action to be called
 		/// </summary>
@@ -186,78 +292,44 @@ namespace Prime31.ZestKit
 			return this;
 		}
 
+		#endregion
 
-		#region AbstractTweenable
 
-		public override bool tick()
+		#region Interation with other ActionTasks
+
+		/// <summary>
+		/// when this ActionTask completes the ActionTask passed into continueWith will be started. Note that the continueWith task should not
+		/// be running so it should be created with one of the ActionTask.create variants (which don't start the task automatically).
+		/// </summary>
+		/// <returns>The with.</returns>
+		/// <param name="actionTask">Action task.</param>
+		public ActionTask continueWith( ActionTask actionTask )
 		{
-			if( _isPaused )
-				return false;
-
-
-			var deltaTime = _isTimeScaleIndependent ? Time.unscaledDeltaTime : Time.deltaTime;
-
-			// handle our initial delay first
-			if( _initialDelay > 0f )
-			{
-				_initialDelay -= deltaTime;
-
-				// catch the overflow if we have any. if we end up less than 0 while decrementing our initial delay we make that our elapsedTime
-				// so that the Action gets called and so that we keep time accurately.
-				if( _initialDelay < 0f )
-				{
-					_elapsedTime = -_initialDelay;
-					_action( this );
-
-					// if we repeat continue on. if not, then we end things here
-					if( _repeats )
-					{
-						return false;
-					}
-					else
-					{
-						_isCurrentlyManagedByZestKit = false;
-						return true;
-					}
-				}
-				else
-				{
-					return false;
-				}
-			}
-
-
-			// done with initial delay. now we either tick the Action every frame or use the repeatDelay to delay calls to the Action
-			if( _repeatDelay > 0f )
-			{
-				if( _elapsedTime > _repeatDelay )
-				{
-					_elapsedTime -= _repeatDelay;
-					_action( this );
-				}
-			}
+			if( actionTask.isRunning() )
+				Debug.LogError( "Attempted to continueWith an ActionTask that is already running. You can only continueWith tasks that have not started yet" );
 			else
-			{
-				_action( this );
-			}
+				_continueWithTask = actionTask;
 
-			_unfilteredElapsedTime += deltaTime;
-			_elapsedTime += deltaTime;
-
-			return false;
+			return this;
 		}
 
 
-		public override void recycleSelf()
+		/// <summary>
+		/// the current task will halt execution until the ActionTask passed into waitFor completes. Note that it must be an already running task!
+		/// </summary>
+		/// <returns>The for.</returns>
+		/// <param name="actionTask">Action task.</param>
+		public ActionTask waitFor( ActionTask actionTask )
 		{
-			_unfilteredElapsedTime = _elapsedTime = _initialDelay = _repeatDelay = 0f;
-			_isPaused = _isCurrentlyManagedByZestKit = _repeats = _isTimeScaleIndependent = false;
-			context = null;
-			_action = null;
+			if( !actionTask.isRunning() )
+				Debug.LogError( "Attempted to waitFor an ActionTask that is not running. You can only waitFor tasks that are already running." );
+			else
+				_waitForTask = actionTask;
 
-			QuickCache<ActionTask>.push( this );
+			return this;
 		}
 
 		#endregion
+
 	}
 }
