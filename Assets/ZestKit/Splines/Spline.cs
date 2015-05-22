@@ -35,7 +35,66 @@ namespace Prime31.ZestKit
 		}
 
 
-		// default constructor
+		/// <summary>
+		/// generates an arc from start to end with the arc axis perpendicular to start and end points
+		/// </summary>
+		/// <returns>The arc.</returns>
+		/// <param name="start">Start.</param>
+		/// <param name="end">End.</param>
+		/// <param name="curvature">how far away from the line from start to end the arc extends</param>
+		public static Spline generateArc( Vector3 start, Vector3 end, float curvature )
+		{
+			return Spline.generateArc( start, end, curvature, Vector3.Cross( start, end ) );
+		}
+
+
+		/// <summary>
+		/// generates an arc from start to end with the arc axis curvatureAxis
+		/// </summary>
+		/// <returns>The arc.</returns>
+		/// <param name="start">Start.</param>
+		/// <param name="end">End.</param>
+		/// <param name="curvature">how far away from the line from start to end the arc extends</param>
+		/// <param name="curvatureAxis">the axis which the arc should extend into</param>
+		public static Spline generateArc( Vector3 start, Vector3 end, float curvature, Vector3 curvatureAxis )
+		{
+			curvatureAxis.Normalize();
+			return Spline.generateArc( start, end, curvature, curvatureAxis, curvatureAxis );
+		}
+
+
+		/// <summary>
+		/// generates an arc from start to end with a separate axis for the start and and points
+		/// </summary>
+		/// <returns>The arc.</returns>
+		/// <param name="start">Start.</param>
+		/// <param name="end">End.</param>
+		/// <param name="curvature">how far away from the line from start to end the arc extends</param>
+		/// <param name="startCurvatureAxis">Start curvature axis.</param>
+		/// <param name="endCurvatureAxis">End curvature axis.</param>
+		public static Spline generateArc( Vector3 start, Vector3 end, float curvature, Vector3 startCurvatureAxis, Vector3 endCurvatureAxis )
+		{
+			startCurvatureAxis.Normalize();
+			endCurvatureAxis.Normalize();
+
+			var nodes = new List<Vector3>()
+			{
+				start,
+				start + startCurvatureAxis * curvature,
+				end + endCurvatureAxis * curvature,
+				end
+			};
+
+			return new Spline( nodes );
+		}
+
+
+		/// <summary>
+		/// Default constructor. Creates and initializes a spline from a List of nodes
+		/// </summary>
+		/// <param name="nodes">Nodes.</param>
+		/// <param name="useBezierIfPossible">If set to <c>true</c> use bezier if possible.</param>
+		/// <param name="useStraightLines">If set to <c>true</c> use straight lines.</param>
 		public Spline( List<Vector3> nodes, bool useBezierIfPossible = false, bool useStraightLines = false )
 		{
 			// determine spline type and solver based on number of nodes
