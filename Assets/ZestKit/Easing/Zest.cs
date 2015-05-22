@@ -55,7 +55,7 @@ namespace Prime31.ZestKit
 		{
 			return new Color32( (byte)( (float)from.r + (float)( to.r - from.r ) * t ), (byte)( (float)from.g + (float)( to.g - from.g ) * t ), (byte)( (float)from.b + (float)( to.b - from.b ) * t ), (byte)( (float)from.a + (float)( to.a - from.a ) * t ) );
 		}
-			
+
 		#endregion
 
 
@@ -95,7 +95,7 @@ namespace Prime31.ZestKit
 		{
 			return unclampedLerp( from, to, curve.Evaluate( t / duration ) );
 		}
-			
+
 
 		public static Vector3 easeAngle( EaseType easeType, Vector3 from, Vector3 to, float t, float duration )
 		{
@@ -162,27 +162,6 @@ namespace Prime31.ZestKit
 		#region Springs
 
 		/// <summary>
-		/// uses the implicit euler method. slower, but always stable.
-		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
-		/// </summary>
-		/// <returns>The spring.</returns>
-		/// <param name="currentValue">Current value.</param>
-		/// <param name="targetValue">Target value.</param>
-		/// <param name="velocity">Velocity by reference. Be sure to reset it to 0 if changing the targetValue between calls</param>
-		/// <param name="dampingRatio">lower values are less damped and higher values are more damped resulting in less springiness.
-		/// should be between 0.01f, 1f to avoid unstable systems.</param>
-		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
-		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
-		public static float stableSpring( float currentValue, float targetValue, ref float velocity, float dampingRatio, float angularFrequency )
-		{
-			velocity += -2.0f * Time.deltaTime * dampingRatio * angularFrequency * velocity + Time.deltaTime * angularFrequency * angularFrequency * ( targetValue - currentValue );
-			currentValue += Time.deltaTime * velocity;
-
-			return currentValue;
-		}
-
-
-		/// <summary>
 		/// uses the semi-implicit euler method. faster, but not always stable.
 		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
 		/// </summary>
@@ -195,6 +174,27 @@ namespace Prime31.ZestKit
 		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
 		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
 		public static float fastSpring( float currentValue, float targetValue, ref float velocity, float dampingRatio, float angularFrequency )
+		{
+			velocity += -2.0f * Time.deltaTime * dampingRatio * angularFrequency * velocity + Time.deltaTime * angularFrequency * angularFrequency * ( targetValue - currentValue );
+			currentValue += Time.deltaTime * velocity;
+
+			return currentValue;
+		}
+
+
+		/// <summary>
+		/// uses the implicit euler method. slower, but always stable.
+		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
+		/// </summary>
+		/// <returns>The spring.</returns>
+		/// <param name="currentValue">Current value.</param>
+		/// <param name="targetValue">Target value.</param>
+		/// <param name="velocity">Velocity by reference. Be sure to reset it to 0 if changing the targetValue between calls</param>
+		/// <param name="dampingRatio">lower values are less damped and higher values are more damped resulting in less springiness.
+		/// should be between 0.01f, 1f to avoid unstable systems.</param>
+		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
+		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
+		public static float stableSpring( float currentValue, float targetValue, ref float velocity, float dampingRatio, float angularFrequency )
 		{
 			var f = 1f + 2f * Time.deltaTime * dampingRatio * angularFrequency;
 			var oo = angularFrequency * angularFrequency;
