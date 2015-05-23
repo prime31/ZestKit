@@ -36,6 +36,7 @@ namespace Prime31.ZestKit
 		public static bool cacheQuaternionTweens = false;
 		public static bool cacheColorTweens = false;
 		public static bool cacheColor32Tweens = false;
+		public static bool cacheRectTweens = false;
 
 		#endregion
 

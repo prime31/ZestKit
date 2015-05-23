@@ -228,12 +228,14 @@ namespace Prime31.ZestKit
 	/// when used with a FloatTween the CameraTargetType determines what is tweened. When used with a ColorTween
 	/// the backgroundColor is tweened
 	/// </summary>
-	public class CameraTarget : AbstractTweenTarget<Camera,float>, ITweenTarget<Color>
+	public class CameraTarget : AbstractTweenTarget<Camera,float>, ITweenTarget<Color>, ITweenTarget<Rect>
 	{
 		public enum CameraTargetType
 		{
 			OrthographicSize,
-			FieldOfView
+			FieldOfView,
+			Rect,
+			PixelRect
 		}
 
 		CameraTargetType _targetType;
@@ -263,10 +265,24 @@ namespace Prime31.ZestKit
 		}
 
 
+		public void setTweenedValue( Rect value )
+		{
+			switch( _targetType )
+			{
+				case CameraTargetType.Rect:
+					_target.rect = value;
+					break;
+				case CameraTargetType.PixelRect:
+					_target.pixelRect = value;
+					break;
+			}
+		}
+
+
 		public CameraTarget( Camera camera, CameraTargetType targetType = CameraTargetType.OrthographicSize )
 		{
 			_target = camera;
-			_targetType = CameraTargetType.OrthographicSize;
+			_targetType = targetType;
 		}
 	}
 

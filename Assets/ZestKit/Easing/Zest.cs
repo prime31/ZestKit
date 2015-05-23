@@ -56,6 +56,18 @@ namespace Prime31.ZestKit
 			return new Color32( (byte)( (float)from.r + (float)( to.r - from.r ) * t ), (byte)( (float)from.g + (float)( to.g - from.g ) * t ), (byte)( (float)from.b + (float)( to.b - from.b ) * t ), (byte)( (float)from.a + (float)( to.a - from.a ) * t ) );
 		}
 
+
+		public static Rect unclampedLerp( Rect from, Rect to, float t )
+		{
+			return new Rect
+			(
+				from.x + ( to.x - from.x ) * t,
+				from.y + ( to.y - from.y ) * t,
+				from.width + ( to.width - from.width ) * t,
+				from.height + ( to.height - from.height ) * t
+			);
+		}
+
 		#endregion
 
 
@@ -152,6 +164,18 @@ namespace Prime31.ZestKit
 
 
 		public static Color32 ease( AnimationCurve curve, Color32 from, Color32 to, float t, float duration )
+		{
+			return unclampedLerp( from, to, curve.Evaluate( t / duration ) );
+		}
+
+
+		public static Rect ease( EaseType easeType, Rect from, Rect to, float t, float duration )
+		{
+			return unclampedLerp( from, to, EaseHelper.ease( easeType, t, duration ) );
+		}
+
+
+		public static Rect ease( AnimationCurve curve, Rect from, Rect to, float t, float duration )
 		{
 			return unclampedLerp( from, to, curve.Evaluate( t / duration ) );
 		}

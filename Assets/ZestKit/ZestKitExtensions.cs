@@ -350,6 +350,40 @@ namespace Prime31.ZestKit
 			return tween;
 		}
 
+
+		/// <summary>
+		/// tweens the Cameras rect property
+		/// </summary>
+		/// <returns>The krect to.</returns>
+		/// <param name="self">Self.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
+		public static ITween<Rect> ZKrectTo( this Camera self, Rect to, float duration = 0.3f )
+		{
+			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.Rect );
+			var tween = ZestKit.cacheRectTweens ? QuickCache<RectTween>.pop() : new RectTween();
+			tween.initialize( tweenTarget, self.rect, to, duration );
+
+			return tween;
+		}
+
+
+		/// <summary>
+		/// tweens the Cameras pixelRect property
+		/// </summary>
+		/// <returns>The krect to.</returns>
+		/// <param name="self">Self.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
+		public static ITween<Rect> ZKpixelRectTo( this Camera self, Rect to, float duration = 0.3f )
+		{
+			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.PixelRect );
+			var tween = ZestKit.cacheRectTweens ? QuickCache<RectTween>.pop() : new RectTween();
+			tween.initialize( tweenTarget, self.pixelRect, to, duration );
+
+			return tween;
+		}
+
 		#endregion
 
 
