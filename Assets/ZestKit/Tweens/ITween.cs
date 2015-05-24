@@ -39,6 +39,14 @@ namespace Prime31.ZestKit
 		ITween<T> setDuration( float duration );
 
 		/// <summary>
+		/// sets the timeScale used for this tween. The timeScale will be multiplied with Time.deltaTime/Time.unscaledDeltaTime
+		/// to get the actual delta time used for the tween.
+		/// </summary>
+		/// <returns>The time scale.</returns>
+		/// <param name="timeScale">Time scale.</param>
+		ITween<T> setTimeScale( float timeScale );
+
+		/// <summary>
 		/// sets the tween to use Time.unscaledDeltaTime instead of Time.deltaTime
 		/// </summary>
 		/// <returns>The is time scale independant.</returns>

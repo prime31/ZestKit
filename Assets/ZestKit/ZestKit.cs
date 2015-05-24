@@ -47,7 +47,7 @@ namespace Prime31.ZestKit
 		List<ITweenable> _activeTweens = new List<ITweenable>();
 
 		/// <summary>
-		/// sed to stop instances being created while the application is quitting
+		/// guard to stop instances being created while the application is quitting
 		/// </summary>
 		static bool _applicationIsQuitting;
 

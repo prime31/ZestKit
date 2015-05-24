@@ -40,6 +40,7 @@ namespace Prime31.ZestKit
 		bool _isTimeScaleIndependent;
 		protected float _delay;
 		protected float _duration;
+		protected float _timeScale = 1f;
 		protected float _elapsedTime;
 		
 		// loop state
@@ -80,6 +81,13 @@ namespace Prime31.ZestKit
 		public ITween<T> setDuration( float duration )
 		{
 			_duration = duration;
+			return this;
+		}
+
+
+		public ITween<T> setTimeScale( float timeScale )
+		{
+			_timeScale = timeScale;
 			return this;
 		}
 
@@ -192,6 +200,7 @@ namespace Prime31.ZestKit
 				handleLooping( elapsedTimeExcess );
 
 			var deltaTime = _isTimeScaleIndependent ? Time.unscaledDeltaTime : Time.deltaTime;
+			deltaTime *= _timeScale;
 
 			// running in reverse? then we need to subtract deltaTime
 			if( _isRunningInReverse )
@@ -334,6 +343,7 @@ namespace Prime31.ZestKit
 			
 			_delay = 0f;
 			_duration = 0f;
+			_timeScale = 1f;
 			_elapsedTime = 0f;
 			_loopType = LoopType.None;
 			_delayBetweenLoops = 0f;
