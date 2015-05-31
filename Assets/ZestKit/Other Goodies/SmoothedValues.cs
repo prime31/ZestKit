@@ -7,7 +7,7 @@ namespace Prime31.ZestKit
 	/// <summary>
 	/// SmoothedValue subclasses were made to address the the propensity to misuse Lerps in Update/FixedUpdate/Coroutines. It is a common
 	/// pattern to do things camera follow and other movement via Lerp( from, to, Time.deltaTime * someValue ). Lerping like that isnt
-	/// really doing much more than jumping towards the to value with an exponential out ease. The target will never reach to to value.
+	/// really doing much more than jumping towards the to value with an exponential out ease. The target will never reach the to value.
 	/// 
 	/// SmoothedValue will do the same basic thing with 2 major differences: you can choose the ease type and the target will reach
 	/// the to value at duration has passed.
