@@ -191,7 +191,7 @@ public class ZestKitOtherGoodies : MonoBehaviour
 	{
 		if( _springTween != null && Input.GetMouseButtonDown( 0 ) )
 		{
-			// fetch the clicked position but keep z 0 so we dont move the cube behind the camera
+			// fetch the clicked position but keep z 1 so we dont move the cube behind the camera
 			var newTargetValue = Camera.main.ScreenToWorldPoint( Input.mousePosition );
 			newTargetValue.z = 1f;
 			_springTween.setTargetValue( newTargetValue );
