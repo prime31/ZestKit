@@ -96,7 +96,7 @@ namespace Prime31.ZestKit
 
 		/// <summary>
 		/// helper that just sets the to value of the tween to be to + from making the tween relative
-		/// to it's current value.
+		/// to its current value.
 		/// </summary>
 		/// <returns>The is relative tween.</returns>
 		ITween<T> setIsRelative();
@@ -147,7 +147,7 @@ namespace Prime31.ZestKit
 
 		/// <summary>
 		/// gets the target of the tween or null for TweenTargets that arent necessarily all about a single object.
-		/// it's only real use is for ZestKit to find a list of tweens by target.
+		/// its only real use is for ZestKit to find a list of tweens by target.
 		/// </summary>
 		/// <returns>The target object.</returns>
 		object getTargetObject();
@@ -215,7 +215,7 @@ namespace Prime31.ZestKit
 
 		/// <summary>
 		/// gets the target of the tween or null for TweenTargets that arent necessarily all about a single object.
-		/// it's only real use is for ZestKit to find a list of tweens by target.
+		/// its only real use is for ZestKit to find a list of tweens by target.
 		/// </summary>
 		/// <returns>The target object.</returns>
 		object getTargetObject();
