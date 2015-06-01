@@ -68,7 +68,7 @@ public class SomeCustomClass : ITweenTarget<Vector3>
 
 That's it. SomeCustomClass is now a valid ```ITweenTarget<T>``` and it can tweened with a ```Vector3Tween``` (just pass it as the first parameter to the constructor or the initialize method of the Vector3Tween).
 
-It was mentioned above that you can use the ZestKit tween engine without ZestKit. The ```Zest``` class contains the core tween engine and all of it's easing powers ready to use. If you are going that route, it is expected that you are a big girl/boy and can read the code and figure out how to use it so you're on your own from here.
+It was mentioned above that you can use the ZestKit tween engine without ZestKit. The ```Zest``` class contains the core tween engine and all of its easing powers ready to use. If you are going that route, it is expected that you are a big girl/boy and can read the code and figure out how to use it so you're on your own from here.
 
 
 
