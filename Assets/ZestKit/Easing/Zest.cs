@@ -17,17 +17,41 @@ namespace Prime31.ZestKit
 		{
 			return from + ( to - from ) * t;
 		}
+		
+		
+		// remainingFactorPerSecond is the percentage of the distance it covers every second. should be between 0 and 1.
+		// if it's 0.25 it means it covers 75% of the remaining distance every second independent of the framerate
+		public static float lerpTowards( float from, float to, float remainingFactorPerSecond, float deltaTime )
+		{
+			return unclampedLerp( from, to, 1f - Mathf.Pow( remainingFactorPerSecond, deltaTime ) );
+		}
 
 
 		public static Vector2 unclampedLerp( Vector2 from, Vector2 to, float t )
 		{
 			return new Vector2( from.x + ( to.x - from.x ) * t, from.y + ( to.y - from.y ) * t );
 		}
+		
+		
+		// remainingFactorPerSecond is the percentage of the distance it covers every second. should be between 0 and 1.
+		// if it's 0.25 it means it covers 75% of the remaining distance every second independent of the framerate
+		public static Vector2 lerpTowards( Vector2 from, Vector2 to, float remainingFactorPerSecond, float deltaTime )
+		{
+			return unclampedLerp( from, to, 1f - Mathf.Pow( remainingFactorPerSecond, deltaTime ) );
+		}
 
 
 		public static Vector3 unclampedLerp( Vector3 from, Vector3 to, float t )
 		{
 			return new Vector3( from.x + ( to.x - from.x ) * t, from.y + ( to.y - from.y ) * t, from.z + ( to.z - from.z ) * t );
+		}
+		
+		
+		// remainingFactorPerSecond is the percentage of the distance it covers every second. should be between 0 and 1.
+		// if it's 0.25 it means it covers 75% of the remaining distance every second independent of the framerate
+		public static Vector3 lerpTowards( Vector3 from, Vector3 to, float remainingFactorPerSecond, float deltaTime )
+		{
+			return unclampedLerp( from, to, 1f - Mathf.Pow( remainingFactorPerSecond, deltaTime ) );
 		}
 
 
