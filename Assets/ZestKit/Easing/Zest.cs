@@ -53,6 +53,15 @@ namespace Prime31.ZestKit
 		{
 			return unclampedLerp( from, to, 1f - Mathf.Pow( remainingFactorPerSecond, deltaTime ) );
 		}
+		
+		
+		// a different variant that requires the target details to calculate the lerp
+		public static Vector3 lerpTowards( Vector3 followerCurrentPosition, Vector3 targetPreviousPosition, Vector3 targetCurrentPosition, float smoothFactor, float deltaTime )
+	    {
+			var targetDiff = targetCurrentPosition - targetPreviousPosition;
+	        var temp = followerCurrentPosition - targetPreviousPosition + targetDiff / ( smoothFactor * deltaTime );
+	        return targetCurrentPosition - targetDiff / ( smoothFactor * deltaTime ) + temp * Mathf.Exp( -smoothFactor * deltaTime );
+	    }
 
 
 		public static Vector3 unclampedAngledLerp( Vector3 from, Vector3 to, float t )
