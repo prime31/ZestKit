@@ -269,28 +269,7 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// uses the implicit euler method. slower, but always stable.
-		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
-		/// </summary>
-		/// <returns>The spring.</returns>
-		/// <param name="currentValue">Current value.</param>
-		/// <param name="targetValue">Target value.</param>
-		/// <param name="velocity">Velocity by reference. Be sure to reset it to 0 if changing the targetValue between calls</param>
-		/// <param name="dampingRatio">lower values are less damped and higher values are more damped resulting in less springiness.
-		/// should be between 0.01f, 1f to avoid unstable systems.</param>
-		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
-		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
-		public static Vector3 stableSpring( Vector3 currentValue, Vector3 targetValue, ref Vector3 velocity, float dampingRatio, float angularFrequency )
-		{
-			velocity += -2.0f * Time.deltaTime * dampingRatio * angularFrequency * velocity + Time.deltaTime * angularFrequency * angularFrequency * ( targetValue - currentValue );
-			currentValue += Time.deltaTime * velocity;
-
-			return currentValue;
-		}
-
-
-		/// <summary>
-		/// uses the semi-implicit euler method. faster, but not always stable.
+		/// uses the semi-implicit euler method. slower, but always stable.
 		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
 		/// </summary>
 		/// <returns>The spring.</returns>
@@ -302,6 +281,27 @@ namespace Prime31.ZestKit
 		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
 		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
 		public static Vector3 fastSpring( Vector3 currentValue, Vector3 targetValue, ref Vector3 velocity, float dampingRatio, float angularFrequency )
+		{
+			velocity += -2.0f * Time.deltaTime * dampingRatio * angularFrequency * velocity + Time.deltaTime * angularFrequency * angularFrequency * ( targetValue - currentValue );
+			currentValue += Time.deltaTime * velocity;
+
+			return currentValue;
+		}
+
+
+		/// <summary>
+		/// uses the implicit euler method. faster, but not always stable.
+		/// see http://allenchou.net/2015/04/game-math-more-on-numeric-springing/
+		/// </summary>
+		/// <returns>The spring.</returns>
+		/// <param name="currentValue">Current value.</param>
+		/// <param name="targetValue">Target value.</param>
+		/// <param name="velocity">Velocity by reference. Be sure to reset it to 0 if changing the targetValue between calls</param>
+		/// <param name="dampingRatio">lower values are less damped and higher values are more damped resulting in less springiness.
+		/// should be between 0.01f, 1f to avoid unstable systems.</param>
+		/// <param name="angularFrequency">An angular frequency of 2pi (radians per second) means the oscillation completes one
+		/// full period over one second, i.e. 1Hz. should be less than 35 or so to remain stable</param>
+		public static Vector3 stableSpring( Vector3 currentValue, Vector3 targetValue, ref Vector3 velocity, float dampingRatio, float angularFrequency )
 		{
 			var f = 1f + 2f * Time.deltaTime * dampingRatio * angularFrequency;
 			var oo = angularFrequency * angularFrequency;
