@@ -286,7 +286,7 @@ namespace Prime31.ZestKit
 		/// sets the task to use Time.unscaledDeltaTime instead of Time.deltaTime
 		/// </summary>
 		/// <returns>ActionTask</returns>
-		public ActionTask setIsTimeScaleIndependant()
+		public ActionTask setIsTimeScaleIndependent()
 		{
 			_isTimeScaleIndependent = true;
 			return this;

@@ -50,7 +50,7 @@ namespace Prime31.ZestKit
 		/// sets the tween to use Time.unscaledDeltaTime instead of Time.deltaTime
 		/// </summary>
 		/// <returns>The is time scale independant.</returns>
-		ITween<T> setIsTimeScaleIndependant();
+		ITween<T> setIsTimeScaleIndependent();
 
 		/// <summary>
 		/// chainable. sets the action that should be called when the tween is complete.

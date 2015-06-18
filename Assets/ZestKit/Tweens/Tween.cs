@@ -92,7 +92,7 @@ namespace Prime31.ZestKit
 		}
 
 
-		public ITween<T> setIsTimeScaleIndependant()
+		public ITween<T> setIsTimeScaleIndependent()
 		{
 			_isTimeScaleIndependent = true;
 			return this;
