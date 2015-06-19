@@ -1,4 +1,7 @@
-﻿#if UNITY_EDITOR
+﻿// enable .NET 2.0 (NOT Subset) and uncomment the following line to use the DLL builder
+//#define DOT_NET_SUBSET_IS_NOT_SET_IN_API_COMPATIBILITY_MODE
+
+#if UNITY_EDITOR && DOT_NET_SUBSET_IS_NOT_SET_IN_API_COMPATIBILITY_MODE 
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
