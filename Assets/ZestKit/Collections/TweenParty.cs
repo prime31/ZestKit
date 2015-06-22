@@ -16,6 +16,8 @@ namespace Prime31.ZestKit
 	{
 		private List<ITweenControl> _tweenList = new List<ITweenControl>();
 
+		public int totalTweens { get { return _tweenList.Count; } }
+
 
 		public TweenParty( float duration )
 		{

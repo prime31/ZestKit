@@ -16,6 +16,8 @@ namespace Prime31.ZestKit
 		private int _currentTween = 0;
 		private Action<TweenChain> _completionHandler;
 
+		public int totalTweens { get { return _tweenList.Count; } }
+
 
 		#region ITweenable
 
