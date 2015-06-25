@@ -10,6 +10,12 @@ namespace Prime31.ZestKit
 {
 	public class IntTween : Tween<int>
 	{
+		public static IntTween create()
+		{
+			return ZestKit.cacheIntTweens ? QuickCache<IntTween>.pop() : new IntTween();
+		}
+
+
 		public IntTween()
 		{}
 
@@ -49,6 +55,12 @@ namespace Prime31.ZestKit
 
 	public class FloatTween : Tween<float>
 	{
+		public static FloatTween create()
+		{
+			return ZestKit.cacheFloatTweens ? QuickCache<FloatTween>.pop() : new FloatTween();
+		}
+
+
 		public FloatTween()
 		{}
 
@@ -88,6 +100,12 @@ namespace Prime31.ZestKit
 
 	public class Vector2Tween : Tween<Vector2>
 	{
+		public static Vector2Tween create()
+		{
+			return ZestKit.cacheVector2Tweens ? QuickCache<Vector2Tween>.pop() : new Vector2Tween();
+		}
+
+
 		public Vector2Tween()
 		{}
 
@@ -127,6 +145,12 @@ namespace Prime31.ZestKit
 
 	public class Vector3Tween : Tween<Vector3>
 	{
+		public static Vector3Tween create()
+		{
+			return ZestKit.cacheVector3Tweens ? QuickCache<Vector3Tween>.pop() : new Vector3Tween();
+		}
+
+
 		public Vector3Tween()
 		{}
 
@@ -166,6 +190,12 @@ namespace Prime31.ZestKit
 
 	public class Vector4Tween : Tween<Vector4>
 	{
+		public static Vector4Tween create()
+		{
+			return ZestKit.cacheVector4Tweens ? QuickCache<Vector4Tween>.pop() : new Vector4Tween();
+		}
+
+
 		public Vector4Tween()
 		{}
 
@@ -205,6 +235,12 @@ namespace Prime31.ZestKit
 
 	public class QuaternionTween : Tween<Quaternion>
 	{
+		public static QuaternionTween create()
+		{
+			return ZestKit.cacheQuaternionTweens ? QuickCache<QuaternionTween>.pop() : new QuaternionTween();
+		}
+
+
 		public QuaternionTween()
 		{}
 
@@ -244,6 +280,12 @@ namespace Prime31.ZestKit
 
 	public class ColorTween : Tween<Color>
 	{
+		public static ColorTween create()
+		{
+			return ZestKit.cacheColorTweens ? QuickCache<ColorTween>.pop() : new ColorTween();
+		}
+
+
 		public ColorTween()
 		{}
 
@@ -283,6 +325,12 @@ namespace Prime31.ZestKit
 
 	public class Color32Tween : Tween<Color32>
 	{
+		public static Color32Tween create()
+		{
+			return ZestKit.cacheColor32Tweens ? QuickCache<Color32Tween>.pop() : new Color32Tween();
+		}
+
+
 		public Color32Tween()
 		{}
 
@@ -322,6 +370,12 @@ namespace Prime31.ZestKit
 
 	public class RectTween : Tween<Rect>
 	{
+		public static RectTween create()
+		{
+			return ZestKit.cacheRectTweens ? QuickCache<RectTween>.pop() : new RectTween();
+		}
+
+
 		public RectTween()
 		{}
 
