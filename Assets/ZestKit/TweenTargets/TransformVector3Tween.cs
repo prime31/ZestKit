@@ -90,10 +90,10 @@ namespace Prime31.ZestKit
 
 		public override void recycleSelf()
 		{
-			base.recycleSelf();
-
 			if( _shouldRecycleTween )
 			{
+				_target = null;
+				_nextTween = null;
 				_transform = null;
 				QuickCache<TransformVector3Tween>.push( this );
 			}
