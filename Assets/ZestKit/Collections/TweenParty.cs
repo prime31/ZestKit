@@ -87,12 +87,8 @@ namespace Prime31.ZestKit
 
 		public override void recycleSelf()
 		{
-			if( !_shouldRecycleTween )
-				return;
-			
 			for( var i = 0; i < _tweenList.Count; i++ )
 				_tweenList[i].recycleSelf();
-
 			_tweenList.Clear();
 		}
 
@@ -107,6 +103,30 @@ namespace Prime31.ZestKit
 			_tweenList.Add( tween );
 
 			return this;
+		}
+
+		/*
+		// maybe prevent this usage?
+		public new ITween<float> prepareForReuse( float from, float to, float duration )
+		{
+			return null;
+		}
+		*/
+
+		/// <summary>
+		/// Prepare TweenParty for reuse. This recycles sub-tweens so use setRecycleTween(false) on any sub-tweens you want to reuse.
+		/// </summary>
+		/// <param name="duration">Duration.</param>
+		public TweenParty prepareForReuse( float duration )
+		{
+			for( var i = 0; i < _tweenList.Count; i++ )
+				_tweenList[i].recycleSelf();
+			_tweenList.Clear();
+
+			//initialize( this, 0f, duration, duration );
+			//return this;
+
+			return (TweenParty) prepareForReuse( 0f, duration, duration); 
 		}
 
 		#endregion
