@@ -170,8 +170,17 @@ namespace Prime31.ZestKit
 						if( _continueWithTask != null )
 							_continueWithTask.start();
 
-						_isCurrentlyManagedByZestKit = false;
-						return true;
+					    // if stop was called on this ActionTask we need to be careful that we don't return true which will tell ZestKit
+						// to remove the task while it is iterating it's list of tweens causing bad things to happen.
+						if( _isCurrentlyManagedByZestKit )
+						{
+							_isCurrentlyManagedByZestKit = false;
+							return true;
+						}
+						else
+						{
+							return false;
+						}
 					}
 				}
 				else
