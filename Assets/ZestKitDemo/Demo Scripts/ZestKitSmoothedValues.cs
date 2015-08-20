@@ -39,7 +39,10 @@ public class ZestKitSmoothedValues : MonoBehaviour
 		DemoGUIHelpers.setupGUIButtons();
 
 
-		GUILayout.Label( "Smoothed Float with Slider to Visualize Easing" );
+		GUILayout.Label( "Click anywhere to move the cube via a SmoothedVector3" );
+		GUILayout.Space( 30 );
+		GUILayout.Label( "Click the buttons below the slider to use\na SmoothedFloat to change the slider value" );
+
 		GUILayout.BeginHorizontal();
 
 		if( GUILayout.Button( "Set To Value to 10" ) )

@@ -56,11 +56,11 @@ public class ZestKitOtherGoodies : MonoBehaviour
 			{
 				var party = new TweenParty( _duration );
 				party.addTween( cube.GetComponent<Renderer>().material.ZKcolorTo( Color.black ) )
-			    .addTween( cube.ZKpositionTo( new Vector3( 7f, 4f ) ) )
-				.addTween( cube.ZKlocalScaleTo( new Vector3( 1f, 4f ) ) )
-				.addTween( cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ) ) )
-				.setLoops( LoopType.PingPong )
-				.start();
+				    .addTween( cube.ZKpositionTo( new Vector3( 7f, 4f ) ) )
+					.addTween( cube.ZKlocalScaleTo( new Vector3( 1f, 4f ) ) )
+					.addTween( cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ) ) )
+					.setLoops( LoopType.PingPong )
+					.start();
 			}
 
 
@@ -68,10 +68,10 @@ public class ZestKitOtherGoodies : MonoBehaviour
 			{
 				var chain = new TweenChain();
 				chain.appendTween( cube.GetComponent<Renderer>().material.ZKcolorTo( Color.black, _duration ).setLoops( LoopType.PingPong ) )
-				.appendTween( cube.ZKpositionTo( new Vector3( 7f, 4f ), _duration ).setLoops( LoopType.PingPong ) )
-				.appendTween( cube.ZKlocalScaleTo( new Vector3( 1f, 4f ), _duration ).setLoops( LoopType.PingPong ) )
-				.appendTween( cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ), _duration ).setLoops( LoopType.PingPong ) )
-				.start();
+					.appendTween( cube.ZKpositionTo( new Vector3( 7f, 4f ), _duration ).setLoops( LoopType.PingPong ) )
+					.appendTween( cube.ZKlocalScaleTo( new Vector3( 1f, 4f ), _duration ).setLoops( LoopType.PingPong ) )
+					.appendTween( cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ), _duration ).setLoops( LoopType.PingPong ) )
+					.start();
 			}
 
 
