@@ -27,6 +27,12 @@ namespace Prime31.ZestKit
 		}
 
 
+		public Vector3 getTweenedValue()
+		{
+			return _transform.position;
+		}
+
+
 		public override ITween<Vector3> setIsRelative()
 		{
 			_isRelativeTween = true;

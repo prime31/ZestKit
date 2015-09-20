@@ -15,8 +15,8 @@ namespace Prime31.ZestKit
 	public class TweenParty : FloatTween, ITweenTarget<float>
 	{
 		private List<ITweenControl> _tweenList = new List<ITweenControl>();
-
 		public int totalTweens { get { return _tweenList.Count; } }
+		public float currentElapsedTime { get; private set; }
 
 
 		public TweenParty( float duration )
@@ -36,10 +36,15 @@ namespace Prime31.ZestKit
 		/// <param name="value">Value.</param>
 		public void setTweenedValue( float value )
 		{
+			currentElapsedTime = value;
 			for( var i = 0; i < _tweenList.Count; i++ )
-			{
 				_tweenList[i].jumpToElapsedTime( value );
-			}
+		}
+
+
+		public float getTweenedValue()
+		{
+			return currentElapsedTime;
 		}
 
 

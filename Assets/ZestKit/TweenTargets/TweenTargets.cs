@@ -32,6 +32,20 @@ namespace Prime31.ZestKit
 					break;
 			}
 		}
+
+
+		public override Quaternion getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case TransformRotationType.Rotation:
+					return _target.rotation;
+				case TransformRotationType.LocalRotation:
+					return _target.localRotation;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
 	
 
 		public TransformRotationTarget( Transform transform, TransformRotationType targetType )
@@ -47,13 +61,13 @@ namespace Prime31.ZestKit
 	public abstract class AbstractMaterialTarget
 	{
 		protected Material _material;
-		protected string _propertyName;
+		protected int _materialNameId;
 
 
 		public void prepareForUse( Material material, string propertyName )
 		{
 			_material = material;
-			_propertyName = propertyName;
+			_materialNameId = Shader.PropertyToID( propertyName );
 		}
 
 
@@ -77,10 +91,15 @@ namespace Prime31.ZestKit
 			// if the babysitter is enabled and we dont validate just silently do nothing
 			if( ZestKit.enableBabysitter && !_material )
 				return;
-			
-			_material.SetColor( _propertyName, value );
+
+			_material.SetColor( _materialNameId, value );
 		}
 
+
+		public Color getTweenedValue()
+		{
+			return _material.GetColor( _materialNameId );
+		}
 	}
 
 
@@ -98,9 +117,15 @@ namespace Prime31.ZestKit
 			if( ZestKit.enableBabysitter && !_material )
 				return;
 			
-			var color = _material.GetColor( _propertyName );
+			var color = _material.GetColor( _materialNameId );
 			color.a = value;
-			_material.SetColor( _propertyName, color );
+			_material.SetColor( _materialNameId, color );
+		}
+
+
+		public float getTweenedValue()
+		{
+			return _material.GetColor( _materialNameId ).a;
 		}
 	}
 
@@ -119,7 +144,13 @@ namespace Prime31.ZestKit
 			if( ZestKit.enableBabysitter && !_material )
 				return;
 			
-			_material.SetFloat( _propertyName, value );
+			_material.SetFloat( _materialNameId, value );
+		}
+
+
+		public float getTweenedValue()
+		{
+			return _material.GetFloat( _materialNameId );
 		}
 	}
 		
@@ -138,16 +169,25 @@ namespace Prime31.ZestKit
 			if( ZestKit.enableBabysitter && !_material )
 				return;
 			
-			_material.SetVector( _propertyName, value );
+			_material.SetVector( _materialNameId, value );
+		}
+
+
+		public Vector4 getTweenedValue()
+		{
+			return _material.GetVector( _materialNameId );
 		}
 	}
 
 
 	public class MaterialTextureOffsetTarget : AbstractMaterialTarget, ITweenTarget<Vector2>
 	{
+		string _propertyName;
+
 		public MaterialTextureOffsetTarget( Material material, string propertyName )
 		{
 			prepareForUse( material, propertyName );
+			_propertyName = propertyName;
 		}
 
 
@@ -156,17 +196,26 @@ namespace Prime31.ZestKit
 			// if the babysitter is enabled and we dont validate just silently do nothing
 			if( ZestKit.enableBabysitter && !_material )
 				return;
-			
+
 			_material.SetTextureOffset( _propertyName, value );
+		}
+
+
+		public Vector2 getTweenedValue()
+		{
+			return _material.GetTextureOffset( _propertyName );
 		}
 	}
 
 
 	public class MaterialTextureScaleTarget : AbstractMaterialTarget, ITweenTarget<Vector2>
 	{
+		string _propertyName;
+
 		public MaterialTextureScaleTarget( Material material, string propertyName )
 		{
 			prepareForUse( material, propertyName );
+			_propertyName = propertyName;
 		}
 
 
@@ -177,6 +226,12 @@ namespace Prime31.ZestKit
 				return;
 			
 			_material.SetTextureScale( _propertyName, value );
+		}
+
+
+		public Vector2 getTweenedValue()
+		{
+			return _material.GetTextureScale( _propertyName );
 		}
 	}
 
@@ -216,6 +271,22 @@ namespace Prime31.ZestKit
 		}
 
 
+		public override float getTweenedValue()
+		{
+			switch( _tweenType )
+			{
+				case AudioSourceFloatType.Volume:
+					return _target.volume;
+				case AudioSourceFloatType.Pitch:
+					return _target.pitch;
+				case AudioSourceFloatType.PanStereo:
+					return _target.panStereo;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
+
+
 		public AudioSourceFloatTarget( AudioSource audioSource, AudioSourceFloatType targetType )
 		{
 			_target = audioSource;
@@ -224,18 +295,12 @@ namespace Prime31.ZestKit
 	}
 
 
-	/// <summary>
-	/// when used with a FloatTween the CameraTargetType determines what is tweened. When used with a ColorTween
-	/// the backgroundColor is tweened
-	/// </summary>
-	public class CameraTarget : AbstractTweenTarget<Camera,float>, ITweenTarget<Color>, ITweenTarget<Rect>
+	public class CameraFloatTarget : AbstractTweenTarget<Camera,float>
 	{
 		public enum CameraTargetType
 		{
 			OrthographicSize,
-			FieldOfView,
-			Rect,
-			PixelRect
+			FieldOfView
 		}
 
 		CameraTargetType _targetType;
@@ -259,13 +324,61 @@ namespace Prime31.ZestKit
 		}
 
 
-		public void setTweenedValue( Color value )
+		public override float getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case CameraTargetType.OrthographicSize:
+					return _target.orthographicSize;
+				case CameraTargetType.FieldOfView:
+					return _target.fieldOfView;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
+			
+
+		public CameraFloatTarget( Camera camera, CameraTargetType targetType = CameraTargetType.OrthographicSize )
+		{
+			_target = camera;
+			_targetType = targetType;
+		}
+	}
+
+
+	public class CameraBackgroundColorTarget : AbstractTweenTarget<Camera,Color>
+	{
+		public override void setTweenedValue( Color value )
 		{
 			_target.backgroundColor = value;
 		}
 
 
-		public void setTweenedValue( Rect value )
+		public override Color getTweenedValue()
+		{
+			return _target.backgroundColor;
+		}
+
+
+		public CameraBackgroundColorTarget( Camera camera )
+		{
+			_target = camera;
+		}
+	}
+
+
+	public class CameraRectTarget : AbstractTweenTarget<Camera,Rect>
+	{
+		public enum CameraTargetType
+		{
+			Rect,
+			PixelRect
+		}
+
+		CameraTargetType _targetType;
+
+
+		public override void setTweenedValue( Rect value )
 		{
 			switch( _targetType )
 			{
@@ -279,7 +392,21 @@ namespace Prime31.ZestKit
 		}
 
 
-		public CameraTarget( Camera camera, CameraTargetType targetType = CameraTargetType.OrthographicSize )
+		public override Rect getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case CameraTargetType.Rect:
+					return _target.rect;
+				case CameraTargetType.PixelRect:
+					return _target.pixelRect;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
+
+
+		public CameraRectTarget( Camera camera, CameraTargetType targetType = CameraTargetType.Rect )
 		{
 			_target = camera;
 			_targetType = targetType;
@@ -287,7 +414,10 @@ namespace Prime31.ZestKit
 	}
 
 
-	public class CanvasGroupTarget : AbstractTweenTarget<CanvasGroup,float>
+	/// <summary>
+	/// Affects the CanvasGroup.alpha property
+	/// </summary>
+	public class CanvasGroupFloatTarget : AbstractTweenTarget<CanvasGroup,float>
 	{
 		public override void setTweenedValue( float value )
 		{
@@ -299,18 +429,20 @@ namespace Prime31.ZestKit
 		}
 
 
-		public CanvasGroupTarget( CanvasGroup canvasGroup )
+		public override float getTweenedValue()
+		{
+			return _target.alpha;
+		}
+
+
+		public CanvasGroupFloatTarget( CanvasGroup canvasGroup )
 		{
 			_target = canvasGroup;
 		}
 	}
 
 
-	/// <summary>
-	/// when used with a FloatTween the ImageTargetType determines what is tweened. When used with a ColorTween
-	/// the color is tweened
-	/// </summary>
-	public class ImageTarget : AbstractTweenTarget<Image,float>, ITweenTarget<Color>
+	public class ImageFloatTarget : AbstractTweenTarget<Image,float>
 	{
 		public enum ImageTargetType
 		{
@@ -321,7 +453,7 @@ namespace Prime31.ZestKit
 		ImageTargetType _targetType;
 
 
-		public ImageTarget( Image image, ImageTargetType targetType = ImageTargetType.Alpha )
+		public ImageFloatTarget( Image image, ImageTargetType targetType = ImageTargetType.Alpha )
 		{
 			_target = image;
 			_targetType = targetType;
@@ -333,7 +465,7 @@ namespace Prime31.ZestKit
 			// if the babysitter is enabled and we dont validate just silently do nothing
 			if( ZestKit.enableBabysitter && !validateTarget() )
 				return;
-			
+
 			switch( _targetType )
 			{
 				case ImageTargetType.Alpha:
@@ -346,6 +478,20 @@ namespace Prime31.ZestKit
 					break;
 			}
 		}
+
+
+		public override float getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case ImageTargetType.Alpha:
+					return _target.color.a;
+				case ImageTargetType.FillAmount:
+					return _target.fillAmount;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
 	
 
 		public void setTweenedValue( Color value )
@@ -356,22 +502,35 @@ namespace Prime31.ZestKit
 
 
 	/// <summary>
-	/// when used with a Vector3Tween the anchoredPosition3D will be tweened and when used with a Vector2Tween
-	/// the anchoredPosition will be tweened
+	/// Affects the Image.color property
 	/// </summary>
-	public class RectTransformTarget : AbstractTweenTarget<RectTransform,Vector3>, ITweenTarget<Vector2>
+	public class ImageColorTarget : AbstractTweenTarget<Image,Color>
 	{
-		public override void setTweenedValue( Vector3 value )
+		public ImageColorTarget( Image image )
 		{
-			// if the babysitter is enabled and we dont validate just silently do nothing
-			if( ZestKit.enableBabysitter && !validateTarget() )
-				return;
-			
-			_target.anchoredPosition3D = value;
+			_target = image;
 		}
 
 
-		public void setTweenedValue( Vector2 value )
+		public override void setTweenedValue( Color value )
+		{
+			_target.color = value;
+		}
+
+
+		public override Color getTweenedValue()
+		{
+			return _target.color;
+		}
+	}
+
+
+	/// <summary>
+	/// affects the anchoredPosition property
+	/// </summary>
+	public class RectTransformVector2Target : AbstractTweenTarget<RectTransform,Vector2>
+	{
+		public override void setTweenedValue( Vector2 value )
 		{
 			// if the babysitter is enabled and we dont validate just silently do nothing
 			if( ZestKit.enableBabysitter && !validateTarget() )
@@ -381,7 +540,41 @@ namespace Prime31.ZestKit
 		}
 
 
-		public RectTransformTarget( RectTransform rectTransform )
+		public override Vector2 getTweenedValue()
+		{
+			return _target.anchoredPosition;
+		}
+
+
+		public RectTransformVector2Target( RectTransform rectTransform )
+		{
+			_target = rectTransform;
+		}
+	}
+
+
+	/// <summary>
+	/// affects the anchoredPosition3D property
+	/// </summary>
+	public class RectTransformVector3Target : AbstractTweenTarget<RectTransform,Vector3>
+	{
+		public override void setTweenedValue( Vector3 value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+
+			_target.anchoredPosition3D = value;
+		}
+
+
+		public override Vector3 getTweenedValue()
+		{
+			return _target.anchoredPosition3D;
+		}
+
+
+		public RectTransformVector3Target( RectTransform rectTransform )
 		{
 			_target = rectTransform;
 		}
@@ -400,6 +593,12 @@ namespace Prime31.ZestKit
 		}
 
 
+		public override Vector2 getTweenedValue()
+		{
+			return _target.normalizedPosition;
+		}
+
+
 		public ScrollRectTarget( ScrollRect scrollRect )
 		{
 			_target = scrollRect;
@@ -408,10 +607,34 @@ namespace Prime31.ZestKit
 
 
 	/// <summary>
-	/// when used with a Color the color property will be tweened and when used with a float tween the LightTargetType
-	/// passed to the constructor dictates what property is tweened.
+	/// affects the color property
 	/// </summary>
-	public class LightTarget : AbstractTweenTarget<Light,Color>, ITweenTarget<float>
+	public class LightColorTarget : AbstractTweenTarget<Light,Color>
+	{
+		public override void setTweenedValue( Color value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !validateTarget() )
+				return;
+
+			_target.color = value;
+		}
+
+
+		public override Color getTweenedValue()
+		{
+			return _target.color;
+		}
+
+
+		public LightColorTarget( Light light )
+		{
+			_target = light;
+		}
+	}
+
+
+	public class LightFloatTarget : AbstractTweenTarget<Light,float>
 	{
 		public enum LightTargetType
 		{
@@ -423,24 +646,7 @@ namespace Prime31.ZestKit
 		LightTargetType _targetType;
 
 
-		public LightTarget( Light light, LightTargetType targetType = LightTargetType.Intensity )
-		{
-			_target = light;
-			_targetType = targetType;
-		}
-
-
-		public override void setTweenedValue( Color value )
-		{
-			// if the babysitter is enabled and we dont validate just silently do nothing
-			if( ZestKit.enableBabysitter && !validateTarget() )
-				return;
-
-			_target.color = value;
-		}
-
-
-		public void setTweenedValue( float value )
+		public override void setTweenedValue( float value )
 		{
 			// if the babysitter is enabled and we dont validate just silently do nothing
 			if( ZestKit.enableBabysitter && !validateTarget() )
@@ -460,6 +666,29 @@ namespace Prime31.ZestKit
 				default:
 					throw new System.ArgumentOutOfRangeException();
 			}
+		}
+
+
+		public override float getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case LightTargetType.Intensity:
+					return _target.intensity;
+				case LightTargetType.Range:
+					return _target.range;
+				case LightTargetType.SpotAngle:
+					return _target.spotAngle;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
+
+
+		public LightFloatTarget( Light light, LightTargetType targetType = LightTargetType.Intensity )
+		{
+			_target = light;
+			_targetType = targetType;
 		}
 	}
 

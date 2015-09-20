@@ -309,7 +309,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKfieldOfViewTo( this Camera self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.FieldOfView );
+			var tweenTarget = new CameraFloatTarget( self, CameraFloatTarget.CameraTargetType.FieldOfView );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.fieldOfView, to, duration );
 
@@ -326,7 +326,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKorthographicSizeTo( this Camera self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.OrthographicSize );
+			var tweenTarget = new CameraFloatTarget( self, CameraFloatTarget.CameraTargetType.OrthographicSize );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.orthographicSize, to, duration );
 
@@ -343,7 +343,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Color> ZKbackgroundColorTo( this Camera self, Color to, float duration = 0.3f )
 		{
-			var tweenTarget = new CameraTarget( self );
+			var tweenTarget = new CameraBackgroundColorTarget( self );
 			var tween = ColorTween.create();
 			tween.initialize( tweenTarget, self.backgroundColor, to, duration );
 
@@ -360,7 +360,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Rect> ZKrectTo( this Camera self, Rect to, float duration = 0.3f )
 		{
-			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.Rect );
+			var tweenTarget = new CameraRectTarget( self, CameraRectTarget.CameraTargetType.Rect );
 			var tween = RectTween.create();
 			tween.initialize( tweenTarget, self.rect, to, duration );
 
@@ -377,7 +377,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Rect> ZKpixelRectTo( this Camera self, Rect to, float duration = 0.3f )
 		{
-			var tweenTarget = new CameraTarget( self, CameraTarget.CameraTargetType.PixelRect );
+			var tweenTarget = new CameraRectTarget( self, CameraRectTarget.CameraTargetType.PixelRect );
 			var tween = RectTween.create();
 			tween.initialize( tweenTarget, self.pixelRect, to, duration );
 
@@ -398,7 +398,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKalphaTo( this CanvasGroup self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new CanvasGroupTarget( self );
+			var tweenTarget = new CanvasGroupFloatTarget( self );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.alpha, to, duration );
 
@@ -419,7 +419,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKalphaTo( this Image self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
+			var tweenTarget = new ImageFloatTarget( self, ImageFloatTarget.ImageTargetType.Alpha );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.color.a, to, duration );
 
@@ -436,7 +436,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKfillAmountTo( this Image self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.FillAmount );
+			var tweenTarget = new ImageFloatTarget( self, ImageFloatTarget.ImageTargetType.FillAmount );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.fillAmount, to, duration );
 
@@ -453,7 +453,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Color> ZKcolorTo( this Image self, Color to, float duration = 0.3f )
 		{
-			var tweenTarget = new ImageTarget( self, ImageTarget.ImageTargetType.Alpha );
+			var tweenTarget = new ImageColorTarget( self );
 			var tween = ColorTween.create();
 			tween.initialize( tweenTarget, self.color, to, duration );
 
@@ -474,7 +474,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Vector2> ZKanchoredPositionTo( this RectTransform self, Vector2 to, float duration = 0.3f )
 		{
-			var tweenTarget = new RectTransformTarget( self );
+			var tweenTarget = new RectTransformVector2Target( self );
 			var tween = Vector2Tween.create();
 			tween.initialize( tweenTarget, self.anchoredPosition, to, duration );
 
@@ -491,7 +491,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Vector3> ZKanchoredPosition3DTo( this RectTransform self, Vector3 to, float duration = 0.3f )
 		{
-			var tweenTarget = new RectTransformTarget( self );
+			var tweenTarget = new RectTransformVector3Target( self );
 			var tween = Vector3Tween.create();
 			tween.initialize( tweenTarget, self.anchoredPosition3D, to, duration );
 
@@ -533,7 +533,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKintensityTo( this Light self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.Intensity );
+			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.Intensity );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.intensity, to, duration );
 
@@ -550,7 +550,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKrangeTo( this Light self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.Range );
+			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.Range );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.range, to, duration );
 
@@ -567,7 +567,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKspotAngleTo( this Light self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new LightTarget( self, LightTarget.LightTargetType.SpotAngle );
+			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.SpotAngle );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, self.spotAngle, to, duration );
 
@@ -584,7 +584,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Color> ZKcolorTo( this Light self, Color to, float duration = 0.3f )
 		{
-			var tweenTarget = new LightTarget( self );
+			var tweenTarget = new LightColorTarget( self );
 			var tween = ColorTween.create();
 			tween.initialize( tweenTarget, self.color, to, duration );
 

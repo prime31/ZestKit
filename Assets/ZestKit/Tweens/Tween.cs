@@ -354,7 +354,7 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// resets all state to defaults and sets the initial state based on the paramters passed in. This method serves
+		/// resets all state to defaults and sets the initial state based on the paramaters passed in. This method serves
 		/// as an entry point so that Tween subclasses can call it and so that tweens can be recycled. When recycled,
 		/// the constructor will not be called again so this method encapsulates what the constructor would be doing.
 		/// </summary>
