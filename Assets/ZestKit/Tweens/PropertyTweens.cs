@@ -108,82 +108,82 @@ namespace Prime31.ZestKit
 
 	public static class PropertyTweens
 	{
-		public static ITween<int> intPropertyTo( object self, string propertyName, int from, int to, float duration )
+		public static ITween<int> intPropertyTo( object self, string propertyName, int to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<int>( self, propertyName );
 			var tween = ZestKit.cacheIntTweens ? QuickCache<IntTween>.pop() : new IntTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<float> floatPropertyTo( object self, string propertyName, float from, float to, float duration )
+		public static ITween<float> floatPropertyTo( object self, string propertyName, float to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<float>( self, propertyName );
 
 			var tween = ZestKit.cacheFloatTweens ? QuickCache<FloatTween>.pop() : new FloatTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector2> vector2PropertyTo( object self, string propertyName, Vector2 from, Vector2 to, float duration )
+		public static ITween<Vector2> vector2PropertyTo( object self, string propertyName, Vector2 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector2>( self, propertyName );
 			var tween = ZestKit.cacheVector2Tweens ? QuickCache<Vector2Tween>.pop() : new Vector2Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector3> vector3PropertyTo( object self, string propertyName, Vector3 from, Vector3 to, float duration )
+		public static ITween<Vector3> vector3PropertyTo( object self, string propertyName, Vector3 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector3>( self, propertyName );
 			var tween = ZestKit.cacheVector3Tweens ? QuickCache<Vector3Tween>.pop() : new Vector3Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Vector4> vector4PropertyTo( object self, string propertyName, Vector4 from, Vector4 to, float duration )
+		public static ITween<Vector4> vector4PropertyTo( object self, string propertyName, Vector4 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Vector4>( self, propertyName );
 			var tween = ZestKit.cacheVector4Tweens ? QuickCache<Vector4Tween>.pop() : new Vector4Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Quaternion> quaternionPropertyTo( object self, string propertyName, Quaternion from, Quaternion to, float duration )
+		public static ITween<Quaternion> quaternionPropertyTo( object self, string propertyName, Quaternion to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Quaternion>( self, propertyName );
 			var tween = ZestKit.cacheQuaternionTweens ? QuickCache<QuaternionTween>.pop() : new QuaternionTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Color> colorPropertyTo( object self, string propertyName, Color from, Color to, float duration )
+		public static ITween<Color> colorPropertyTo( object self, string propertyName, Color to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color>( self, propertyName );
 			var tween = ZestKit.cacheColorTweens ? QuickCache<ColorTween>.pop() : new ColorTween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
 
 
-		public static ITween<Color32> color32PropertyTo( object self, string propertyName, Color32 from, Color32 to, float duration )
+		public static ITween<Color32> color32PropertyTo( object self, string propertyName, Color32 to, float duration )
 		{
 			var tweenTarget = new PropertyTarget<Color32>( self, propertyName );
 			var tween = ZestKit.cacheColor32Tweens ? QuickCache<Color32Tween>.pop() : new Color32Tween();
-			tween.initialize( tweenTarget, from, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}

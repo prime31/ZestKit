@@ -25,6 +25,7 @@ namespace Prime31.ZestKit
 
 
 		protected ITweenTarget<T> _target;
+		protected bool _isFromValueOverridden;
 		protected T _fromValue;
 		protected T _toValue;
 		protected EaseType _easeType;
@@ -129,6 +130,7 @@ namespace Prime31.ZestKit
 
 		public ITween<T> setFrom( T from )
 		{
+			_isFromValueOverridden = true;
 			_fromValue = from;
 			return this;
 		}
@@ -136,7 +138,7 @@ namespace Prime31.ZestKit
 
 		public ITween<T> prepareForReuse( T from, T to, float duration )
 		{
-			initialize( _target, from, to, duration );
+			initialize( _target, to, duration );
 			return this;
 		}
 
@@ -245,8 +247,11 @@ namespace Prime31.ZestKit
 
 		public virtual void start()
 		{
+			if( !_isFromValueOverridden )
+				_fromValue = _target.getTweenedValue();
+			
 			if( _tweenState == TweenState.Complete )
-			{
+			{				
 				_tweenState = TweenState.Running;
 				ZestKit.instance.addTween( this );
 			}
@@ -328,6 +333,7 @@ namespace Prime31.ZestKit
 		{
 			context = null;
 			_completionHandler = _loopCompleteHandler = null;
+			_isFromValueOverridden = false;
 			_isTimeScaleIndependent = false;
 			_tweenState = TweenState.Complete;
 			// TODO: I don't think we should ever flip the flag from _shouldRecycleTween = false without the user's consent. Needs research and some thought
@@ -362,13 +368,12 @@ namespace Prime31.ZestKit
 		/// <param name="from">From.</param>
 		/// <param name="to">To.</param>
 		/// <param name="duration">Duration.</param>
-		public void initialize( ITweenTarget<T> target, T from, T to, float duration )
+		public void initialize( ITweenTarget<T> target, T to, float duration )
 		{
 			// reset state in case we were recycled
 			resetState();
 
 			_target = target;
-			_fromValue = from;
 			_toValue = to;
 			_duration = duration;
 		}

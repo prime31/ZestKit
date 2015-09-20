@@ -17,7 +17,7 @@ namespace Prime31.ZestKit
 			_spline = spline;
 			_spline.buildPath();
 
-			initialize( this, _transform.position, Vector3.zero, duration );
+			initialize( this, Vector3.zero, duration );
 		}
 
 

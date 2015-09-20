@@ -38,7 +38,7 @@ namespace Prime31.ZestKit
 		}
 
 
-		public void start()
+		public virtual void start()
 		{
 			// dont add ourself twice!
 			if( _isCurrentlyManagedByZestKit )

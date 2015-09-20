@@ -12,12 +12,21 @@ namespace Prime31.ZestKit
 	/// </summary>
 	public class TweenChain : AbstractTweenable
 	{
-		private List<ITweenable> _tweenList = new List<ITweenable>();
-		private int _currentTween = 0;
-		private Action<TweenChain> _completionHandler;
+		List<ITweenable> _tweenList = new List<ITweenable>();
+		int _currentTween = 0;
+		Action<TweenChain> _completionHandler;
 
 		public int totalTweens { get { return _tweenList.Count; } }
 
+
+		public override void start()
+		{
+			// prep our first tween
+			if( _tweenList.Count > 0 )
+				_tweenList[0].start();
+			
+			base.start();
+		}
 
 		#region ITweenable
 
@@ -26,7 +35,7 @@ namespace Prime31.ZestKit
 			if( _isPaused )
 				return false;
 
-			// if currentTween is greater than we we've got end this chain
+			// if currentTween is greater than we've got in the tweenList end this chain
 			if( _currentTween >= _tweenList.Count )
 				return true;
 			
@@ -41,6 +50,11 @@ namespace Prime31.ZestKit
 
 					_isCurrentlyManagedByZestKit = false;
 					return true;
+				}
+				else
+				{
+					// we have a new tween so start it
+					_tweenList[_currentTween].start();
 				}
 			}
 

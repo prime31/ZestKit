@@ -23,7 +23,7 @@ namespace Prime31.ZestKit
 		{
 			var tween = QuickCache<TransformVector3Tween>.pop();
 			tween.setTargetAndType( self, TransformTargetType.Position );
-			tween.initialize( tween, self.position, to, duration );
+			tween.initialize( tween, to, duration );
 
 			return tween;
 		}
@@ -40,7 +40,7 @@ namespace Prime31.ZestKit
 		{
 			var tween = QuickCache<TransformVector3Tween>.pop();
 			tween.setTargetAndType( self, TransformTargetType.LocalPosition );
-			tween.initialize( tween, self.localPosition, to, duration );
+			tween.initialize( tween, to, duration );
 
 			return tween;
 		}
@@ -57,7 +57,7 @@ namespace Prime31.ZestKit
 		{
 			var tween = QuickCache<TransformVector3Tween>.pop();
 			tween.setTargetAndType( self, TransformTargetType.LocalScale );
-			tween.initialize( tween, self.localScale, to, duration );
+			tween.initialize( tween, to, duration );
 
 			return tween;
 		}
@@ -74,7 +74,7 @@ namespace Prime31.ZestKit
 		{
 			var tween = QuickCache<TransformVector3Tween>.pop();
 			tween.setTargetAndType( self, TransformTargetType.EulerAngles );
-			tween.initialize( tween, self.eulerAngles, to, duration );
+			tween.initialize( tween, to, duration );
 
 			return tween;
 		}
@@ -91,7 +91,7 @@ namespace Prime31.ZestKit
 		{
 			var tween = QuickCache<TransformVector3Tween>.pop();
 			tween.setTargetAndType( self, TransformTargetType.LocalEulerAngles );
-			tween.initialize( tween, self.localEulerAngles, to, duration );
+			tween.initialize( tween, to, duration );
 
 			return tween;
 		}
@@ -145,7 +145,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialColorTarget( self, propertyName );
 			var tween = ColorTween.create();
-			tween.initialize( tweenTarget, self.GetColor( propertyName ), to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -163,7 +163,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialAlphaTarget( self, propertyName );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.GetColor( propertyName ).a, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -181,7 +181,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialFloatTarget( self, propertyName );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.GetFloat( propertyName ), to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -199,7 +199,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialVector4Target( self, propertyName );
 			var tween = Vector4Tween.create();
-			tween.initialize( tweenTarget, self.GetVector( propertyName ), to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -217,7 +217,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialTextureOffsetTarget( self, propertyName );
 			var tween = Vector2Tween.create();
-			tween.initialize( tweenTarget, self.GetTextureOffset( propertyName ), to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -235,7 +235,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new MaterialTextureScaleTarget( self, propertyName );
 			var tween = Vector2Tween.create();
-			tween.initialize( tweenTarget, self.GetTextureScale( propertyName ), to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -256,7 +256,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Volume );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.volume, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -273,7 +273,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.Pitch );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.pitch, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -290,7 +290,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new AudioSourceFloatTarget( self, AudioSourceFloatTarget.AudioSourceFloatType.PanStereo );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.panStereo, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -311,7 +311,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CameraFloatTarget( self, CameraFloatTarget.CameraTargetType.FieldOfView );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.fieldOfView, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -328,7 +328,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CameraFloatTarget( self, CameraFloatTarget.CameraTargetType.OrthographicSize );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.orthographicSize, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -345,7 +345,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CameraBackgroundColorTarget( self );
 			var tween = ColorTween.create();
-			tween.initialize( tweenTarget, self.backgroundColor, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -362,7 +362,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CameraRectTarget( self, CameraRectTarget.CameraTargetType.Rect );
 			var tween = RectTween.create();
-			tween.initialize( tweenTarget, self.rect, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -379,7 +379,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CameraRectTarget( self, CameraRectTarget.CameraTargetType.PixelRect );
 			var tween = RectTween.create();
-			tween.initialize( tweenTarget, self.pixelRect, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -400,7 +400,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new CanvasGroupFloatTarget( self );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.alpha, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -421,7 +421,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new ImageFloatTarget( self, ImageFloatTarget.ImageTargetType.Alpha );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.color.a, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -438,7 +438,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new ImageFloatTarget( self, ImageFloatTarget.ImageTargetType.FillAmount );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.fillAmount, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -455,7 +455,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new ImageColorTarget( self );
 			var tween = ColorTween.create();
-			tween.initialize( tweenTarget, self.color, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -476,7 +476,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new RectTransformVector2Target( self );
 			var tween = Vector2Tween.create();
-			tween.initialize( tweenTarget, self.anchoredPosition, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -493,7 +493,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new RectTransformVector3Target( self );
 			var tween = Vector3Tween.create();
-			tween.initialize( tweenTarget, self.anchoredPosition3D, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -514,7 +514,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new ScrollRectTarget( self );
 			var tween = Vector2Tween.create();
-			tween.initialize( tweenTarget, self.normalizedPosition, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -535,7 +535,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.Intensity );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.intensity, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -552,7 +552,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.Range );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.range, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -569,7 +569,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new LightFloatTarget( self, LightFloatTarget.LightTargetType.SpotAngle );
 			var tween = FloatTween.create();
-			tween.initialize( tweenTarget, self.spotAngle, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}
@@ -586,7 +586,7 @@ namespace Prime31.ZestKit
 		{
 			var tweenTarget = new LightColorTarget( self );
 			var tween = ColorTween.create();
-			tween.initialize( tweenTarget, self.color, to, duration );
+			tween.initialize( tweenTarget, to, duration );
 
 			return tween;
 		}

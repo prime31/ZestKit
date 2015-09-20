@@ -37,17 +37,18 @@ public class ZestKitOtherGoodies : MonoBehaviour
 
 			if( GUILayout.Button( "Custom Property Tween (wackyDoodleWidth)" ) )
 			{
-				PropertyTweens.floatPropertyTo( this, "wackyDoodleWidth", 1f, 6f, _duration )
-				.setLoops( LoopType.PingPong )
-				.start();
+				PropertyTweens.floatPropertyTo( this, "wackyDoodleWidth", 6f, _duration )
+					.setFrom( 1f )
+					.setLoops( LoopType.PingPong )
+					.start();
 			}
 
 
 			if( GUILayout.Button( "Position via Property Tween" ) )
 			{
-				PropertyTweens.vector3PropertyTo( cube, "position", cube.position, new Vector3( 5f, 5f, 5f ), _duration )
-				.setLoops( LoopType.PingPong )
-				.start();
+				PropertyTweens.vector3PropertyTo( cube, "position", new Vector3( 5f, 5f, 5f ), _duration )
+					.setLoops( LoopType.PingPong )
+					.start();
 			}
 
 
@@ -77,18 +78,18 @@ public class ZestKitOtherGoodies : MonoBehaviour
 
 			if( GUILayout.Button( "Chaining Tweens Directly (same props as the party)" ) )
 			{
-				cube.GetComponent<Renderer>().material.ZKcolorTo( Color.black ).setLoops( LoopType.PingPong )
-				.setNextTween
-				(
-					cube.ZKpositionTo( new Vector3( 7f, 4f ) ).setLoops( LoopType.PingPong ).setNextTween
+				cube.GetComponent<Renderer>().material.ZKcolorTo( Color.black, _duration ).setLoops( LoopType.PingPong )
+					.setNextTween
 					(
-						cube.ZKlocalScaleTo( new Vector3( 1f, 4f ) ).setLoops( LoopType.PingPong ).setNextTween
+						cube.ZKpositionTo( new Vector3( 7f, 4f ), _duration ).setLoops( LoopType.PingPong ).setNextTween
 						(
-							cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ) ).setLoops( LoopType.PingPong )
+							cube.ZKlocalScaleTo( new Vector3( 1f, 4f ), _duration ).setLoops( LoopType.PingPong ).setNextTween
+							(
+								cube.ZKrotationTo( Quaternion.AngleAxis( 180f, Vector3.one ), _duration ).setLoops( LoopType.PingPong )
+							)
 						)
 					)
-				)
-				.start();
+					.start();
 			}
 
 
