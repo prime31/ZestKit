@@ -414,10 +414,7 @@ namespace Prime31.ZestKit
 	}
 
 
-	/// <summary>
-	/// Affects the CanvasGroup.alpha property
-	/// </summary>
-	public class CanvasGroupFloatTarget : AbstractTweenTarget<CanvasGroup,float>
+	public class CanvasGroupAlphaTarget : AbstractTweenTarget<CanvasGroup,float>
 	{
 		public override void setTweenedValue( float value )
 		{
@@ -435,7 +432,7 @@ namespace Prime31.ZestKit
 		}
 
 
-		public CanvasGroupFloatTarget( CanvasGroup canvasGroup )
+		public CanvasGroupAlphaTarget( CanvasGroup canvasGroup )
 		{
 			_target = canvasGroup;
 		}
@@ -501,9 +498,6 @@ namespace Prime31.ZestKit
 	}
 
 
-	/// <summary>
-	/// Affects the Image.color property
-	/// </summary>
 	public class ImageColorTarget : AbstractTweenTarget<Image,Color>
 	{
 		public ImageColorTarget( Image image )
@@ -525,10 +519,7 @@ namespace Prime31.ZestKit
 	}
 
 
-	/// <summary>
-	/// affects the anchoredPosition property
-	/// </summary>
-	public class RectTransformVector2Target : AbstractTweenTarget<RectTransform,Vector2>
+	public class RectTransformAnchoredPositionTarget : AbstractTweenTarget<RectTransform,Vector2>
 	{
 		public override void setTweenedValue( Vector2 value )
 		{
@@ -546,17 +537,14 @@ namespace Prime31.ZestKit
 		}
 
 
-		public RectTransformVector2Target( RectTransform rectTransform )
+		public RectTransformAnchoredPositionTarget( RectTransform rectTransform )
 		{
 			_target = rectTransform;
 		}
 	}
 
 
-	/// <summary>
-	/// affects the anchoredPosition3D property
-	/// </summary>
-	public class RectTransformVector3Target : AbstractTweenTarget<RectTransform,Vector3>
+	public class RectTransformAnchoredPosition3DTarget : AbstractTweenTarget<RectTransform,Vector3>
 	{
 		public override void setTweenedValue( Vector3 value )
 		{
@@ -574,14 +562,14 @@ namespace Prime31.ZestKit
 		}
 
 
-		public RectTransformVector3Target( RectTransform rectTransform )
+		public RectTransformAnchoredPosition3DTarget( RectTransform rectTransform )
 		{
 			_target = rectTransform;
 		}
 	}
 
 
-	public class ScrollRectTarget : AbstractTweenTarget<ScrollRect,Vector2>
+	public class ScrollRectNormalizedPositionTarget : AbstractTweenTarget<ScrollRect,Vector2>
 	{
 		public override void setTweenedValue( Vector2 value )
 		{
@@ -599,16 +587,13 @@ namespace Prime31.ZestKit
 		}
 
 
-		public ScrollRectTarget( ScrollRect scrollRect )
+		public ScrollRectNormalizedPositionTarget( ScrollRect scrollRect )
 		{
 			_target = scrollRect;
 		}
 	}
 
 
-	/// <summary>
-	/// affects the color property
-	/// </summary>
 	public class LightColorTarget : AbstractTweenTarget<Light,Color>
 	{
 		public override void setTweenedValue( Color value )

@@ -398,7 +398,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<float> ZKalphaTo( this CanvasGroup self, float to, float duration = 0.3f )
 		{
-			var tweenTarget = new CanvasGroupFloatTarget( self );
+			var tweenTarget = new CanvasGroupAlphaTarget( self );
 			var tween = FloatTween.create();
 			tween.initialize( tweenTarget, to, duration );
 
@@ -474,7 +474,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Vector2> ZKanchoredPositionTo( this RectTransform self, Vector2 to, float duration = 0.3f )
 		{
-			var tweenTarget = new RectTransformVector2Target( self );
+			var tweenTarget = new RectTransformAnchoredPositionTarget( self );
 			var tween = Vector2Tween.create();
 			tween.initialize( tweenTarget, to, duration );
 
@@ -491,7 +491,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Vector3> ZKanchoredPosition3DTo( this RectTransform self, Vector3 to, float duration = 0.3f )
 		{
-			var tweenTarget = new RectTransformVector3Target( self );
+			var tweenTarget = new RectTransformAnchoredPosition3DTarget( self );
 			var tween = Vector3Tween.create();
 			tween.initialize( tweenTarget, to, duration );
 
@@ -512,7 +512,7 @@ namespace Prime31.ZestKit
 		/// <param name="duration">Duration.</param>
 		public static ITween<Vector2> ZKnormalizedPositionTo( this ScrollRect self, Vector2 to, float duration = 0.3f )
 		{
-			var tweenTarget = new ScrollRectTarget( self );
+			var tweenTarget = new ScrollRectNormalizedPositionTarget( self );
 			var tween = Vector2Tween.create();
 			tween.initialize( tweenTarget, to, duration );
 
