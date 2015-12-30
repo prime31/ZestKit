@@ -20,9 +20,9 @@ namespace Prime31.ZestKit
 		{}
 
 
-		public IntTween( ITweenTarget<int> target, int from, int to, float duration )
+		public IntTween( ITweenTarget<int> target, int to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -67,7 +67,7 @@ namespace Prime31.ZestKit
 
 		public FloatTween( ITweenTarget<float> target, float from, float to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -112,7 +112,7 @@ namespace Prime31.ZestKit
 
 		public Vector2Tween( ITweenTarget<Vector2> target, Vector2 from, Vector2 to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -157,7 +157,7 @@ namespace Prime31.ZestKit
 
 		public Vector3Tween( ITweenTarget<Vector3> target, Vector3 from, Vector3 to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -202,7 +202,7 @@ namespace Prime31.ZestKit
 
 		public Vector4Tween( ITweenTarget<Vector4> target, Vector4 from, Vector4 to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -247,7 +247,7 @@ namespace Prime31.ZestKit
 
 		public QuaternionTween( ITweenTarget<Quaternion> target, Quaternion from, Quaternion to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -292,7 +292,7 @@ namespace Prime31.ZestKit
 
 		public ColorTween( ITweenTarget<Color> target, Color from, Color to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -337,7 +337,7 @@ namespace Prime31.ZestKit
 
 		public Color32Tween( ITweenTarget<Color32> target, Color32 from, Color32 to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 
@@ -382,7 +382,7 @@ namespace Prime31.ZestKit
 
 		public RectTween( ITweenTarget<Rect> target, Rect from, Rect to, float duration )
 		{
-			initialize( target, from, to, duration );
+			initialize( target, to, duration );
 		}
 
 

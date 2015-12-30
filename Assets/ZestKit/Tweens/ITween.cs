@@ -213,6 +213,9 @@ namespace Prime31.ZestKit
 		/// <param name="value">Value.</param>
 		void setTweenedValue( T value );
 
+
+		T getTweenedValue();
+
 		/// <summary>
 		/// gets the target of the tween or null for TweenTargets that arent necessarily all about a single object.
 		/// its only real use is for ZestKit to find a list of tweens by target.

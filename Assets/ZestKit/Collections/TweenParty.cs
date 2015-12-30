@@ -15,8 +15,8 @@ namespace Prime31.ZestKit
 	public class TweenParty : FloatTween, ITweenTarget<float>
 	{
 		private List<ITweenControl> _tweenList = new List<ITweenControl>();
-
 		public int totalTweens { get { return _tweenList.Count; } }
+		public float currentElapsedTime { get; private set; }
 
 
 		public TweenParty( float duration )
@@ -36,10 +36,15 @@ namespace Prime31.ZestKit
 		/// <param name="value">Value.</param>
 		public void setTweenedValue( float value )
 		{
+			currentElapsedTime = value;
 			for( var i = 0; i < _tweenList.Count; i++ )
-			{
 				_tweenList[i].jumpToElapsedTime( value );
-			}
+		}
+
+
+		public float getTweenedValue()
+		{
+			return currentElapsedTime;
 		}
 
 
@@ -78,6 +83,8 @@ namespace Prime31.ZestKit
 						((ITween<Color>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
 					else if( _tweenList[i] is ITween<Color32> )
 						((ITween<Color32>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+
+					_tweenList[i].start();
 				}
 
 				ZestKit.instance.addTween( this );
@@ -105,13 +112,6 @@ namespace Prime31.ZestKit
 			return this;
 		}
 
-		/*
-		// maybe prevent this usage?
-		public new ITween<float> prepareForReuse( float from, float to, float duration )
-		{
-			return null;
-		}
-		*/
 
 		/// <summary>
 		/// Prepare TweenParty for reuse. This recycles sub-tweens so use setRecycleTween(false) on any sub-tweens you want to reuse.
@@ -126,7 +126,7 @@ namespace Prime31.ZestKit
 			//initialize( this, 0f, duration, duration );
 			//return this;
 
-			return (TweenParty) prepareForReuse( 0f, duration, duration); 
+			return (TweenParty)prepareForReuse( 0f, duration, duration ); 
 		}
 
 		#endregion

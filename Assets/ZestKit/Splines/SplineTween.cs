@@ -17,13 +17,19 @@ namespace Prime31.ZestKit
 			_spline = spline;
 			_spline.buildPath();
 
-			initialize( this, _transform.position, Vector3.zero, duration );
+			initialize( this, Vector3.zero, duration );
 		}
 
 
 		public void setTweenedValue( Vector3 value )
 		{
 			_transform.position = value;
+		}
+
+
+		public Vector3 getTweenedValue()
+		{
+			return _transform.position;
 		}
 
 
