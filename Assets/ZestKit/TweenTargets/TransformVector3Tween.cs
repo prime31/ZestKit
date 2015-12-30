@@ -55,6 +55,26 @@ namespace Prime31.ZestKit
 		}
 
 
+		public Vector3 getTweenedValue()
+		{
+			switch( _targetType )
+			{
+				case TransformTargetType.Position:
+					return _transform.position;
+				case TransformTargetType.LocalPosition:
+					return _transform.localPosition;
+				case TransformTargetType.LocalScale:
+					return _transform.localScale;
+				case TransformTargetType.EulerAngles:
+					return _transform.eulerAngles;
+				case TransformTargetType.LocalEulerAngles:
+					return _transform.localEulerAngles;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+		}
+
+
 		public new object getTargetObject()
 		{
 			return _transform;

@@ -164,7 +164,7 @@ namespace Prime31.ZestKit
 
 
 		/// <summary>
-		/// returns all the tweens that have a specific context. Tweens are returned as ITweenControl since that is all
+		/// returns all the tweens that have a specific context. Tweens are returned as ITweenable since that is all
 		/// that ZestKit knows about.
 		/// </summary>
 		/// <returns>The tweens with context.</returns>

@@ -12,6 +12,7 @@ namespace Prime31.ZestKit
 		protected U _target;
 
 		abstract public void setTweenedValue( T value );
+		abstract public T getTweenedValue();
 
 
 		public void setTarget( U target )
