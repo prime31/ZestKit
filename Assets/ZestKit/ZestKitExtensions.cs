@@ -131,6 +131,46 @@ namespace Prime31.ZestKit
 		#endregion
 
 
+		#region SpriteRenderer tweens
+
+		/// <summary>
+		/// tweens any SpriteRenderer Color property
+		/// </summary>
+		/// <returns>The kcolor to.</returns>
+		/// <param name="self">Self.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
+		/// <param name="propertyName">Property name.</param>
+		public static ITween<Color> ZKcolorTo( this SpriteRenderer self, Color to, float duration = 0.3f )
+		{
+			var tweenTarget = new SpriteRendererColorTarget( self );
+			var tween = ColorTween.create();
+			tween.initialize( tweenTarget, to, duration );
+
+			return tween;
+		}
+
+
+		/// <summary>
+		/// tweens the alpha value of any SpriteRenderer Color property
+		/// </summary>
+		/// <returns>The kalpha to.</returns>
+		/// <param name="self">Self.</param>
+		/// <param name="to">To.</param>
+		/// <param name="duration">Duration.</param>
+		/// <param name="propertyName">Property name.</param>
+		public static ITween<float> ZKalphaTo( this SpriteRenderer self, float to, float duration = 0.3f )
+		{
+			var tweenTarget = new SpriteRendererAlphaTarget( self );
+			var tween = FloatTween.create();
+			tween.initialize( tweenTarget, to, duration );
+
+			return tween;
+		}
+
+		#endregion
+
+
 		#region Material tweens
 
 		/// <summary>
