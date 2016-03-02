@@ -56,6 +56,82 @@ namespace Prime31.ZestKit
 	}
 
 
+	#region SpriteRenderer target
+
+
+	public abstract class AbstractSpriteRendererTarget
+	{
+		protected SpriteRenderer _spriteRenderer;
+
+
+		public void prepareForUse( SpriteRenderer spriteRenderer )
+		{
+			_spriteRenderer = spriteRenderer;
+		}
+
+
+		public object getTargetObject()
+		{
+			return _spriteRenderer;
+		}
+	}
+
+
+	public class SpriteRendererColorTarget : AbstractSpriteRendererTarget, ITweenTarget<Color>
+	{
+		public SpriteRendererColorTarget( SpriteRenderer spriteRenderer )
+		{
+			prepareForUse( spriteRenderer );
+		}
+
+
+		public void setTweenedValue( Color value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_spriteRenderer )
+				return;
+
+			_spriteRenderer.color = value;
+		}
+
+
+		public Color getTweenedValue()
+		{
+			return _spriteRenderer.color;
+		}
+	}
+
+
+	public class SpriteRendererAlphaTarget : AbstractSpriteRendererTarget, ITweenTarget<float>
+	{
+		public SpriteRendererAlphaTarget( SpriteRenderer spriteRenderer )
+		{
+			prepareForUse( spriteRenderer);
+		}
+
+
+		public void setTweenedValue( float value )
+		{
+			// if the babysitter is enabled and we dont validate just silently do nothing
+			if( ZestKit.enableBabysitter && !_spriteRenderer )
+				return;
+
+			var color = _spriteRenderer.color;
+			color.a = value;
+			_spriteRenderer.color = color;
+		}
+
+
+		public float getTweenedValue()
+		{
+			return _spriteRenderer.color.a;
+		}
+	}
+
+
+	#endregion
+
+
 	#region Material targets
 
 	public abstract class AbstractMaterialTarget
