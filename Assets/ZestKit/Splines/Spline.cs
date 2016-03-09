@@ -260,5 +260,10 @@ namespace Prime31.ZestKit
 			var spline = new Spline( new List<Vector3>( nodes ) );
 			spline.drawGizmos( resolution, isInEditMode );
 		}
-	}
+
+
+        public int getTotalPointsBetweenPoints(float t, float t2) {
+            return _solver.getTotalPointsBetweenPoints(t, t2);
+        }
+    }
 }
