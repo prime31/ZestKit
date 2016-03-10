@@ -23,7 +23,9 @@ namespace Prime31.ZestKit
 		// used by the visual path editor
 		public List<Vector3> nodes { get { return _solver.nodes; } }
 
-		private bool _isReversed; // internal flag that lets us know if our nodes are reversed or not
+        public List<Vector3> nodesWithDivisions { get { return _solver.nodesWithDivisions; } }
+
+        private bool _isReversed; // internal flag that lets us know if our nodes are reversed or not
 		private AbstractSplineSolver _solver;
 
 		public float pathLength
@@ -35,14 +37,25 @@ namespace Prime31.ZestKit
 		}
 
 
-		/// <summary>
-		/// generates an arc from start to end with the arc axis perpendicular to start and end points
-		/// </summary>
-		/// <returns>The arc.</returns>
-		/// <param name="start">Start.</param>
-		/// <param name="end">End.</param>
-		/// <param name="curvature">how far away from the line from start to end the arc extends</param>
-		public static Spline generateArc( Vector3 start, Vector3 end, float curvature )
+        public float getPathLength(int endPoint) 
+        {
+            return _solver.getPathLength(endPoint);
+        }
+
+
+        public float getPathLength(int initPoint, int endPoint) 
+        {
+            return _solver.getPathLength(initPoint, endPoint);
+        }
+
+        /// <summary>
+        /// generates an arc from start to end with the arc axis perpendicular to start and end points
+        /// </summary>
+        /// <returns>The arc.</returns>
+        /// <param name="start">Start.</param>
+        /// <param name="end">End.</param>
+        /// <param name="curvature">how far away from the line from start to end the arc extends</param>
+        public static Spline generateArc( Vector3 start, Vector3 end, float curvature )
 		{
 			return Spline.generateArc( start, end, curvature, Vector3.Cross( start, end ) );
 		}
@@ -146,10 +159,16 @@ namespace Prime31.ZestKit
 		}
 
 
-		/// <summary>
-		/// responsible for calculating total length, segmentStartLocations and segmentDistances
-		/// </summary>
-		public void buildPath()
+        public float allPathLength {
+            get {
+                return _solver.allPathLength;
+            }
+        }
+
+        /// <summary>
+        /// responsible for calculating total length, segmentStartLocations and segmentDistances
+        /// </summary>
+        public void buildPath()
 		{
 			_solver.buildPath();
 		}

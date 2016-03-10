@@ -8,7 +8,12 @@ namespace Prime31.ZestKit
 	{
 		protected List<Vector3> _nodes;
 		public List<Vector3> nodes { get { return _nodes; } }
-		protected float _pathLength;
+
+        protected List<Vector3> _nodesWithDivisions;
+        public List<Vector3> nodesWithDivisions { get { return _nodesWithDivisions; } }
+
+
+        protected float _pathLength;
 
 		public float pathLength
 		{
@@ -18,10 +23,57 @@ namespace Prime31.ZestKit
 			}
 		}
 
+        public float allPathLength 
+        {
+            get 
+            {
+                return _nodesWithDivisions.Count;
+            }
+        }
 
-		// how many subdivisions should we divide each segment into? higher values take longer to build and lookup but
-		// result in closer to actual constant velocity
-		protected int totalSubdivisionsPerNodeForLookupTable = 5;
+        //get the distance from the beginning to a point
+        public float getPathLength(int endPoint) 
+        {
+            float length = 0f;
+            var totalSudivisions = _nodes.Count * totalSubdivisionsPerNodeForLookupTable;
+            float timePerSlice = 1f / totalSudivisions;
+            Vector3 lastPoint = getPoint(0);
+
+            for (int i = 1; i < endPoint + 1; i++) 
+            {
+                float currentTime = timePerSlice * i;
+                var currentPoint = getPoint(currentTime);
+                length += Vector3.Distance(currentPoint, lastPoint);
+                lastPoint = currentPoint;
+            }
+
+            return length;
+        }
+
+        //get the distance from the initpoint to the endpoint we want
+        //this points are NOT the waypoints or nodes, these are the subdivisions
+        public float getPathLength(int initPoint, int endPoint) 
+        {
+            float length = 0f;
+            var totalSudivisions = _nodes.Count * totalSubdivisionsPerNodeForLookupTable;
+            float timePerSlice = 1f / totalSudivisions;
+            Vector3 lastPoint = getPoint(initPoint);
+
+            for (int i = initPoint+1; i < endPoint + 1; i++) 
+            {
+                float currentTime = timePerSlice * i;
+                var currentPoint = getPoint(currentTime);
+                length += Vector3.Distance(currentPoint, lastPoint);
+                lastPoint = currentPoint;
+            }
+
+            return length;
+        }
+
+
+        // how many subdivisions should we divide each segment into? higher values take longer to build and lookup but
+        // result in closer to actual constant velocity
+        protected int totalSubdivisionsPerNodeForLookupTable = 5;
 		protected Dictionary<float, float> _segmentTimeForDistance; // holds data in the form [time:distance] as a lookup table
 
 
@@ -36,6 +88,7 @@ namespace Prime31.ZestKit
 			// we dont care about the first node for distances because they are always t:0 and len:0
 			_segmentTimeForDistance = new Dictionary<float, float>( totalSudivisions );
 
+            _nodesWithDivisions = new List<Vector3>();
 
 			var lastPoint = getPoint( 0 );
 
@@ -49,6 +102,7 @@ namespace Prime31.ZestKit
 				_pathLength += Vector3.Distance( currentPoint, lastPoint );
 				lastPoint = currentPoint;
 
+                _nodesWithDivisions.Add(currentPoint);
 				_segmentTimeForDistance.Add( currentTime, _pathLength );
 			}
 		}
