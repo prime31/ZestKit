@@ -52,12 +52,13 @@ namespace Prime31.ZestKit
 
         //get the distance from the initpoint to the endpoint we want
         //this points are NOT the waypoints or nodes, these are the subdivisions
-        public float getPathLength(int initPoint, int endPoint) 
+        public float getPathLength(int initPoint, int endPoint, float normalizedInitPos) 
         {
             float length = 0f;
             var totalSudivisions = _nodes.Count * totalSubdivisionsPerNodeForLookupTable;
             float timePerSlice = 1f / totalSudivisions;
-            Vector3 lastPoint = getPoint(initPoint);
+            //get the initial point to work with
+            Vector3 lastPoint = getPoint(normalizedInitPos);
 
             for (int i = initPoint+1; i < endPoint + 1; i++) 
             {

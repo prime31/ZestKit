@@ -43,9 +43,8 @@ namespace Prime31.ZestKit
         }
 
 
-        public float getPathLength(int initPoint, int endPoint) 
-        {
-            return _solver.getPathLength(initPoint, endPoint);
+        public float getPathLength(int initPoint, int endPoint, float normalizedInitPoint) {
+            return _solver.getPathLength(initPoint, endPoint, normalizedInitPoint);
         }
 
         /// <summary>
