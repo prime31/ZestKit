@@ -132,6 +132,70 @@ namespace Prime31.ZestKit
 	#endregion
 
 
+    #region Text targets
+
+    public abstract class AbstractTextTarget
+    {
+        protected Text _text;
+
+        public void prepareForUse(Text text)
+        {
+            _text = text;
+        }
+
+        public object getTargetObject()
+        {
+            return _text;
+        }
+    }
+
+    public class TextColorTarget : AbstractTextTarget, ITweenTarget<Color>
+    {
+        public TextColorTarget(Text text)
+        {
+            prepareForUse(text);
+        }
+
+        public void setTweenedValue(Color value)
+        {
+            if (ZestKit.enableBabysitter && !_text)
+                return;
+
+            _text.color = value;
+        }
+
+        public Color getTweenedValue()
+        {
+            return _text.color;
+        }
+    }
+
+    public class TextAlphaTarget : AbstractTextTarget, ITweenTarget<float>
+    {
+        public TextAlphaTarget(Text text)
+        {
+            prepareForUse(text);
+        }
+
+        public void setTweenedValue(float value)
+        {
+            if (ZestKit.enableBabysitter && !_text)
+                return;
+
+            var color = _text.color;
+            color.a = value;
+            _text.color = color;
+        }
+
+        public float getTweenedValue()
+        {
+            return _text.color.a;
+        }
+    }
+
+    #endregion
+
+
 	#region Material targets
 
 	public abstract class AbstractMaterialTarget
