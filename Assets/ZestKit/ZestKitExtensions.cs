@@ -633,5 +633,40 @@ namespace Prime31.ZestKit
 
 		#endregion
 
+        #region Text tweens
+
+        /// <summary>
+        /// tweens a Text color property
+        /// </summary>
+        /// <param name="self">Self.</param>
+        /// <param name="to">To.</param>
+        /// <param name="duration">Duration.</param>
+        /// <returns></returns>
+	    public static ITween<Color> ZKcolorTo(this Text self, Color to, float duration = 0.3f)
+	    {
+	        var tweenTarget = new TextColorTarget(self);
+            var tween = ColorTween.create();
+            tween.initialize(tweenTarget, to, duration);
+
+            return tween;
+	    }
+
+        /// <summary>
+        /// tweens a Text color alpha property
+        /// </summary>
+        /// <param name="self">Self.</param>
+        /// <param name="to">To.</param>
+        /// <param name="duration">Duration.</param>
+        /// <returns></returns>
+	    public static ITween<float> ZKalphaTo(this Text self, float to, float duration = 0.3f)
+	    {
+            var tweenTarget = new TextAlphaTarget(self);
+            var tween = FloatTween.create();
+            tween.initialize(tweenTarget, to, duration);
+
+            return tween;
+	    }
+
+        #endregion
 	}
 }
