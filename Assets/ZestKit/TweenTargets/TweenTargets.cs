@@ -709,7 +709,32 @@ namespace Prime31.ZestKit
 	}
 
 
-	public class ScrollRectNormalizedPositionTarget : AbstractTweenTarget<ScrollRect,Vector2>
+    public class RectTransformSizeDeltaTarget : AbstractTweenTarget<RectTransform, Vector2>
+    {
+        public override void setTweenedValue(Vector2 value)
+        {
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if (ZestKit.enableBabysitter && !validateTarget())
+                return;
+
+            _target.sizeDelta = value;
+        }
+
+
+        public override Vector2 getTweenedValue()
+        {
+            return _target.sizeDelta;
+        }
+
+
+        public RectTransformSizeDeltaTarget(RectTransform rectTransform)
+        {
+            _target = rectTransform;
+        }
+    }
+
+
+    public class ScrollRectNormalizedPositionTarget : AbstractTweenTarget<ScrollRect,Vector2>
 	{
 		public override void setTweenedValue( Vector2 value )
 		{
