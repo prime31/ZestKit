@@ -47,6 +47,11 @@ namespace Prime31.ZestKit
 		List<ITweenable> _activeTweens = new List<ITweenable>();
 
 		/// <summary>
+		/// stores tweens marked for removal
+		/// </summary>
+		List<ITweenable> _tempTweens = new List<ITweenable>();
+
+		/// <summary>
 		/// guard to stop instances being created while the application is quitting
 		/// </summary>
 		static bool _applicationIsQuitting;
@@ -109,8 +114,13 @@ namespace Prime31.ZestKit
 			{
 				var tween = _activeTweens[i];
 				if( tween.tick() )
-					removeTween( tween, i );
+					_tempTweens.Add( tween );
 			}
+
+			// kill the dead Tweens
+			for( var i = 0; i < _tempTweens.Count; i++ )
+				removeTween( _tempTweens[i] );
+			_tempTweens.Clear();
 		}
 
 		#endregion
