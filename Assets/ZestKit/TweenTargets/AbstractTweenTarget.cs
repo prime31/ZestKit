@@ -15,9 +15,10 @@ namespace Prime31.ZestKit
 		abstract public T getTweenedValue();
 
 
-		public void setTarget( U target )
+		public AbstractTweenTarget<U,T> setTarget( U target )
 		{
 			_target = target;
+			return this;
 		}
 
 
