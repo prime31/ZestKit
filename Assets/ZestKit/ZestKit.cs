@@ -56,6 +56,10 @@ namespace Prime31.ZestKit
 		/// </summary>
 		static bool _applicationIsQuitting;
 
+		/// <summary>
+		/// flag when updating active tweens
+		/// </summary>
+		bool _isUpdating;
 
 		/// <summary>
 		/// holds the singleton instance. creates one on demand if none exists.
@@ -109,13 +113,16 @@ namespace Prime31.ZestKit
 
 		void Update()
 		{
-			// loop backwards so we can remove completed tweens
-			for( var i = _activeTweens.Count - 1; i >= 0; --i )
+			_isUpdating = true;
+
+			for( var i = 0; i < _activeTweens.Count; i++ )
 			{
 				var tween = _activeTweens[i];
 				if( tween.tick() )
 					_tempTweens.Add( tween );
 			}
+
+			_isUpdating = false;
 
 			// kill the dead Tweens
 			for( var i = 0; i < _tempTweens.Count; i++ )
@@ -147,7 +154,16 @@ namespace Prime31.ZestKit
 		/// <param name="tween">Tween.</param>
 		public void removeTween( ITweenable tween )
 		{
-			_tempTweens.Add( tween );
+			if (_isUpdating)
+			{
+				_tempTweens.Add( tween );
+			
+			}
+			else
+			{
+				tween.recycleSelf();
+				_activeTweens.Remove( tween );
+			}
 		}
 
 
