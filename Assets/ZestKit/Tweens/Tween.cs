@@ -35,6 +35,7 @@ namespace Prime31.ZestKit
 		protected Action<ITween<T>> _completionHandler;
 		protected Action<ITween<T>> _loopCompleteHandler;
 		protected ITweenable _nextTween;
+        protected T _offset;
 
 		// tween state
 		protected TweenState _tweenState = TweenState.Complete;
@@ -165,6 +166,12 @@ namespace Prime31.ZestKit
 			_nextTween = nextTween;
 			return this;
 		}
+
+        public ITween<T> setOffset( T offset)
+        {
+            this._offset = offset;
+            return this;
+        }
 
 		#endregion
 

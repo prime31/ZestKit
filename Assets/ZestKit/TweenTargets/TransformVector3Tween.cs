@@ -35,20 +35,20 @@ namespace Prime31.ZestKit
 			switch( _targetType )
 			{
 				case TransformTargetType.Position:
-					_transform.position = value;
+					_transform.position = value + this._offset;
 					break;
 				case TransformTargetType.LocalPosition:
-					_transform.localPosition = value;
+					_transform.localPosition = value + this._offset;
 					break;
 				case TransformTargetType.LocalScale:
-					_transform.localScale = value;
+					_transform.localScale = value + this._offset;
 					break;
 				case TransformTargetType.EulerAngles:
-					_transform.eulerAngles = value;
-					break;
+					_transform.eulerAngles = value + this._offset;
+                    break;
 				case TransformTargetType.LocalEulerAngles:
-					_transform.localEulerAngles = value;
-					break;
+					_transform.localEulerAngles = value + this._offset;
+                    break;
 				default:
 					throw new System.ArgumentOutOfRangeException();
 			}

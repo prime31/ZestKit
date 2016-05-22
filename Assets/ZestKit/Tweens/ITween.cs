@@ -117,6 +117,15 @@ namespace Prime31.ZestKit
 		/// <returns>The next tween.</returns>
 		/// <param name="nextTween">Next tween.</param>
 		ITween<T> setNextTween( ITweenable nextTween );
+
+        /// <summary>
+        /// Allows to apply any arbitrary value at any time to current tweened value but preserving the tween.
+        /// Can be used for e.g. more advanced tween composition or add noise to otherwise steady nature of tween values.
+        /// When not changed adds T.Zero to tween values.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        ITween<T> setOffset(T offset);
 	}
 		
 

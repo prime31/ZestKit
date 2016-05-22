@@ -23,7 +23,7 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector3 value )
 		{
-			_transform.position = value;
+			_transform.position = value + this._offset;
 		}
 
 
@@ -49,7 +49,7 @@ namespace Prime31.ZestKit
 			if( _isRelativeTween )
 				position += _fromValue;
 
-			setTweenedValue( position );
+			setTweenedValue(position + this._offset);
 		}
 
 
