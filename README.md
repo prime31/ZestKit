@@ -25,7 +25,7 @@ material.ZKcolorTo( Color.yellow, 0.5f )
 // and get notified when the tween has finished specifying the easing equation to use
 transform.ZKlocalScaleTo( new Vector3( 10f, 10f, 10f ), 0.5f )
     .setDelay( 2f )
-    .setIsTimeScaleIndependant()
+    .setIsTimeScaleIndependent()
     .setCompletionHandler( myCompletionHandlerFunction )
     .setEaseType( EaseType.ElasticOut )
     .start();
