@@ -37,9 +37,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( (int)Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( (int)Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( (int)Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( (int)Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -82,9 +82,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -127,9 +127,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -172,9 +172,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -217,9 +217,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -262,9 +262,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) * this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) * this._offset);
 		}
 
 
@@ -307,9 +307,9 @@ namespace Prime31.ZestKit
 		protected override void updateValue()
 		{
 			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
+				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration) + this._offset);
 		}
 
 
@@ -351,14 +351,25 @@ namespace Prime31.ZestKit
 
 		protected override void updateValue()
 		{
-			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
-			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
-		}
+            Color32 newColor;
+
+            if (_animationCurve != null)
+                newColor = Zest.ease(_animationCurve, _fromValue, _toValue, _elapsedTime, _duration);
+            else
+                newColor = Zest.ease(_easeType, _fromValue, _toValue, _elapsedTime, _duration);
+
+            newColor = new Color32(
+                (byte)(newColor.r + this._offset.r)
+                , (byte)(newColor.g + this._offset.g)
+                , (byte)(newColor.b + this._offset.b)
+                , (byte)(newColor.a + this._offset.a)
+                );
+
+            _target.setTweenedValue(newColor);
+        }
 
 
-		public override void recycleSelf()
+        public override void recycleSelf()
 		{
 			base.recycleSelf();
 
@@ -403,14 +414,20 @@ namespace Prime31.ZestKit
 
 		protected override void updateValue()
 		{
-			if( _animationCurve != null )
-				_target.setTweenedValue( Zest.ease( _animationCurve, _fromValue, _toValue, _elapsedTime, _duration ) );
-			else
-				_target.setTweenedValue( Zest.ease( _easeType, _fromValue, _toValue, _elapsedTime, _duration ) );
-		}
+            Rect newRect;
+
+            if (_animationCurve != null)
+                newRect = Zest.ease(_animationCurve, _fromValue, _toValue, _elapsedTime, _duration);
+            else
+                newRect = Zest.ease(_easeType, _fromValue, _toValue, _elapsedTime, _duration);
+
+            newRect = new Rect(newRect.x + this._offset.x, newRect.y + this._offset.y, newRect.width + this._offset.width, newRect.height + this._offset.height);
+
+            _target.setTweenedValue(newRect);
+        }
 
 
-		public override void recycleSelf()
+        public override void recycleSelf()
 		{
 			base.recycleSelf();
 
