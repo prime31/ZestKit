@@ -23,6 +23,10 @@ namespace Prime31.ZestKit
 
 		public void setTweenedValue( Vector3 value )
 		{
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if( ZestKit.enableBabysitter && !_transform )
+                return;
+            
 			_transform.position = value;
 		}
 
