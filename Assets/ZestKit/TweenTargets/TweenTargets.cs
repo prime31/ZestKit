@@ -489,7 +489,11 @@ namespace Prime31.ZestKit
 	public class CameraBackgroundColorTarget : AbstractTweenTarget<Camera,Color>
 	{
 		public override void setTweenedValue( Color value )
-		{
+        {
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if ( ZestKit.enableBabysitter && !validateTarget() )
+                return;
+            
 			_target.backgroundColor = value;
 		}
 
@@ -520,6 +524,10 @@ namespace Prime31.ZestKit
 
 		public override void setTweenedValue( Rect value )
 		{
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if ( ZestKit.enableBabysitter && !validateTarget() )
+                return;
+            
 			switch( _targetType )
 			{
 				case CameraTargetType.Rect:
@@ -632,7 +640,11 @@ namespace Prime31.ZestKit
 	
 
 		public void setTweenedValue( Color value )
-		{
+        {
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if( ZestKit.enableBabysitter && !validateTarget() )
+                return;
+            
 			_target.color = value;
 		}
 	}
@@ -647,7 +659,11 @@ namespace Prime31.ZestKit
 
 
 		public override void setTweenedValue( Color value )
-		{
+        {
+            // if the babysitter is enabled and we dont validate just silently do nothing
+            if( ZestKit.enableBabysitter && !validateTarget() )
+                return;
+            
 			_target.color = value;
 		}
 
