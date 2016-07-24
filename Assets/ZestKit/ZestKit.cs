@@ -71,7 +71,7 @@ namespace Prime31.ZestKit
 			{
 				if( !_instance && !_applicationIsQuitting )
 				{
-					// check if there is a GoKitLite instance already available in the scene graph before creating one
+					// check if there is a ZestKit instance already available in the scene graph before creating one
 					_instance = FindObjectOfType( typeof( ZestKit ) ) as ZestKit;
 
 					if( !_instance )
