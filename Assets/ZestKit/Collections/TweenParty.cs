@@ -8,15 +8,16 @@ namespace Prime31.ZestKit
 	/// <summary>
 	/// helper class for managing a series of simultaneous tweens. An important item to note here is that the delay,
 	/// loop values and ease/animation curve should be set on the TweenParty and that the sub-tweens must have the
-	/// same duration as the TweenParty.
+	/// same duration as the TweenParty. TweenParty will force reset delay, loops, duration and ease type of all subtweens.
 	/// 
 	/// We piggyback on a FloatTween here and use the float value to tween all of our sub-tweens.
 	/// </summary>
 	public class TweenParty : FloatTween, ITweenTarget<float>
 	{
-		private List<ITweenControl> _tweenList = new List<ITweenControl>();
 		public int totalTweens { get { return _tweenList.Count; } }
 		public float currentElapsedTime { get; private set; }
+
+		List<ITweenControl> _tweenList = new List<ITweenControl>();
 
 
 		public TweenParty( float duration )
@@ -68,21 +69,21 @@ namespace Prime31.ZestKit
 				for( var i = 0; i < _tweenList.Count; i++ )
 				{
 					if( _tweenList[i] is ITween<int> )
-						((ITween<int>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<int>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<float> )
-						((ITween<float>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<float>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Vector2> )
-						((ITween<Vector2>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Vector2>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Vector3> )
-						((ITween<Vector3>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Vector3>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Vector4> )
-						((ITween<Vector4>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Vector4>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Quaternion> )
-						((ITween<Quaternion>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Quaternion>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Color> )
-						((ITween<Color>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Color>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 					else if( _tweenList[i] is ITween<Color32> )
-						((ITween<Color32>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration );
+						((ITween<Color32>)_tweenList[i]).setDelay( 0 ).setLoops( LoopType.None ).setDuration( _duration ).setEaseType( _easeType );
 
 					_tweenList[i].start();
 				}
@@ -122,9 +123,6 @@ namespace Prime31.ZestKit
 			for( var i = 0; i < _tweenList.Count; i++ )
 				_tweenList[i].recycleSelf();
 			_tweenList.Clear();
-
-			//initialize( this, 0f, duration, duration );
-			//return this;
 
 			return (TweenParty)prepareForReuse( 0f, duration, duration ); 
 		}
