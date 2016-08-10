@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_5_4_OR_NEWER
+using UnityEngine.SceneManagement;
+#endif
 
 
 namespace Prime31.ZestKit
@@ -93,8 +96,12 @@ namespace Prime31.ZestKit
 		{
 			if( _instance == null )
 				_instance = this;
-		}
 
+			#if UNITY_5_4_OR_NEWER
+			SceneManager.sceneLoaded -= OnSceneWasLoaded;
+			SceneManager.sceneLoaded += OnSceneWasLoaded;
+			#endif
+		}
 
 		void OnApplicationQuit()
 		{
@@ -104,11 +111,23 @@ namespace Prime31.ZestKit
 		}
 
 
+		#if UNITY_5_4_OR_NEWER
+
+		void OnSceneWasLoaded( Scene scene, LoadSceneMode loadSceneMode )
+		{
+			if( loadSceneMode == LoadSceneMode.Single && removeAllTweensOnLevelLoad )
+				_activeTweens.Clear();
+		}
+
+		#else
+
 		void OnLevelWasLoaded( int level )
 		{
 			if( removeAllTweensOnLevelLoad )
 				_activeTweens.Clear();
 		}
+
+		#endif
 
 
 		void Update()

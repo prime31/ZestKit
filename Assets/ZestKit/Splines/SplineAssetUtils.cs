@@ -12,12 +12,14 @@ namespace Prime31.ZestKit
 		/// </summary>
 		public static List<Vector3> nodeListFromAsset( string pathAssetName )
 		{
+			
+			#if !UNITY_5_4_OR_NEWER
 			if( Application.platform == RuntimePlatform.OSXWebPlayer || Application.platform == RuntimePlatform.WindowsWebPlayer )
 			{
 				Debug.LogError( "The Web Player does not support loading files from disk." );
 				return null;
 			}
-
+			#endif
 
 			var path = string.Empty;
 			if( !pathAssetName.EndsWith( ".asset" ) )
