@@ -74,7 +74,7 @@ namespace Prime31.ZestKit
 		/// bringToCompletion is ignored for chains due to it not having a solid, specific meaning for a chain
 		/// </summary>
 		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
-		public override void stop( bool bringToCompletion = false )
+		public override void stop( bool bringToCompletion = false, bool bringToCompletionImmediately = false )
 		{
 			_currentTween = _tweenList.Count;
 		}

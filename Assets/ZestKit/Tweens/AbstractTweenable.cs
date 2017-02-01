@@ -65,7 +65,7 @@ namespace Prime31.ZestKit
 		}
 
 
-		public virtual void stop( bool bringToCompletion = false )
+		public virtual void stop( bool bringToCompletion = false, bool bringToCompletionImmediately = false )
 		{
 			ZestKit.instance.removeTween( this );
 			_isCurrentlyManagedByZestKit = false;

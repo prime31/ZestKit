@@ -173,7 +173,7 @@ namespace Prime31.ZestKit
 		/// <param name="tween">Tween.</param>
 		public void removeTween( ITweenable tween )
 		{
-			if (_isUpdating)
+			if( _isUpdating )
 			{
 				_tempTweens.Add( tween );
 			

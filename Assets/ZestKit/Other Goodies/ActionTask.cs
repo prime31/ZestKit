@@ -215,7 +215,7 @@ namespace Prime31.ZestKit
 		/// stops the task optionally running the continueWith task if it is present
 		/// </summary>
 		/// <param name="runContinueWithTaskIfPresent">If set to <c>true</c> run continue with task if present.</param>
-		public override void stop( bool runContinueWithTaskIfPresent = true )
+		public override void stop( bool runContinueWithTaskIfPresent = true, bool bringToCompletionImmediately = false )
 		{
 			if( runContinueWithTaskIfPresent && _continueWithTask != null )
 				_continueWithTask.start();

@@ -195,7 +195,7 @@ namespace Prime31.ZestKit
 		/// stops the tween optionally bringing it to completion
 		/// </summary>
 		/// <param name="bringToCompletion">If set to <c>true</c> bring to completion.</param>
-		void stop( bool bringToCompletion = false );
+		void stop( bool bringToCompletion = false, bool bringToCompletionImmediately = false );
 	}
 
 

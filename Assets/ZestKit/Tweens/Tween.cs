@@ -270,7 +270,7 @@ namespace Prime31.ZestKit
 		}
 
 
-		public void stop( bool bringToCompletion = false )
+		public void stop( bool bringToCompletion = false, bool bringToCompletionImmediately = false )
 		{
 			_tweenState = TweenState.Complete;
 
@@ -281,7 +281,12 @@ namespace Prime31.ZestKit
 				_loopType = LoopType.None;
 				_loops = 0;
 
-				// ZestKit will handle removal on the next tick
+				// ZestKit will handle removal on the next tick unless we want it done like RIGHT NOW!
+				if( bringToCompletionImmediately )
+				{
+					tick();
+					ZestKit.instance.removeTween( this );
+				}
 			}
 			else
 			{
