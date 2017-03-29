@@ -52,7 +52,9 @@ namespace Prime31.ZestKit
 		/// <summary>
 		/// stores tweens marked for removal
 		/// </summary>
-		List<ITweenable> _tempTweens = new List<ITweenable>();
+        List<ITweenable> _tempTweens = new List<ITweenable>();
+		List<ITweenable> _removedTweens = new List<ITweenable>();
+        int _nextTempTweenIdxToDelete = 0;
 
 		/// <summary>
 		/// guard to stop instances being created while the application is quitting
@@ -141,15 +143,24 @@ namespace Prime31.ZestKit
 					_tempTweens.Add( tween );
 			}
 
-			_isUpdating = false;
-
-			// kill the dead Tweens
+            // kill the dead Tweens
+            _nextTempTweenIdxToDelete = 0;
+            ITweenable tweenToDelete;
 			for( var i = 0; i < _tempTweens.Count; i++ )
 			{
-				_tempTweens[i].recycleSelf();
-				_activeTweens.Remove( _tempTweens[i] );
+                _nextTempTweenIdxToDelete++;
+                tweenToDelete = _tempTweens[i];
+                if ( _removedTweens.Contains( tweenToDelete ) )
+                    continue;
+
+				tweenToDelete.recycleSelf();
+				_activeTweens.Remove( tweenToDelete );
 			}
 			_tempTweens.Clear();
+            _removedTweens.Clear();
+            _nextTempTweenIdxToDelete = -1;
+
+            _isUpdating = false;
 		}
 
 		#endregion
@@ -175,8 +186,20 @@ namespace Prime31.ZestKit
 		{
 			if( _isUpdating )
 			{
-				_tempTweens.Add( tween );
-			
+                int tempTweensIdx = _tempTweens.IndexOf( tween );
+                if ( tempTweensIdx < 0 ) {
+                    // not in temp tweens yet, triggered by a tween stopping on its own
+                    tween.recycleSelf();
+                    _activeTweens.Remove( tween );
+                    _removedTweens.Add( tween );
+                }
+                else if ( tempTweensIdx >= _nextTempTweenIdxToDelete ) {
+                    // triggered by a tween being recycled
+                    tween.recycleSelf();
+                    _activeTweens.Remove( tween );
+                    _tempTweens.RemoveAt( tempTweensIdx );
+                }
+                // otherwise has already been deleted
 			}
 			else
 			{
