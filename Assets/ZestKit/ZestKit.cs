@@ -48,13 +48,12 @@ namespace Prime31.ZestKit
 		/// internal list of all the currently active tweens
 		/// </summary>
 		List<ITweenable> _activeTweens = new List<ITweenable>();
+		List<ITweenable> _tempTweens = new List<ITweenable>();
 
 		/// <summary>
 		/// stores tweens marked for removal
 		/// </summary>
-		List<ITweenable> _tempTweens = new List<ITweenable>();
 		List<ITweenable> _removedTweens = new List<ITweenable>();
-		int _nextTempTweenIdxToDelete = 0;
 
 		/// <summary>
 		/// guard to stop instances being created while the application is quitting
@@ -136,29 +135,24 @@ namespace Prime31.ZestKit
 		{
 			_isUpdating = true;
 
-			for( var i = 0; i < _activeTweens.Count; i++ )
-			{
-				var tween = _activeTweens[i];
-				if( tween.tick() )
-					_tempTweens.Add( tween );
-			}
-
-			// kill the dead Tweens
-			_nextTempTweenIdxToDelete = 0;
-			ITweenable tweenToDelete;
-			for( var i = 0; i < _tempTweens.Count; i++ )
-			{
-				_nextTempTweenIdxToDelete++;
-				tweenToDelete = _tempTweens[i];
-				if ( _removedTweens.Contains( tweenToDelete ) )
-					continue;
-
-				tweenToDelete.recycleSelf();
-				_activeTweens.Remove( tweenToDelete );
-			}
 			_tempTweens.Clear();
+			_tempTweens.AddRange( _activeTweens );
+			for ( int i = 0; i < _tempTweens.Count; i++ ) {
+				var tween = _tempTweens[i];
+				if ( _removedTweens.Contains( tween ) ) {
+					// was already recycled
+					continue;
+				}
+
+				// update tween
+				if ( tween.tick() ) {
+					// tween completed
+					tween.recycleSelf();
+					_activeTweens.Remove( tween );
+				}
+			}
+
 			_removedTweens.Clear();
-			_nextTempTweenIdxToDelete = -1;
 
 			_isUpdating = false;
 		}
@@ -184,27 +178,12 @@ namespace Prime31.ZestKit
 		/// <param name="tween">Tween.</param>
 		public void removeTween( ITweenable tween )
 		{
+			tween.recycleSelf();
+			_activeTweens.Remove( tween );
 			if( _isUpdating )
 			{
-				int tempTweensIdx = _tempTweens.IndexOf( tween );
-				if ( tempTweensIdx < 0 ) {
-					// not in temp tweens yet, triggered by a tween stopping on its own
-					tween.recycleSelf();
-					_activeTweens.Remove( tween );
-					_removedTweens.Add( tween );
-				}
-				else if ( tempTweensIdx >= _nextTempTweenIdxToDelete ) {
-					// triggered by a tween being recycled
-					tween.recycleSelf();
-					_activeTweens.Remove( tween );
-					_tempTweens.RemoveAt( tempTweensIdx );
-				}
-				// otherwise has already been deleted
-			}
-			else
-			{
-				tween.recycleSelf();
-				_activeTweens.Remove( tween );
+				// make sure it doesn't get updated
+				_removedTweens.Add( tween );
 			}
 		}
 
