@@ -137,15 +137,15 @@ namespace Prime31.ZestKit
 
 			_tempTweens.Clear();
 			_tempTweens.AddRange( _activeTweens );
-			for ( int i = 0; i < _tempTweens.Count; i++ ) {
+			for( var i = 0; i < _tempTweens.Count; i++ )
+			{
 				var tween = _tempTweens[i];
-				if ( _removedTweens.Contains( tween ) ) {
-					// was already recycled
-					continue;
-				}
+				if( _removedTweens.Contains( tween ) )
+					continue; // was already recycled
 
 				// update tween
-				if ( tween.tick() ) {
+				if( tween.tick() )
+				{
 					// tween completed
 					tween.recycleSelf();
 					_activeTweens.Remove( tween );
@@ -153,7 +153,6 @@ namespace Prime31.ZestKit
 			}
 
 			_removedTweens.Clear();
-
 			_isUpdating = false;
 		}
 
@@ -180,11 +179,10 @@ namespace Prime31.ZestKit
 		{
 			tween.recycleSelf();
 			_activeTweens.Remove( tween );
+
+			// make sure it doesn't get updated if we are in the update loop
 			if( _isUpdating )
-			{
-				// make sure it doesn't get updated
 				_removedTweens.Add( tween );
-			}
 		}
 
 

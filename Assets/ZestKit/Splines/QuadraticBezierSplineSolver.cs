@@ -54,7 +54,7 @@ namespace Prime31.ZestKit
 
 		public override Vector3 getPoint( float t )
 		{
-			float d = 1f - t;
+			var d = 1f - t;
 			return d * d * _nodes[0] + 2f * d * t * _nodes[1] + t * t * _nodes[2];
 		}
 

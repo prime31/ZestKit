@@ -75,7 +75,7 @@ namespace Prime31.ZestKit
 			var nextNodeLength = 0f;
 
 			float[] keysSegmentTimeForDistance = new float[_segmentTimeForDistance.Keys.Count];
-			_segmentTimeForDistance.Keys.CopyTo ( keysSegmentTimeForDistance, 0 );
+			_segmentTimeForDistance.Keys.CopyTo( keysSegmentTimeForDistance, 0 );
 
 			// loop through all the values in our lookup table and find the two nodes our targetDistance falls between
 			for( int k = 0; k < keysSegmentTimeForDistance.Length; ++k )
@@ -116,59 +116,64 @@ namespace Prime31.ZestKit
 
 
 		public virtual void drawGizmos()
-		{}
+		{ }
 
 
-        public virtual int getTotalPointsBetweenPoints(float t, float t2) {
-            int totalPoints = 0;
+		public virtual int getTotalPointsBetweenPoints( float t, float t2 )
+		{
+			int totalPoints = 0;
 
-            // we know exactly how far along the path we want to be from the passed in t
-            var targetDistance = _pathLength * t;
-            var targetDistance2 = _pathLength * t2;
+			// we know exactly how far along the path we want to be from the passed in t
+			var targetDistance = _pathLength * t;
+			var targetDistance2 = _pathLength * t2;
 
-            // store the previous and next nodes in our lookup table
-            var nextNodeLength = 0f;
+			// store the previous and next nodes in our lookup table
+			var nextNodeLength = 0f;
 
-            float[] keysSegmentTimeForDistance = new float[_segmentTimeForDistance.Keys.Count];
-            _segmentTimeForDistance.Keys.CopyTo(keysSegmentTimeForDistance, 0);
+			float[] keysSegmentTimeForDistance = new float[_segmentTimeForDistance.Keys.Count];
+			_segmentTimeForDistance.Keys.CopyTo( keysSegmentTimeForDistance, 0 );
 
-            // loop through all the values in our lookup table and find the two nodes our targetDistance falls between
-            for (int k = 0; k < keysSegmentTimeForDistance.Length; ++k) {
-                float key = keysSegmentTimeForDistance[k];
-                float value = _segmentTimeForDistance[key];
+			// loop through all the values in our lookup table and find the two nodes our targetDistance falls between
+			for( int k = 0; k < keysSegmentTimeForDistance.Length; ++k )
+			{
+				float key = keysSegmentTimeForDistance[k];
+				float value = _segmentTimeForDistance[key];
 
-                // have we passed our targetDistance yet?
-                if (value >= targetDistance) {
-                    nextNodeLength = value;
-                    break;
-                }
-            }
+				// have we passed our targetDistance yet?
+				if( value >= targetDistance )
+				{
+					nextNodeLength = value;
+					break;
+				}
+			}
 
 
-            // store the previous and next nodes in our lookup table
-            var previousNodeTime = 0f;
-            var previousNodeLength = 0f;
+			// store the previous and next nodes in our lookup table
+			var previousNodeTime = 0f;
+			var previousNodeLength = 0f;
 
-            // loop through all the values in our lookup table and find the two nodes our targetDistance falls between
-            for (int k = 0; k < keysSegmentTimeForDistance.Length; ++k) {
-                float key = keysSegmentTimeForDistance[k];
-                float value = _segmentTimeForDistance[key];
+			// loop through all the values in our lookup table and find the two nodes our targetDistance falls between
+			for( int k = 0; k < keysSegmentTimeForDistance.Length; ++k )
+			{
+				float key = keysSegmentTimeForDistance[k];
+				float value = _segmentTimeForDistance[key];
 
-                // have we passed our targetDistance yet?
-                if (value >= targetDistance2) {
-                    if (previousNodeTime > 0)
-                        previousNodeLength = _segmentTimeForDistance[previousNodeTime];
+				// have we passed our targetDistance yet?
+				if( value >= targetDistance2 )
+				{
+					if( previousNodeTime > 0 )
+						previousNodeLength = _segmentTimeForDistance[previousNodeTime];
 
-                    break;
-                }
-                previousNodeTime = key;
-            }
+					break;
+				}
+				previousNodeTime = key;
+			}
 
-            //round the float values, we just want an approximation to the amount of nodes
-            //not a very strict and real value
-            totalPoints = (int)(nextNodeLength + 0.5f) + (int)(previousNodeLength + 0.5f);
+			//round the float values, we just want an approximation to the amount of nodes
+			//not a very strict and real value
+			totalPoints = (int)( nextNodeLength + 0.5f ) + (int)( previousNodeLength + 0.5f );
 
-            return totalPoints;
-        }
-    }
+			return totalPoints;
+		}
+	}
 }
