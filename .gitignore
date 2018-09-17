@@ -13,3 +13,4 @@ Assets/Editor.meta
 Assets/Editor/StripGeneratedSolutionSettings.cs
 Assets/Editor/StripGeneratedSolutionSettings.cs.meta
 *.userprefs
+.vscode

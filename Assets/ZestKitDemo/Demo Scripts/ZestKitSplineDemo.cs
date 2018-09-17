@@ -42,7 +42,7 @@ public class ZestKitSplineDemo : MonoBehaviour
 		}
 
 
-		if( GUILayout.Button( "Cicle Position Tween (relative with PingPong)" ) )
+		if( GUILayout.Button( "Circle Position Tween (relative with PingPong)" ) )
 		{
 			var spline = new Spline( "circle", true );
 			spline.closePath();

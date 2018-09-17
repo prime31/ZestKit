@@ -37,12 +37,14 @@ public static class DemoGUIHelpers
 
 	static int buttonHeight()
 	{
+#if !UNITY_EDITOR
 		if( isRetinaOrLargeScreen() )
 		{
 			if( isRetinaIpad() )
 				return 140;
 			return 70;
 		}
+#endif
 
 		return 30;
 	}
@@ -50,12 +52,14 @@ public static class DemoGUIHelpers
 
 	static int buttonFontSize()
 	{
+#if !UNITY_EDITOR
 		if( isRetinaOrLargeScreen() )
 		{
 			if( isRetinaIpad() )
 				return 40;
 			return 25;
 		}
+#endif
 
 		return 15;
 	}
@@ -178,7 +182,7 @@ public class ComboBox
 
 		switch( Event.current.GetTypeForControl(controlID) )
 		{
-			case EventType.mouseUp:
+			case EventType.MouseUp:
 				{
 					if( isClickedComboButton )
 					{
