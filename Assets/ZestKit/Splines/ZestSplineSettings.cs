@@ -12,10 +12,17 @@ namespace Prime31.ZestKit
         // From: https://wiki.unity3d.com/index.php?title=CreateScriptableObjectAsset
         public static void CreateAsset(string path, List<Vector3> nodes)
         {
-            ZestSplineSettings asset = ScriptableObject.CreateInstance<ZestSplineSettings>();
-            asset.Nodes = nodes;
-
-            AssetDatabase.CreateAsset(asset, path);
+            ZestSplineSettings asset = AssetDatabase.LoadAssetAtPath(path.Replace(Application.dataPath, "Assets"), typeof(ZestSplineSettings)) as ZestSplineSettings;
+            if (asset != null)
+            {
+                asset.Nodes = nodes;
+            }
+            else
+            {
+                asset = ScriptableObject.CreateInstance<ZestSplineSettings>();
+                asset.Nodes = nodes;
+                AssetDatabase.CreateAsset(asset, path);
+            }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
