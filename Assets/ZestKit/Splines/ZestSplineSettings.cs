@@ -2,24 +2,25 @@
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ZestSpline", menuName = "ZestKit/Create New ZestKit Asset")]
-public class ZestKitSettings : ScriptableObject
+namespace Prime31.ZestKit
 {
-    public List<Vector3> Nodes;
-
-    // From: https://wiki.unity3d.com/index.php?title=CreateScriptableObjectAsset
-    public static void CreateAsset(string path, List<Vector3> nodes)
+    [CreateAssetMenu(fileName = "New ZestSpline", menuName = "ZestKit/Create New ZestKit Asset")]
+    public class ZestKitSettings : ScriptableObject
     {
-        ZestKitSettings asset = ScriptableObject.CreateInstance<ZestKitSettings>();
-        asset.Nodes = nodes;
+        public List<Vector3> Nodes;
 
-        AssetDatabase.CreateAsset(asset, AssetDatabase.GenerateUniqueAssetPath(path));
+        // From: https://wiki.unity3d.com/index.php?title=CreateScriptableObjectAsset
+        public static void CreateAsset(string path, List<Vector3> nodes)
+        {
+            ZestKitSettings asset = ScriptableObject.CreateInstance<ZestKitSettings>();
+            asset.Nodes = nodes;
 
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-        EditorUtility.FocusProjectWindow();
-        Selection.activeObject = asset;
+            AssetDatabase.CreateAsset(asset, AssetDatabase.GenerateUniqueAssetPath(path));
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.FocusProjectWindow();
+            Selection.activeObject = asset;
+        }
     }
 }
-
-
