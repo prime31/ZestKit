@@ -15,7 +15,7 @@ namespace Prime31.ZestKit
             ZestSplineSettings asset = ScriptableObject.CreateInstance<ZestSplineSettings>();
             asset.Nodes = nodes;
 
-            AssetDatabase.CreateAsset(asset, AssetDatabase.GenerateUniqueAssetPath(path));
+            AssetDatabase.CreateAsset(asset, path);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
