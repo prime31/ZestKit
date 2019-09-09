@@ -314,7 +314,7 @@ namespace Prime31.ZestKit
                     var path = EditorUtility.OpenFilePanel("Choose path to load", Path.Combine(Application.dataPath, "Asset"), "asset");
                     if (path != string.Empty)
                     {
-                        ZestKitSettings asset = AssetDatabase.LoadAssetAtPath(path.Replace(Application.dataPath, "Assets"), typeof(ZestKitSettings)) as ZestKitSettings;
+                        ZestSplineSettings asset = AssetDatabase.LoadAssetAtPath(path.Replace(Application.dataPath, "Assets"), typeof(ZestSplineSettings)) as ZestSplineSettings;
                         if (asset != null)
                         {
                             _target.nodes = asset.Nodes;
@@ -875,7 +875,7 @@ namespace Prime31.ZestKit
 
         private void saveAsScriptableObject(string path)
         {
-            ZestKitSettings.CreateAsset(path, _target.nodes);
+            ZestSplineSettings.CreateAsset(path, _target.nodes);
         }
 
         private void persistRouteToDisk(string path)

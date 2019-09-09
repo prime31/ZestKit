@@ -402,9 +402,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quad: {fileID: 1703907326}
   LoadFromScriptableObject: 1
-  FigureEightSplineSettings: {fileID: 11400000, guid: 4e09738ab1e5596408803c66c1baa499,
+  FigureEightSplineSettings: {fileID: 11400000, guid: f2fdfd73cd5d3f642bcee7f3bd0c90ae,
     type: 2}
-  CircleSplineSettings: {fileID: 11400000, guid: a711e74d261c1f04c948b62542e85dd5,
+  CircleSplineSettings: {fileID: 11400000, guid: eb0290a319b001f42b1f9b0d2bfddcab,
     type: 2}
   DemoRouteSplineSettings: {fileID: 11400000, guid: f3c382efb7612f745ae65df5c59d007b,
     type: 2}

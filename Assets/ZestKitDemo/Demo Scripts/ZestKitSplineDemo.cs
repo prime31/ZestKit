@@ -6,9 +6,9 @@ public class ZestKitSplineDemo : MonoBehaviour
 {
     public Transform quad;
     [SerializeField] private bool LoadFromScriptableObject;
-    [SerializeField] private ZestKitSettings FigureEightSplineSettings;
-    [SerializeField] private ZestKitSettings CircleSplineSettings;
-    [SerializeField] private ZestKitSettings DemoRouteSplineSettings;
+    [SerializeField] private ZestSplineSettings FigureEightSplineSettings;
+    [SerializeField] private ZestSplineSettings CircleSplineSettings;
+    [SerializeField] private ZestSplineSettings DemoRouteSplineSettings;
 
     float _duration = 2.5f;
 
