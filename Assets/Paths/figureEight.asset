@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8879ddc6e37766f4a9d6feca751a1a9d, type: 3}
+  m_Name: figureEight
+  m_EditorClassIdentifier: 
+  Nodes:
+  - {x: 11.412099, y: 0.25536537, z: 0.930336}
+  - {x: 0, y: 0, z: 0}
+  - {x: 11.001852, y: 5.55903, z: 0.2692169}
+  - {x: 5.8535132, y: 8.8757515, z: 0.26707458}
+  - {x: -0.97132856, y: 6.1435156, z: 0.930336}
+  - {x: 11.412099, y: 0.25536537, z: 0.930336}
+  - {x: 5.706049, y: -4.5936356, z: 0.465168}
+  - {x: 0, y: 0, z: 0}
+  - {x: 11.001852, y: 5.55903, z: 0.2692169}

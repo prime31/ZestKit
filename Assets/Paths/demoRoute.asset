@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8879ddc6e37766f4a9d6feca751a1a9d, type: 3}
+  m_Name: demoRoute
+  m_EditorClassIdentifier: 
+  Nodes:
+  - {x: 0, y: 0, z: 0}
+  - {x: -0.6243181, y: 5.1001954, z: 0}
+  - {x: -0.14932942, y: 4.488624, z: 0}
+  - {x: 3.6550314, y: 5.827647, z: 0}
+  - {x: 7.4593925, y: 7.166669, z: 0}
+  - {x: 7.9665785, y: 7.765952, z: 0}
+  - {x: 9.391892, y: 4.9484234, z: 0}
+  - {x: 10.817208, y: 2.130897, z: 0}
+  - {x: 1.001476, y: -2.8061614, z: 0}
+  - {x: 2.5937998, y: 1.2443137, z: 0}
+  - {x: 4.186125, y: 5.2947874, z: 0}
+  - {x: 11.675099, y: -1.7070389, z: 0}
+  - {x: 8.567503, y: -4.093643, z: 0}
+  - {x: 5.4599056, y: -6.4802504, z: 0}
+  - {x: 0.6243181, y: -5.1001954, z: 0}
+  - {x: 0, y: 0, z: 0}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8879ddc6e37766f4a9d6feca751a1a9d, type: 3}
+  m_Name: circle
+  m_EditorClassIdentifier: 
+  Nodes:
+  - {x: 0, y: 0, z: 0}
+  - {x: 3.8026109, y: 0.6755667, z: 0}
+  - {x: 1.3882027, y: 4.8268776, z: 0}
+  - {x: -1.3839946, y: 4.0366507, z: 0}
+  - {x: -4.1561923, y: 3.2464244, z: 0}
+  - {x: -3.893187, y: -0.57744455, z: 0}
+  - {x: 0, y: 0, z: 0}
