@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Prime31.ZestKit
@@ -9,6 +11,7 @@ namespace Prime31.ZestKit
     {
         public List<Vector3> Nodes;
 
+#if UNITY_EDITOR
         // From: https://wiki.unity3d.com/index.php?title=CreateScriptableObjectAsset
         public static void CreateAsset(string path, List<Vector3> nodes)
         {
@@ -29,5 +32,6 @@ namespace Prime31.ZestKit
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = asset;
         }
+#endif
     }
 }
