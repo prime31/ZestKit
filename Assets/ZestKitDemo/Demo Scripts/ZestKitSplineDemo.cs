@@ -5,10 +5,10 @@ using UnityEngine;
 public class ZestKitSplineDemo : MonoBehaviour
 {
     public Transform quad;
-    [SerializeField] private bool LoadFromScriptableObject;
-    [SerializeField] private ZestSplineSettings FigureEightSplineSettings;
-    [SerializeField] private ZestSplineSettings CircleSplineSettings;
-    [SerializeField] private ZestSplineSettings DemoRouteSplineSettings;
+    [SerializeField] public bool LoadFromScriptableObject;
+    [SerializeField] public ZestSplineSettings FigureEightSplineSettings;
+    [SerializeField] public ZestSplineSettings CircleSplineSettings;
+    [SerializeField] public ZestSplineSettings DemoRouteSplineSettings;
 
     float _duration = 2.5f;
 
