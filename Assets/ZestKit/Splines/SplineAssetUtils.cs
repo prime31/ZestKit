@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+#if ENABLE_UNITYWEBREQUEST
+using UnityEngine.Networking;
+#endif
 
 
 namespace Prime31.ZestKit
@@ -30,10 +33,20 @@ namespace Prime31.ZestKit
 			{
 				path = Path.Combine( "jar:file://" + Application.dataPath + "!/assets/", pathAssetName );
 
+#if ENABLE_UNITYWEBREQUEST
+				UnityWebRequest loadAsset = UnityWebRequest.Get( path );
+				loadAsset.SendWebRequest();
+				while( !loadAsset.isDone ) { } // maybe make a safety check here
+
+				return bytesToVector3List( loadAsset.downloadHandler.data );
+#elif ENABLE_WWW
 				WWW loadAsset = new WWW( path );
 				while( !loadAsset.isDone ) { } // maybe make a safety check here
 
 				return bytesToVector3List( loadAsset.bytes );
+#else
+				throw System.NotImplementedException();
+#endif
 			}
 			else
 			{
